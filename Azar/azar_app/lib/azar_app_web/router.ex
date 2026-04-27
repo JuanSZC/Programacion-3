@@ -17,7 +17,7 @@ defmodule AzarAppWeb.Router do
   scope "/", AzarAppWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", AzarLive, :home
   end
 
   # Other scopes may use custom stacks.
