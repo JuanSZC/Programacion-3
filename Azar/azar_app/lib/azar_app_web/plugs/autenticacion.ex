@@ -1,0 +1,64 @@
+defmodule AzarAppWeb.Plugs.Autenticacion do
+  @moduledoc """
+  Agrupa los plugs de seguridad para la aplicación Azar.
+  """
+end
+
+defmodule AzarAppWeb.Plugs.CargarUsuario do
+  import Plug.Conn
+  alias AzarApp.Cuentas
+
+  def init(opts), do: opts
+
+  def call(conn, _opts) do
+    usuario_id = get_session(conn, :usuario_id)
+    usuario = if usuario_id, do: Cuentas.obtener_usuario(usuario_id), else: nil
+
+    # Asignamos :usuario_actual para que esté disponible en layouts y LiveViews
+    assign(conn, :usuario_actual, usuario)
+  end
+end
+
+defmodule AzarAppWeb.Plugs.RequireAuth do
+  import Plug.Conn
+  import Phoenix.Controller, only: [redirect: 2, put_flash: 3]
+  alias AzarApp.Cuentas
+
+  def init(opts), do: opts
+
+  def call(conn, _opts) do
+    usuario_id = get_session(conn, :usuario_id)
+    usuario = if usuario_id, do: Cuentas.obtener_usuario(usuario_id), else: nil
+
+    if usuario && usuario.activo do
+      assign(conn, :usuario_actual, usuario)
+    else
+      conn
+      |> put_flash(:error, "Debes iniciar sesión para continuar.")
+      |> redirect(to: "/login")
+      |> halt()
+    end
+  end
+end
+
+defmodule AzarAppWeb.Plugs.RequireAdmin do
+  import Plug.Conn
+  import Phoenix.Controller, only: [redirect: 2, put_flash: 3]
+  alias AzarApp.Cuentas
+
+  def init(opts), do: opts
+
+  def call(conn, _opts) do
+    usuario_id = get_session(conn, :usuario_id)
+    usuario = if usuario_id, do: Cuentas.obtener_usuario(usuario_id), else: nil
+
+    if usuario && usuario.activo && usuario.rol == "admin" do
+      assign(conn, :usuario_actual, usuario)
+    else
+      conn
+      |> put_flash(:error, "Acceso restringido a administradores.")
+      |> redirect(to: "/admin/login")
+      |> halt()
+    end
+  end
+end

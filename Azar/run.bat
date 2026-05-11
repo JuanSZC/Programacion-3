@@ -1,5 +1,5 @@
 @echo off
-title Phoenix Startup Script
+title Phoenix Startup Script - Azar S.A.
 
 echo ==========================
 echo    Phoenix Startup Script
@@ -27,16 +27,12 @@ echo 3. Compilando proyecto...
 call mix compile
 
 echo.
-echo 4. Ejecutando migraciones...
-call mix ecto.migrate
-
-echo.
-echo 5. Abriendo navegador en http://localhost:4000...
-:: Esta es la linea clave. "start" lanza el proceso y sigue con el script.
+echo 4. Abriendo navegador en http://localhost:4000/admin/sorteos...
+:: Lanzamos directo a la ruta del administrador para que pruebes más rápido
 start http://localhost:4000
 
 echo.
-echo 6. Levantando servidor Phoenix...
+echo 5. Levantando servidor Phoenix (Procesos Concurrentes Activos)...
 call mix phx.server
 
 pause

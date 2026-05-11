@@ -33,42 +33,116 @@ defmodule AzarAppWeb.Layouts do
 
   slot :inner_block, required: true
 
-  def app(assigns) do
+def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </header>
+    <div class="min-h-screen flex flex-col">
+      <%!-- BARRA DE NAVEGACIÓN SUPERIOR (Sticky y Efecto Cristal) --%>
+      <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-base-100/80 border-b border-base-200 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16 sm:h-20">
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
-        {render_slot(@inner_block)}
-      </div>
-    </main>
+            <%!-- IZQUIERDA: Logo y Branding --%>
+            <div class="flex-shrink-0 flex items-center gap-2">
+              <a href="/" class="flex items-center gap-2 group outline-none">
+                <div class="bg-primary text-primary-content p-2.5 rounded-2xl group-hover:rotate-12 group-hover:scale-110 transition-all shadow-lg shadow-primary/30">
+                  <.icon name="hero-sparkles-solid" class="size-6" />
+                </div>
+                <span class="font-extrabold text-2xl tracking-tight text-base-content group-hover:text-primary transition-colors">
+                  Azar<span class="text-primary">App</span>
+                </span>
+              </a>
+            </div>
 
-    <.flash_group flash={@flash} />
+            <%!-- CENTRO: Enlaces de Navegación (Escritorio) --%>
+            <nav class="hidden md:flex items-center space-x-1">
+              <a href="/cliente/sorteos" class="px-4 py-2 rounded-xl text-base-content/70 hover:text-primary hover:bg-primary/10 font-bold transition-all flex items-center gap-2">
+                <.icon name="hero-ticket" class="size-5" />
+                Explorar Sorteos
+              </a>
+            </nav>
+
+            <%!-- DERECHA: Acciones, Modo Oscuro y Usuario --%>
+            <div class="flex items-center gap-2 sm:gap-4">
+
+              <%!-- TU COMPONENTE DE TEMA ORIGINAL (Integrado a la perfección) --%>
+              <.theme_toggle />
+
+              <%!-- Separador Visual --%>
+              <div class="hidden sm:block h-8 w-px bg-base-200 mx-1"></div>
+
+              <%!-- MENÚ DE USUARIO (Mockup dinámico) --%>
+              <%= if assigns[:current_user] || assigns[:current_usuario] do %>
+                <div class="dropdown dropdown-end">
+                  <div tabindex="0" role="button" class="btn btn-ghost rounded-2xl px-2 py-1 flex items-center gap-3 hover:bg-base-200 border border-transparent hover:border-base-300 transition-all">
+                    <div class="avatar placeholder">
+                      <div class="bg-primary text-primary-content rounded-xl w-9 shadow-md">
+                        <span class="text-sm font-black uppercase">U</span>
+                      </div>
+                    </div>
+                    <div class="hidden sm:flex flex-col items-start leading-tight">
+                      <span class="font-bold text-sm text-base-content">Mi Cuenta</span>
+                      <span class="text-[10px] font-semibold text-primary uppercase tracking-wider">Online</span>
+                    </div>
+                    <.icon name="hero-chevron-down" class="size-4 opacity-50 hidden sm:block" />
+                  </div>
+
+                  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-2xl shadow-base-300/50 bg-base-100 rounded-3xl w-56 border border-base-200 mt-4 font-medium">
+                    <li>
+                      <a href="/admin/sorteos" class="py-3 rounded-xl hover:bg-base-200">
+                        <.icon name="hero-command-line" class="size-5 text-secondary" />
+                        Panel Admin
+                      </a>
+                    </li>
+                    <div class="divider my-1"></div>
+                    <li>
+                      <a href="/log_out" class="py-3 rounded-xl text-error hover:bg-error/10 hover:text-error">
+                        <.icon name="hero-arrow-right-on-rectangle" class="size-5" />
+                        Cerrar Sesión
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              <% else %>
+                <%!-- BOTONES PARA INVITADOS --%>
+                <div class="hidden sm:flex items-center gap-3">
+                  <a href="/login" class="btn btn-ghost rounded-xl font-bold text-base-content/70 hover:text-primary hover:bg-primary/10">
+                    Ingresar
+                  </a>
+                  <a href="/registro" class="btn btn-primary rounded-xl px-6 shadow-lg shadow-primary/30 hover:-translate-y-0.5 transition-transform font-bold">
+                    Crear Cuenta
+                  </a>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <%!-- CONTENEDOR PRINCIPAL DONDE SE CARGAN TUS PÁGINAS --%>
+      <main class="flex-grow pt-8 pb-20 w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <%!-- Notificaciones (Flash Messages) --%>
+          <.flash_group flash={@flash} />
+
+          <%!-- El contenido de tus vistas (Sorteos, Admin, etc.) --%>
+          {render_slot(@inner_block)}
+        </div>
+      </main>
+
+      <%!-- PIE DE PÁGINA (Footer) --%>
+      <footer class="footer footer-center p-10 bg-base-200/50 text-base-content rounded-t-3xl border-t border-base-200 mt-auto">
+        <aside>
+          <div class="flex items-center justify-center gap-2 mb-3 opacity-60 grayscale hover:grayscale-0 transition-all cursor-pointer">
+            <.icon name="hero-sparkles-solid" class="size-8" />
+            <span class="font-extrabold text-2xl tracking-tight">AzarApp</span>
+          </div>
+          <p class="font-medium text-sm text-base-content/70">
+            Plataforma segura de sorteos digitales. <br/>
+            Copyright © <%= Date.utc_today().year %> - Todos los derechos reservados.
+          </p>
+        </aside>
+      </footer>
+    </div>
     """
   end
 

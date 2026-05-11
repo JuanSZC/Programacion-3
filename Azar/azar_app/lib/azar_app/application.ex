@@ -7,15 +7,16 @@ defmodule AzarApp.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
+children = [
       AzarAppWeb.Telemetry,
       AzarApp.Repo,
       {DNSCluster, query: Application.get_env(:azar_app, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: AzarApp.PubSub},
-      # Start a worker by calling: AzarApp.Worker.start_link(arg)
-      # {AzarApp.Worker, arg},
-      # Start to serve requests, typically the last entry
-      AzarAppWeb.Endpoint
+      AzarAppWeb.Endpoint,
+      # Tus módulos core aquí abajo:
+      AzarApp.Core.SorteoSupervisor,
+      # Tarea que arranca los sorteos guardados una vez el supervisor ya está listo
+      Supervisor.child_spec({Task, fn -> AzarApp.Core.SorteoSupervisor.restaurar_sorteos() end}, restart: :temporary)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

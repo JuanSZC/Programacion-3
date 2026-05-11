@@ -10,30 +10,33 @@
    The heroicons installation itself is managed by your mix.exs */
 @plugin "../vendor/heroicons";
 
-/* daisyUI Tailwind Plugin. You can update this file by fetching the latest version with:
-   curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js
-   Make sure to look at the daisyUI changelog: https://daisyui.com/docs/changelog/ */
+/* daisyUI Tailwind Plugin. */
 @plugin "../vendor/daisyui" {
   themes: false;
 }
 
-/* daisyUI theme plugin. You can update this file by fetching the latest version with:
-  curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui-theme.js
-  We ship with two themes, a light one inspired on Phoenix colors and a dark one inspired
-  on Elixir colors. Build your own at: https://daisyui.com/theme-generator/ */
+/* =========================================
+   MODO OSCURO (DARK THEME)
+   ========================================= */
 @plugin "../vendor/daisyui-theme" {
   name: "dark";
   default: false;
   prefersdark: true;
   color-scheme: "dark";
-  --color-base-100: oklch(30.33% 0.016 252.42);
-  --color-base-200: oklch(25.26% 0.014 253.1);
-  --color-base-300: oklch(20.15% 0.012 254.09);
-  --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(58% 0.233 277.117);
-  --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(58% 0.233 277.117);
-  --color-secondary-content: oklch(96% 0.018 272.314);
+  
+  /* FONDOS Y TEXTOS (Magia del contraste) */
+  --color-base-100: #1d232a; /* Fondo principal (Oscuro) */
+  --color-base-200: #191e24; /* Fondo para tarjetas/secciones */
+  --color-base-300: #15191e; /* Fondo más oscuro */
+  --color-base-content: #f8fafc; /* Texto principal (Blanco/Gris muy claro) */
+  
+  /* COLORES GLOBALES */
+  --color-primary: #3b82f6; /* Azul brillante para destacar en fondo oscuro */
+  --color-primary-content: #ffffff; /* Texto sobre elementos primarios (Blanco) */
+  --color-secondary: #10b981; /* Esmeralda brillante */
+  --color-secondary-content: #ffffff; /* Texto sobre elementos secundarios (Blanco) */
+
+  /* Resto de colores del sistema (se dejan en OKLCH por defecto) */
   --color-accent: oklch(60% 0.25 292.717);
   --color-accent-content: oklch(96% 0.016 293.756);
   --color-neutral: oklch(37% 0.044 257.287);
@@ -56,19 +59,28 @@
   --noise: 0;
 }
 
+/* =========================================
+   MODO CLARO (LIGHT THEME)
+   ========================================= */
 @plugin "../vendor/daisyui-theme" {
   name: "light";
   default: true;
   prefersdark: false;
   color-scheme: "light";
-  --color-base-100: oklch(98% 0 0);
-  --color-base-200: oklch(96% 0.001 286.375);
-  --color-base-300: oklch(92% 0.004 286.32);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(70% 0.213 47.604);
-  --color-primary-content: oklch(98% 0.016 73.684);
-  --color-secondary: oklch(55% 0.027 264.364);
-  --color-secondary-content: oklch(98% 0.002 247.839);
+  
+  /* FONDOS Y TEXTOS (Magia del contraste) */
+  --color-base-100: #ffffff; /* Fondo principal (Blanco) */
+  --color-base-200: #f1f5f9; /* Fondo para tarjetas/secciones (Gris muy claro) */
+  --color-base-300: #e2e8f0; /* Fondo gris para bordes */
+  --color-base-content: #0f172a; /* Texto principal (Negro/Gris muy oscuro) */
+  
+  /* COLORES GLOBALES */
+  --color-primary: #2563eb; /* Azul estándar */
+  --color-primary-content: #ffffff; /* Texto sobre elementos primarios (Blanco) */
+  --color-secondary: #059669; /* Esmeralda estándar */
+  --color-secondary-content: #ffffff; /* Texto sobre elementos secundarios (Blanco) */
+
+  /* Resto de colores del sistema */
   --color-accent: oklch(0% 0 0);
   --color-accent-content: oklch(100% 0 0);
   --color-neutral: oklch(44% 0.017 285.786);

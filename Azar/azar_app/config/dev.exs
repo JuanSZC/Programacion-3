@@ -3,7 +3,8 @@ import Config
 # Configure your database
 config :azar_app, AzarApp.Repo,
   username: "postgres",
-  password: "azarelixir",
+  # Ajusta esta contraseña a la que tengas configurada en tu PostgreSQL
+  password: System.get_env("DATABASE_PASSWORD", "azarelixir"),
   hostname: "localhost",
   database: "azar_app_dev",
   stacktrace: true,
