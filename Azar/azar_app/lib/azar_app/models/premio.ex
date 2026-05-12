@@ -4,6 +4,7 @@ defmodule AzarApp.Premio do
     :id,
     :monto_bruto,
     :categoria,
+    :numero_ganador,
     monto_neto: 0,
     entregado: false,
     ganador_cedula: nil

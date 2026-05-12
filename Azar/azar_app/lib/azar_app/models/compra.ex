@@ -5,12 +5,13 @@ defmodule AzarApp.Compra do
     :cedula_cliente,
     :codigo_billete,
     :monto_pagado,
+    :tipo_compra,
     fecha: nil,
     estado: :completada # :completada, :reembolsada
   ]
 
 
-  def crear(id, cliente, billete) do
+  def crear(id, cliente, billete, tipo \\ :compra) do
     cond do
       cliente.saldo < billete.precio ->
         {:error, :saldo_insuficiente}

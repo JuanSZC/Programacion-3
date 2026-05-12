@@ -5,8 +5,10 @@ defmodule AzarApp.Sorteo do
     :titulo,
     :fecha_ejecucion,
     pozo_acumulado: 0,
-    numero_ganador: nil,
-    boletos_participantes: [], # Lista de códigos de billetes
+    numero_ganador: [],
+    boletos_participantes: [],
+    compras: [],
+    premios: [], # Lista de códigos de billetes
     estado: :programado # :programado, :realizado, :cancelado
   ]
 
@@ -19,6 +21,14 @@ defmodule AzarApp.Sorteo do
       pozo_acumulado: pozo_inicial
     }}
   end
+
+  def agregar_premio(sorteo, premio) do
+
+  nuevos_premios = [premio | sorteo.premios]
+
+  %{sorteo | premios: nuevos_premios}
+
+end
 
 
 end
