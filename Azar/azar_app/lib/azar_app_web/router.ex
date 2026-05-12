@@ -8,37 +8,54 @@ defmodule AzarAppWeb.Router do
     plug :put_root_layout, html: {AzarAppWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug AzarAppWeb.Plugs.CargarUsuario
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :require_auth do
+    plug AzarAppWeb.Plugs.RequireAuth
+  end
+
+  pipeline :require_admin do
+    plug AzarAppWeb.Plugs.RequireAdmin
   end
 
   scope "/", AzarAppWeb do
     pipe_through :browser
 
     live "/", AzarLive, :home
+    live "/login", AuthLive.LoginLive, :login
+    live "/registro", AuthLive.RegistroLive, :registros
+    live "/admin/login", AuthLive.AdminLoginLive, :admin_login
+
+    post "/sesion", SesionController, :crear
+    delete "/sesion", SesionController, :borrar
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AzarAppWeb do
-  #   pipe_through :api
-  # end
+  # PANEL DE ADMINISTRACIÓN
+  scope "/admin", AzarAppWeb do
+    pipe_through [:browser, :require_admin]
 
-  # Enable LiveDashboard and Swoosh mailbox preview in development
-  if Application.compile_env(:azar_app, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
+    live "/sorteos", Admin.SorteoLive.Index, :index
+    live "/sorteos/new", Admin.SorteoLive.Index, :new
+    live "/sorteos/:id/edit", Admin.SorteoLive.Index, :edit
+    live "/sorteos/:id", Admin.SorteoLive.Show, :show
+  end
 
-    scope "/dev" do
-      pipe_through :browser
+  # PANEL DE CLIENTE
+  # live_session aplica el NotificacionHook y el layout cliente a TODAS
+  # las rutas de cliente sin repetir código en cada LiveView.
+  scope "/cliente", AzarAppWeb.Cliente do
+    pipe_through [:browser, :require_auth]
 
-      live_dashboard "/dashboard", metrics: AzarAppWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+    live_session :cliente,
+      on_mount: [AzarAppWeb.Cliente.NotificacionHook],
+      layout: {AzarAppWeb.Layouts, :cliente} do
+
+      live "/perfil", PerfilLive, :index
+      live "/sorteos", SorteosLive, :index
+      live "/sorteos/:id", SorteoDetalleLive, :show
     end
+
+    delete "/sesion", AzarAppWeb.SesionController, :borrar
   end
 end
