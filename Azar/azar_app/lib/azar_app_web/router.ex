@@ -27,10 +27,7 @@ defmodule AzarAppWeb.Router do
     live "/registro", AuthLive.RegistroLive, :registros
     live "/admin/login", AuthLive.AdminLoginLive, :admin_login
 
-    # RUTAS DE SESIÓN (Limpiadas y sin duplicados)
     post "/sesion", SesionController, :crear
-    get "/sesion/validar", SesionController, :crear
-    post "/sesion/validar", SesionController, :crear
     delete "/sesion", SesionController, :borrar
   end
 
@@ -41,19 +38,24 @@ defmodule AzarAppWeb.Router do
     live "/sorteos", Admin.SorteoLive.Index, :index
     live "/sorteos/new", Admin.SorteoLive.Index, :new
     live "/sorteos/:id/edit", Admin.SorteoLive.Index, :edit
-
-    # Si te sigue dando error de "module Show is undefined",
-    # comenta la siguiente línea con un # hasta que crees ese archivo.
     live "/sorteos/:id", Admin.SorteoLive.Show, :show
   end
 
-# PANEL DE CLIENTE
-  scope "/cliente", AzarAppWeb.Cliente do # <-- Agregamos .Cliente aquí
+  # PANEL DE CLIENTE
+  # live_session aplica el NotificacionHook y el layout cliente a TODAS
+  # las rutas de cliente sin repetir código en cada LiveView.
+  scope "/cliente", AzarAppWeb.Cliente do
     pipe_through [:browser, :require_auth]
 
-    live "/perfil", PerfilLive, :index
-    live "/sorteos", SorteosLive, :index
-    live "/sorteos/:id", SorteoDetalleLive, :show # Cambié el nombre para evitar conflictos
-    delete "/sesion", SesionController, :borrar
+    live_session :cliente,
+      on_mount: [AzarAppWeb.Cliente.NotificacionHook],
+      layout: {AzarAppWeb.Layouts, :cliente} do
+
+      live "/perfil", PerfilLive, :index
+      live "/sorteos", SorteosLive, :index
+      live "/sorteos/:id", SorteoDetalleLive, :show
+    end
+
+    delete "/sesion", AzarAppWeb.SesionController, :borrar
   end
 end

@@ -4,17 +4,16 @@ defmodule AzarApp.Sorteos.Ticket do
 
   schema "tickets" do
     field :numero, :string
-    field :estado, :string, default: "disponible" # disponible, apartado, pagado
-
+    field :estado, :string, default: "disponible"
     belongs_to :sorteo, AzarApp.Sorteos.Sorteo
     belongs_to :usuario, AzarApp.Cuentas.Usuario
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
 
   def changeset(ticket, attrs) do
     ticket
     |> cast(attrs, [:numero, :estado, :sorteo_id, :usuario_id])
-    |> validate_required([:numero, :estado, :sorteo_id])
+    |> validate_required([:numero, :estado])
   end
 end

@@ -2,7 +2,6 @@ defmodule AzarAppWeb.AdminSidebar do
   use AzarAppWeb, :html
 
   attr :current_page, :string, default: "sorteos"
-
   slot :inner_block, required: true
 
   def sidebar(assigns) do
@@ -11,7 +10,7 @@ defmodule AzarAppWeb.AdminSidebar do
       <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
 
       <div class="drawer-content flex flex-col bg-base-200/30">
-
+        <%!-- NAVBAR MÓVIL --%>
         <div class="navbar bg-base-100/80 backdrop-blur-md border-b border-base-300 sticky top-0 z-40 lg:hidden">
           <div class="flex-none">
             <label for="my-drawer-2" class="btn btn-square btn-ghost">
@@ -21,7 +20,7 @@ defmodule AzarAppWeb.AdminSidebar do
             </label>
           </div>
           <div class="flex-1 px-2 mx-2">
-            <span class="text-xl font-black text-primary tracking-tight">Azar Admin</span>
+            <span class="text-xl font-black text-primary tracking-tight italic uppercase">Azar Admin</span>
           </div>
         </div>
 
@@ -36,54 +35,68 @@ defmodule AzarAppWeb.AdminSidebar do
         <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
 
         <div class="flex flex-col w-80 min-h-full bg-base-100 border-r border-base-300 shadow-sm">
-
-          <div class="h-20 flex items-center px-8 border-b border-base-200">
-            <h2 class="text-3xl font-black text-primary tracking-tighter">
-              Azar<span class="text-base-content/20">.</span>
-            </h2>
+          <%!-- LOGO SECCIÓN --%>
+          <div class="h-24 flex items-center px-8 border-b border-base-200 bg-base-100">
+            <div class="flex items-center gap-2">
+              <div class="bg-primary p-2 rounded-xl shadow-lg shadow-primary/20">
+                <.icon name="hero-bolt-solid" class="size-6 text-white" />
+              </div>
+              <h2 class="text-3xl font-black text-primary tracking-tighter italic uppercase">
+                Azar<span class="text-base-content/20">App</span>
+              </h2>
+            </div>
           </div>
 
-          <ul class="menu flex-1 px-4 py-6 space-y-2 text-base font-medium">
-            <li class="menu-title text-xs uppercase tracking-widest text-base-content/40 font-bold mb-2 px-4">
+          <%!-- MENÚ DE NAVEGACIÓN --%>
+          <ul class="menu flex-1 px-4 py-8 space-y-2 text-base font-medium">
+            <li class="menu-title text-[10px] uppercase tracking-[0.3em] text-base-content/30 font-black mb-4 px-4">
               Administración
             </li>
 
             <li>
-              <a href="/admin/sorteos" class={[
-                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200",
-                @current_page == "sorteos" && "bg-primary text-primary-content shadow-md shadow-primary/20",
-                @current_page != "sorteos" && "text-base-content/70 hover:bg-base-200 hover:text-base-content"
+              <.link navigate={~p"/admin/sorteos"} class={[
+                "flex items-center gap-3 px-4 py-4 rounded-2xl transition-all duration-300 group",
+                @current_page == "sorteos" && "bg-primary text-primary-content shadow-xl shadow-primary/30 font-black italic",
+                @current_page != "sorteos" && "text-base-content/60 hover:bg-base-200 hover:text-base-content"
               ]}>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                </svg>
-                Sorteos
-              </a>
+                <.icon name="hero-ticket-solid" class={["size-5 transition-transform group-hover:scale-110", @current_page == "sorteos" && "text-white"]} />
+                <span>Gestión de Sorteos</span>
+              </.link>
             </li>
 
-            <div class="divider my-4 px-4 opacity-30"></div>
-
-            <li>
-              <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-base-content/70 hover:bg-base-200 hover:text-base-content transition-all duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                </svg>
-                Volver al Inicio
-              </a>
-            </li>
+            <%!-- Agrega aquí más ítems de menú si los necesitas --%>
           </ul>
 
-          <div class="p-4 border-t border-base-200">
-            <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-base-200/50 hover:bg-base-200 transition-colors cursor-pointer">
-              <div class="avatar placeholder">
-                <div class="bg-primary text-primary-content rounded-full w-10">
-                  <span class="font-semibold">AD</span>
+          <%!-- SECCIÓN INFERIOR: PERFIL Y LOGOUT --%>
+          <div class="p-4 border-t border-base-200 bg-base-50">
+            <div class="flex flex-col gap-2">
+              <%!-- INFO DEL ADMIN --%>
+              <div class="flex items-center gap-3 px-4 py-4 rounded-2xl bg-base-200/50 border border-base-300/30">
+                <div class="avatar placeholder">
+                  <div class="bg-primary text-primary-content rounded-xl w-10 shadow-md">
+                    <span class="font-black text-xs uppercase">AD</span>
+                  </div>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black text-base-content uppercase tracking-tighter italic">Administrador</span>
+                  <span class="text-[10px] font-bold text-success flex items-center gap-1 uppercase">
+                    <div class="size-1.5 bg-success rounded-full animate-pulse"></div> En línea
+                  </span>
                 </div>
               </div>
-              <div class="flex flex-col">
-                <span class="text-sm font-bold text-base-content">Admin</span>
-                <span class="text-xs text-base-content/50">Panel de Control</span>
-              </div>
+
+              <%!-- BOTÓN CERRAR SESIÓN CHIMBA --%>
+              <.link
+                href={~p"/sesion"}
+                method="delete"
+                class="flex items-center justify-between px-5 py-4 rounded-2xl text-error font-black text-xs uppercase tracking-widest hover:bg-error/10 border border-transparent hover:border-error/20 transition-all group"
+              >
+                <div class="flex items-center gap-3">
+                  <.icon name="hero-arrow-right-on-rectangle" class="size-5 transition-transform group-hover:translate-x-1" />
+                  Cerrar Sesión
+                </div>
+                <.icon name="hero-chevron-right" class="size-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </.link>
             </div>
           </div>
 

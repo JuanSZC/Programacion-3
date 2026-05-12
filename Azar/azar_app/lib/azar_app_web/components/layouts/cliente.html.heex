@@ -1,0 +1,100 @@
+<%!--
+  Layout compartido para todas las rutas /cliente.
+  Renderiza la página normal + el modal de premio si hay notificaciones pendientes.
+  Los assigns @notificacion_activa y @notificaciones_pendientes los inyecta
+  el NotificacionHook automáticamente.
+--%>
+
+{@inner_content}
+
+<%!-- MODAL DE PREMIO — aparece si hay notificaciones no leídas --%>
+<%= if @notificacion_activa do %>
+  <div
+    id="modal-premio"
+    class="fixed inset-0 z-[200] flex items-center justify-center px-4"
+    phx-mounted={JS.transition("animate-in fade-in zoom-in-95 duration-300")}
+  >
+    <%!-- Fondo oscuro --%>
+    <div class="absolute inset-0 bg-base-300/80 backdrop-blur-md"></div>
+
+    <%!-- Tarjeta del modal --%>
+    <div class="relative bg-base-100/95 backdrop-blur-3xl border border-warning/30 rounded-[3rem] p-8 md:p-12 w-full max-w-md shadow-2xl shadow-warning/20 animate-in zoom-in-95 duration-300 text-center overflow-hidden">
+
+      <%!-- Brillo decorativo --%>
+      <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-warning/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+      <%!-- Ícono trofeo animado --%>
+      <div class="relative inline-flex mb-6">
+        <div class="absolute inset-0 bg-warning/30 rounded-full blur-xl animate-pulse"></div>
+        <div class="relative bg-warning/10 border-2 border-warning/30 rounded-full p-6">
+          <.icon name="hero-trophy-solid" class="size-14 text-warning" />
+        </div>
+      </div>
+
+      <%!-- Título --%>
+      <div class="mb-2 inline-flex items-center gap-2 bg-warning/10 px-4 py-1.5 rounded-full border border-warning/20">
+        <div class="size-2 bg-warning rounded-full animate-pulse"></div>
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-warning">¡Premio!</span>
+      </div>
+
+      <h2 class="text-3xl md:text-4xl font-black italic uppercase tracking-tighter text-base-content mt-3 mb-2">
+        ¡Ganaste!
+      </h2>
+
+      <p class="text-base-content/50 text-sm font-bold mb-8">
+        Tu ticket resultó ganador en el sorteo
+        <span class="text-base-content font-black"><%= @notificacion_activa.sorteo.titulo %></span>
+      </p>
+
+      <%!-- Detalles del premio --%>
+      <div class="space-y-3 mb-8">
+        <div class="flex justify-between items-center bg-base-200/60 rounded-2xl px-5 py-4 border border-base-300/50">
+          <span class="text-[11px] font-black uppercase tracking-widest text-base-content/50 flex items-center gap-2">
+            <.icon name="hero-ticket-solid" class="size-4" />
+            Ticket Ganador
+          </span>
+          <span class="font-black text-xl italic text-base-content">
+            #<%= @notificacion_activa.ticket_numero %>
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center bg-base-200/60 rounded-2xl px-5 py-4 border border-base-300/50">
+          <span class="text-[11px] font-black uppercase tracking-widest text-base-content/50 flex items-center gap-2">
+            <.icon name="hero-banknotes-solid" class="size-4" />
+            Tipo de Premio
+          </span>
+          <span class="font-black text-sm uppercase tracking-widest text-base-content">
+            <%= if @notificacion_activa.tipo_premio == "fijo", do: "Premio Fijo", else: "Acumulado" %>
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center bg-warning/10 rounded-2xl px-5 py-4 border border-warning/20 shadow-inner">
+          <span class="text-[11px] font-black uppercase tracking-widest text-warning/70 flex items-center gap-2">
+            <.icon name="hero-star-solid" class="size-4" />
+            Premio Acreditado
+          </span>
+          <span class="font-black text-3xl italic text-warning">
+            $<%= @notificacion_activa.monto_premio %>
+          </span>
+        </div>
+      </div>
+
+      <%!-- Indicador de múltiples notificaciones --%>
+      <%= if length(@notificaciones_pendientes) > 1 do %>
+        <p class="text-[10px] font-black uppercase tracking-widest text-base-content/30 mb-4">
+          <%= length(@notificaciones_pendientes) - 1 %> premio(s) más por revisar
+        </p>
+      <% end %>
+
+      <%!-- Botón cerrar --%>
+      <button
+        phx-click="cerrar_notificacion"
+        phx-value-id={@notificacion_activa.id}
+        class="btn btn-warning w-full h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-warning/30 hover:-translate-y-1 hover:shadow-warning/40 transition-all gap-2"
+      >
+        ¡Entendido, gracias!
+        <.icon name="hero-check-circle-solid" class="size-5" />
+      </button>
+    </div>
+  </div>
+<% end %>
