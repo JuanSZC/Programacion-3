@@ -16,7 +16,9 @@ children = [
       # Tus módulos core aquí abajo:
       AzarApp.Core.SorteoSupervisor,
       # Tarea que arranca los sorteos guardados una vez el supervisor ya está listo
+      AzarApp.Sorteos.Scheduler,
       Supervisor.child_spec({Task, fn -> AzarApp.Core.SorteoSupervisor.restaurar_sorteos() end}, restart: :temporary)
+
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
