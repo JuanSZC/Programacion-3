@@ -1,64 +1,100 @@
 @echo off
 setlocal enabledelayedexpansion
-title AzarApp - Iniciando...
+title AzarApp - Cloudflare Server
 color 0A
 cls
 
+:: =====================================================
+:: CONFIGURACION
+:: =====================================================
 
-:: [CONFIGURACIÓN]
 set "PROYECTO=C:\Users\Sebastian\Documents\Proyecto Final\Programacion-3\Azar\azar_app"
 set "PG_SERVICE=postgresql-x64-18"
 set "APP_PORT=4000"
 set "APP_URL=http://localhost:4000/"
 
-cd /d "%PROYECTO%" || (echo [ERROR] No existe la ruta & pause & exit /b)
+:: Ruta de Cloudflare Tunnel
+set "CLOUDFLARED=C:\cloudfared\cloudflared-windows-amd64.exe"
+
+:: =====================================================
+:: ENTRAR AL PROYECTO
+:: =====================================================
+
+cd /d "%PROYECTO%" || (
+echo [ERROR] No existe la ruta del proyecto
+pause
+exit /b
+)
 
 echo =====================================================
-echo    AZAR S.A. - Modo Ultra-Rápido 🚀
+echo        AZAR S.A. - CLOUD SERVER 🚀
 echo =====================================================
 
-:: [1/4] POSTGRESQL - Solo intenta iniciar si no está corriendo
-echo [1/4] Verificando PostgreSQL...
+:: =====================================================
+:: [1/5] POSTGRESQL
+:: =====================================================
+
+echo [1/5] Verificando PostgreSQL...
+
 sc query %PG_SERVICE% | find "RUNNING" >nul
+
 if errorlevel 1 (
-    net start %PG_SERVICE% >nul 2>&1
+echo [RUN] Iniciando PostgreSQL...
+net start %PG_SERVICE% >nul 2>&1
 )
 
-:: [2/4] PUERTO - Solo mata si el puerto está ocupado
+echo [OK] PostgreSQL listo.
+
+:: =====================================================
+:: [2/5] LIBERAR PUERTO
+:: =====================================================
+
+echo [2/5] Liberando puerto %APP_PORT%...
+
 for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":%APP_PORT% "') do (
-    taskkill /PID %%a /F >nul 2>&1
+taskkill /PID %%a /F >nul 2>&1
 )
+
 echo [OK] Puerto %APP_PORT% listo.
 
-:: [3/4] DEPENDENCIAS - Sistema de Check Simplificado
-:: En lugar de comparar strings de fecha complejos, comparamos el tamaño del archivo mix.lock
-echo [3/4] Verificando dependencias...
-set "LOCK_FILE=mix.lock"
-for %%A in ("%LOCK_FILE%") do set "CURRENT_SIZE=%%~zA"
+:: =====================================================
+:: [3/5] DEPENDENCIAS
+:: =====================================================
 
-if exist "%TEMP%\azar_last_size.txt" (
-    set /p LAST_SIZE=<"%TEMP%\azar_last_size.txt"
-    if "!CURRENT_SIZE!"=="!LAST_SIZE!" (
-        echo [SKIP] Sin cambios en mix.lock.
-        goto :skip_deps
-    )
-)
+echo [3/5] Verificando dependencias...
 
-echo [RUN] Actualizando mix deps...
-call mix deps.get
-echo %CURRENT_SIZE%>"%TEMP%\azar_last_size.txt"
+call mix deps.get >nul 2>&1
 
-:skip_deps
+echo [OK] Dependencias listas.
 
-:: [4/4] MIGRACIONES Y ARRANQUE - El truco del "Silent Check"
-echo [4/4] Iniciando Phoenix...
+:: =====================================================
+:: [4/5] INICIAR PHOENIX
+:: =====================================================
 
-:: Lanzar el navegador antes de mix para que no bloquee
-start "" powershell -WindowStyle Hidden -Command "for($i=0;$i -lt 30;$i++){try{$t=New-Object Net.Sockets.TcpClient;$t.Connect('localhost',%APP_PORT%);$t.Close();Start-Process '%APP_URL%';break}catch{Start-Sleep 1}}"
+echo [4/5] Iniciando Phoenix...
 
-:: Ejecutamos mix phx.server directamente. 
-:: Phoenix ya hace un chequeo de migraciones pendientes por defecto en dev.
-title AzarApp - localhost:%APP_PORT%
-call mix phx.server
+start "Phoenix Server" cmd /k "cd /d %PROYECTO% && mix phx.server"
+
+:: Esperar a que Phoenix arranque
+timeout /t 8 >nul
+
+:: Abrir localhost
+start "" "%APP_URL%"
+
+:: =====================================================
+:: [5/5] INICIAR CLOUDFLARE TUNNEL
+:: =====================================================
+
+echo [5/5] Iniciando Cloudflare Tunnel...
+
+start "Cloudflare Tunnel" cmd /k "%CLOUDFLARED% tunnel --url http://localhost:%APP_PORT%"
+
+echo.
+echo =====================================================
+echo          SERVIDOR PUBLICO INICIADO
+echo =====================================================
+echo.
+
+pause
 
 endlocal

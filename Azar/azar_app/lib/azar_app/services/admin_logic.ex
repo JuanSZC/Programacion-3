@@ -1,4 +1,4 @@
-defmodule administrador do
+defmodule Administrador do
   def crear_sorteo(nombre, fecha, valor_billete, fracciones, cantidad_billetes) do
 
     cond do
@@ -39,15 +39,15 @@ defmodule administrador do
 
   end
 
-  def obtener_premios(%__MODULE__{} = sorteo) do
+  def obtener_premios(sorteo) do
   sorteo.premios
   end
 
-  def realizado?(%__MODULE__{} = sorteo) do
+  def realizado?(sorteo) do
   sorteo.estado == :realizado
   end
 
-  def obtener_ganadores_por_premio(%__MODULE__{} = sorteo) do
+  def obtener_ganadores_por_premio(sorteo) do
 
   Enum.map(sorteo.premios, fn premio ->
 
@@ -61,7 +61,7 @@ defmodule administrador do
 
   end
 
-  def mostrar_info(%__MODULE__{} = sorteo) do
+  def mostrar_info(sorteo) do
 
   %{
     id: sorteo.id,
@@ -167,7 +167,7 @@ def buscar_por_id(lista_sorteos, id) do
 end
 
 #Sorteo?
-def premios_entregados(%__MODULE__{} = sorteo) do
+def premios_entregados(sorteo) do
 
   Enum.filter(sorteo.premios, fn premio ->
     premio.entregado == true
@@ -195,11 +195,11 @@ def nombres_ganadores(sorteo, clientes) do
 end
 
 #Sorteo?
-def dinero_recolectado(%__MODULE__{} = sorteo) do
+def dinero_recolectado(sorteo) do
   sorteo.pozo_acumulado
 end
 
-def total_premios_entregados(%__MODULE__{} = sorteo) do
+def total_premios_entregados(sorteo) do
 
   premios_entregados(sorteo)
   |> Enum.reduce(0, fn premio, acumulador ->
@@ -211,7 +211,7 @@ def total_premios_entregados(%__MODULE__{} = sorteo) do
 end
 
 #Sorteo?
-def total_premios_entregados(%__MODULE__{} = sorteo) do
+def total_premios_entregados(sorteo) do
 
   premios_entregados(sorteo)
   |> Enum.reduce(0, fn premio, acumulador ->
@@ -223,7 +223,7 @@ def total_premios_entregados(%__MODULE__{} = sorteo) do
 end
 
 #Sorteo?
-def ganancias_o_perdidas(%__MODULE__{} = sorteo) do
+def ganancias_o_perdidas(sorteo) do
 
   dinero_recolectado(sorteo) -
     total_premios_entregados(sorteo)
@@ -238,7 +238,7 @@ def sorteos_pasados(lista_sorteos) do
 
 end
 
-def resumen_sorteo(%__MODULE__{} = sorteo) do
+def resumen_sorteo(sorteo) do
 
   %{
     id: sorteo.id,
@@ -331,7 +331,7 @@ def sorteos_pendientes(lista_sorteos, fecha_actual) do
 
 end
 
-def generar_numero_ganador(%__MODULE__{} = sorteo) do
+def generar_numero_ganador(sorteo) do
 
   billete =
     Enum.random(sorteo.boletos_participantes)
@@ -340,7 +340,7 @@ def generar_numero_ganador(%__MODULE__{} = sorteo) do
 
 end
 
-def ejecutar_sorteo(%__MODULE__{} = sorteo) do
+def ejecutar_sorteo(sorteo) do
 
   numero =
     generar_numero_ganador(sorteo)
@@ -381,6 +381,15 @@ def notificar_ganadores(sorteo, clientes) do
 
   end)
 
+end
+
+def agregar_premio(sorteo, premio) do
+  premios_actualizados = [premio | sorteo.premios]
+
+  %{
+    sorteo |
+    premios: premios_actualizados
+  }
 end
 
 
