@@ -1,18 +1,28 @@
 defmodule AzarAppWeb.Admin.SorteoLive.Show do
   use AzarAppWeb, :live_view
   alias AzarApp.Sorteos
+  alias AzarApp.ErrorHandler
 
   # MOUNT
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteo:#{id}")
 
-    sorteo = Sorteos.get_sorteo_con_tickets!(id)
-    {:ok,
-     socket
-     |> assign(:selected_ticket, nil)
-     |> assign_sorteo_data(sorteo)
-     |> stream(:tickets, sorteo.tickets)}
+    # Protección total: Evitamos el crash si el ID del sorteo no existe
+    case ErrorHandler.safe_get(fn -> Sorteos.get_sorteo_con_tickets!(id) end) do
+      {:ok, sorteo} ->
+        {:ok,
+         socket
+         |> assign(:selected_ticket, nil)
+         |> assign_sorteo_data(sorteo)
+         |> stream(:tickets, sorteo.tickets)}
+
+      {:error, :not_found} ->
+        {:ok,
+         socket
+         |> put_flash(:error, "Sorteo no encontrado")
+         |> push_navigate(to: ~p"/admin/sorteos")}
+    end
   end
 
   defp assign_sorteo_data(socket, sorteo) do
@@ -39,7 +49,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-4">
           <div class="flex flex-col gap-2">
             <h1 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-base-content mt-2">
-              Sorteo <span class="text-primary drop-shadow-md">{@sorteo.titulo}</span>
+              Sorteo <span class="text-primary drop-shadow-md"><%= @sorteo.titulo %></span>
             </h1>
           </div>
           <.link navigate={~p"/admin/sorteos"} class="btn btn-ghost rounded-[1.5rem] font-black text-xs uppercase tracking-widest text-base-content/60 gap-3 transition-all border border-transparent hover:border-base-300">
@@ -53,16 +63,16 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
               Modelo: <span class="text-secondary"><%= if @sorteo.tipo_premio == "fijo", do: "Fijo", else: "Acumulado" %></span>
             </h3>
             <div class="flex flex-wrap items-center gap-4 text-xs font-black uppercase tracking-widest text-base-content/60 bg-base-100/50 p-3 rounded-2xl w-fit border border-base-200">
-              <span>Recaudo: ${@recaudo_actual}</span>
+              <span>Recaudo: $<%= @recaudo_actual %></span>
               <span class="opacity-30">|</span>
-              <span class="text-success">Premio: ${@premio_actual}</span>
+              <span class="text-success">Premio: $<%= @premio_actual %></span>
             </div>
           </div>
 
-          <div class="flex flex-col items-center lg:items-end gap-2">
+          <div class="flex flex-col items-center lg:items-end gap-2 w-full lg:w-auto">
             <%= cond do %>
               <% @sorteo.estado == "finalizado" and @tickets_vendidos > 0 -> %>
-                <div class="px-8 py-4 bg-success/10 border-2 border-success/30 rounded-[2rem] flex flex-col items-center shadow-lg shadow-success/10">
+                <div class="px-8 py-4 bg-success/10 border-2 border-success/30 rounded-[2rem] flex flex-col items-center shadow-lg shadow-success/10 w-full lg:w-auto">
                   <span class="text-[10px] font-black uppercase tracking-[0.3em] text-success/70 mb-1 flex items-center gap-2">
                     <.icon name="hero-star-solid" class="size-4" /> Finalizado
                   </span>
@@ -71,11 +81,18 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
                   </span>
                 </div>
               <% @sorteo.estado == "activo" -> %>
-                <button phx-click="jugar_ahora" data-confirm="¿Ejecutar sorteo?" disabled={not @puede_jugar?} class={["btn h-16 px-10 rounded-[2rem] font-black text-sm uppercase tracking-widest shadow-xl transition-all w-full lg:w-auto", if(@puede_jugar?, do: "btn-primary", else: "btn-disabled opacity-40 grayscale")]}>
-                   ¡Jugar Ahora!
-                </button>
+                <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                  <button phx-click="cancelar_sorteo" data-confirm="¿Estás seguro de cancelar este sorteo? Se devolverá el saldo a los usuarios y la acción es irreversible." class="btn bg-error/10 text-error border-error/20 hover:bg-error hover:text-white h-16 px-8 rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all w-full sm:w-auto">
+                    Cancelar Sorteo
+                  </button>
+                  <button phx-click="jugar_ahora" data-confirm="¿Ejecutar sorteo?" disabled={not @puede_jugar?} class={["btn h-16 px-10 rounded-[2rem] font-black text-sm uppercase tracking-widest shadow-xl transition-all w-full sm:w-auto", if(@puede_jugar?, do: "btn-primary", else: "btn-disabled opacity-40 grayscale")]}>
+                     ¡Jugar Ahora!
+                  </button>
+                </div>
               <% true -> %>
-                <div class="px-8 py-4 bg-error/10 border-2 border-error/30 rounded-[2rem] text-error font-black uppercase tracking-tighter text-center">Cerrado / Sin Tickets</div>
+                <div class="px-8 py-4 bg-error/10 border-2 border-error/30 rounded-[2rem] text-error font-black uppercase tracking-tighter text-center w-full lg:w-auto">
+                  <%= String.capitalize(@sorteo.estado) %>
+                </div>
             <% end %>
           </div>
         </div>
@@ -86,12 +103,12 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
               <div class="flex-1 space-y-8 z-10 w-full">
                 <div class="flex items-center gap-6">
                   <div class="size-20 rounded-[2rem] bg-primary/10 border border-primary/20 text-primary flex items-center justify-center font-black text-4xl shadow-inner">
-                    {@selected_ticket.numero}
+                    <%= @selected_ticket.numero %>
                   </div>
                   <div>
-                    <h3 class="text-2xl font-black uppercase tracking-tight italic mb-2">Ticket {@selected_ticket.numero}</h3>
+                    <h3 class="text-2xl font-black uppercase tracking-tight italic mb-2">Ticket <%= @selected_ticket.numero %></h3>
                     <span class={["px-4 py-1.5 rounded-full font-black text-[10px] uppercase", if(@selected_ticket.estado == "vendido", do: "bg-success text-white", else: "bg-base-200 text-base-content/60")]}>
-                      {@selected_ticket.estado}
+                      <%= @selected_ticket.estado %>
                     </span>
                   </div>
                 </div>
@@ -101,7 +118,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
                     <div>
                       <p class="text-[10px] font-black uppercase tracking-[0.2em] text-base-content/40">Propietario</p>
                       <p class="font-black text-xl flex items-center gap-3 text-base-content uppercase tracking-tight italic">
-                         {@selected_ticket.usuario.nombre}
+                         <%= @selected_ticket.usuario.nombre %>
                       </p>
                     </div>
                     <.link navigate={~p"/admin/usuarios/#{@selected_ticket.usuario.id}"} class="btn btn-primary h-12 px-6 rounded-2xl shadow-xl font-black text-xs uppercase tracking-widest">
@@ -132,7 +149,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
                   true -> "bg-base-200/80 text-base-content/50 border-base-300"
                 end
               ]}>
-              {ticket.numero}
+              <%= ticket.numero %>
             </div>
           </div>
         </div>
@@ -153,12 +170,27 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_event("jugar_ahora", _, socket) do
+    # Capturamos el posible error si la lógica de negocio lo impide
     case Sorteos.realizar_sorteo!(socket.assigns.sorteo) do
       {:ok, _sorteo_actualizado} ->
-        # El broadcast se encargará de actualizar la vista mediante handle_info
         {:noreply, put_flash(socket, :info, "Sorteo realizado con éxito")}
       {:error, razon} ->
-        {:noreply, put_flash(socket, :error, "Error: #{razon}")}
+        {:noreply, put_flash(socket, :error, "❌ Error: #{razon}")}
+    end
+  end
+
+  @impl true
+  def handle_event("cancelar_sorteo", _, socket) do
+    # Capturamos la lógica de cancelación (asumiendo que Sorteos.cancelar_sorteo maneja los reembolsos)
+    case Sorteos.cancelar_sorteo(socket.assigns.sorteo) do
+      {:ok, _sorteo_cancelado} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Sorteo cancelado exitosamente. Se ha reembolsado a los participantes.")
+         |> push_navigate(to: ~p"/admin/sorteos")}
+
+      {:error, razon} ->
+        {:noreply, put_flash(socket, :error, "❌ No se pudo cancelar el sorteo: #{razon}")}
     end
   end
 
@@ -182,6 +214,15 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
      socket
      |> assign_sorteo_data(sorteo_actualizado)
      |> stream(:tickets, sorteo_actualizado.tickets, reset: true)}
+  end
+
+  @impl true
+  def handle_info(:sorteo_cancelado, socket) do
+    # En caso de que se cancele desde otro lado y queramos actualizar en tiempo real
+    {:noreply,
+     socket
+     |> put_flash(:warning, "Este sorteo ha sido cancelado.")
+     |> push_navigate(to: ~p"/admin/sorteos")}
   end
 
   # HELPERS

@@ -2,50 +2,67 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
   alias AzarApp.Sorteos
+  alias AzarApp.ErrorHandler
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    usuario = Cuentas.obtener_usuario!(id)
-    tickets = Sorteos.list_tickets_por_usuario(usuario.id)
+    # Protección total: Si el ID no existe, redirige sin explotar.
+    case ErrorHandler.safe_get(fn -> Cuentas.obtener_usuario!(id) end) do
+      {:ok, usuario} ->
+        tickets = Sorteos.list_tickets_por_usuario(usuario.id)
 
-    {:ok,
-     socket
-     |> assign(:usuario, usuario)
-     |> assign(:tickets, tickets)
-     |> assign(:editando, false)
-     |> assign(:page_title, "Gestión: #{usuario.nombre}")}
+        {:ok,
+         socket
+         |> assign(:usuario, usuario)
+         |> assign(:tickets, tickets)
+         |> assign(:editando, false)
+         |> assign(:page_title, "Gestión: #{usuario.nombre}")}
+
+      {:error, :not_found} ->
+        {:ok,
+         socket
+         |> put_flash(:error, "Usuario no encontrado")
+         |> push_navigate(to: ~p"/admin/usuarios")}
+    end
   end
 
-@impl true
-def handle_event("toggle_activo", _, socket) do
-  {:ok, usuario} = Cuentas.toggle_activo(socket.assigns.usuario)
+  @impl true
+  def handle_event("toggle_activo", _, socket) do
+    # Capturamos posible error si intentan desactivar al último admin
+    case Cuentas.toggle_activo(socket.assigns.usuario) do
+      {:ok, usuario} ->
+        if not usuario.activo do
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
+        end
 
-  if not usuario.activo do
-    Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
+        {:noreply,
+         socket
+         |> assign(:usuario, usuario)
+         |> put_flash(:info, "Usuario #{if usuario.activo, do: "activado", else: "desactivado"}")}
+
+      {:error, razon} ->
+        {:noreply, put_flash(socket, :error, razon)}
+    end
   end
 
-  {:noreply,
-   socket
-   |> assign(:usuario, usuario)
-   |> put_flash(:info, "Usuario #{if usuario.activo, do: "activado", else: "desactivado"}")}
-end
+  @impl true
+  def handle_event("eliminar_usuario", _, socket) do
+    usuario = socket.assigns.usuario
 
-@impl true
-def handle_event("eliminar_usuario", _, socket) do
-  usuario = socket.assigns.usuario
+    # Delegamos toda la lógica de validación al Contexto
+    case Cuentas.eliminar_usuario(usuario) do
+      {:ok, _} ->
+        Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
 
-  if Cuentas.tiene_tickets_activos?(usuario.id) do
-    {:noreply, put_flash(socket, :error, "❌ No se puede eliminar: tiene tickets en sorteos activos.")}
-  else
-    Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
-    {:ok, _} = Cuentas.eliminar_usuario(usuario)
+        {:noreply,
+         socket
+         |> put_flash(:info, "Usuario eliminado exitosamente.")
+         |> push_navigate(to: ~p"/admin/usuarios")}
 
-    {:noreply,
-     socket
-     |> put_flash(:info, "Usuario eliminado.")
-     |> push_navigate(to: ~p"/admin/usuarios")}
+      {:error, razon} ->
+        {:noreply, put_flash(socket, :error, "❌ Error: #{razon}")}
+    end
   end
-end
 
   @impl true
   def handle_event("editar", _, socket), do: {:noreply, assign(socket, :editando, true)}
@@ -60,25 +77,59 @@ end
          |> assign(:usuario, usuario)
          |> assign(:editando, false)
          |> put_flash(:info, "Usuario actualizado correctamente")}
+
       {:error, _changeset} ->
-        {:noreply, put_flash(socket, :error, "Error al guardar los cambios")}
+        {:noreply, put_flash(socket, :error, "Error al guardar los cambios, revisa los datos.")}
     end
   end
 
   @impl true
-  def handle_event("ajustar_saldo", %{"monto" => monto, "operacion" => op}, socket) do
-    monto_int = String.to_integer(monto)
-    monto_final = if op == "sumar", do: monto_int, else: -monto_int
+  def handle_event("ajustar_saldo", %{"monto" => monto_str, "operacion" => op}, socket) do
+    usuario = socket.assigns.usuario
 
-    case Cuentas.ajustar_saldo_admin(socket.assigns.usuario, monto_final) do
-      {:ok, usuario} ->
+    # Normalizamos el valor de la cadena para pasar el signo correcto al contexto financiero.
+    # La limpieza profunda (comas, espacios, caracteres inválidos) ocurre en el contexto.
+    monto_formateado =
+      if op == "restar" do
+        "-" <> String.trim(monto_str)
+      else
+        String.trim(monto_str)
+      end
+
+    # Invocamos la función del contexto que ya contiene todas las validaciones y límites
+    case Cuentas.ajustar_saldo_admin(usuario, monto_formateado) do
+      {:ok, usuario_actualizado} ->
+        Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario_actualizado.id}", :ticket_comprado)
+
         accion = if op == "sumar", do: "sumado", else: "descontado"
+
         {:noreply,
          socket
-         |> assign(:usuario, usuario)
-         |> put_flash(:info, "Saldo #{accion}: $#{monto_int}")}
-      _ ->
-        {:noreply, put_flash(socket, :error, "Error al ajustar el saldo")}
+         |> assign(:usuario, usuario_actualizado)
+         |> put_flash(:info, "💸 Saldo #{accion} con éxito.")}
+
+      {:error, mensaje_error} ->
+        {:noreply, put_flash(socket, :error, "❌ No se puede realizar: #{mensaje_error}")}
+    end
+  end
+
+  @impl true
+  def handle_event("vaciar_cuenta", _, socket) do
+    case Cuentas.vaciar_cuenta_admin(socket.assigns.usuario) do
+      {:ok, usuario_actualizado} ->
+        Phoenix.PubSub.broadcast(
+          AzarApp.PubSub,
+          "usuario:#{usuario_actualizado.id}",
+          :ticket_comprado
+        )
+
+        {:noreply,
+         socket
+         |> assign(:usuario, usuario_actualizado)
+         |> put_flash(:info, "🧹 Cuenta vaciada. Saldo establecido en $0.")}
+
+      {:error, mensaje} ->
+        {:noreply, put_flash(socket, :error, "❌ #{mensaje}")}
     end
   end
 
@@ -222,27 +273,61 @@ end
             <h3 class="font-black text-xl italic uppercase tracking-tight">Ajuste de Saldo</h3>
           </div>
 
+          <%!-- Límite informativo visible al admin --%>
+          <p class="text-[10px] font-bold text-base-content/40 uppercase tracking-widest mb-4 ml-1">
+            Límite por transacción: $10,000,000 · El saldo no puede quedar negativo
+          </p>
+
           <form phx-submit="ajustar_saldo" class="flex flex-col sm:flex-row gap-4 items-end">
             <div class="form-control flex-1">
               <label class="text-[10px] font-black uppercase tracking-widest text-base-content/50 mb-1.5 ml-1">Monto ($)</label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-4 flex items-center font-black text-base-content/30">$</span>
-                <input type="number" name="monto" min="1" placeholder="0" required
-                  class="input input-bordered h-12 w-full pl-8 rounded-2xl bg-base-200/50 border-none focus:ring-2 focus:ring-primary/40 font-bold" />
+                <input
+                  type="number"
+                  name="monto"
+                  placeholder="0"
+                  min="0.01"
+                  step="0.01"
+                  required
+                  class="input input-bordered h-12 w-full pl-8 rounded-2xl bg-base-200/50 border-none focus:ring-2 focus:ring-primary/40 font-bold"
+                />
               </div>
             </div>
             <input type="hidden" name="operacion" id="op-hidden" value="sumar" />
             <div class="flex gap-3">
-              <button type="submit" phx-click={JS.set_attribute({"value", "sumar"}, to: "#op-hidden")}
+              <button
+                type="submit"
+                phx-click={JS.set_attribute({"value", "sumar"}, to: "#op-hidden")}
                 class="btn btn-success h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-success/20">
                 <.icon name="hero-plus-solid" class="size-4" /> Sumar
               </button>
-              <button type="submit" phx-click={JS.set_attribute({"value", "restar"}, to: "#op-hidden")}
+              <button
+                type="submit"
+                phx-click={JS.set_attribute({"value", "restar"}, to: "#op-hidden")}
                 class="btn bg-error/10 text-error border border-error/20 hover:bg-error hover:text-white h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
                 <.icon name="hero-minus-solid" class="size-4" /> Restar
               </button>
             </div>
           </form>
+
+          <%!-- Separador + botón vaciar cuenta --%>
+          <div class="mt-6 pt-6 border-t border-base-200/60 flex items-center justify-between gap-4">
+            <div>
+              <p class="text-xs font-black uppercase tracking-widest text-base-content/40">Vaciar cuenta</p>
+              <p class="text-[10px] text-base-content/30 mt-0.5">
+                Establece el saldo en $0 de forma inmediata. Saldo actual:
+                <span class="font-black text-error">$<%= @usuario.saldo_virtual || 0 %></span>
+              </p>
+            </div>
+            <button
+              phx-click="vaciar_cuenta"
+              data-confirm={"¿Vaciar la cuenta de #{@usuario.nombre}? Su saldo de $#{@usuario.saldo_virtual || 0} quedará en $0. Esta acción no se puede deshacer."}
+              class="btn bg-warning/10 text-warning border border-warning/20 hover:bg-warning hover:text-white h-11 px-5 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all gap-2 shrink-0">
+              <.icon name="hero-archive-box-x-mark-solid" class="size-4" />
+              Vaciar Cuenta
+            </button>
+          </div>
         </div>
 
         <%!-- TICKETS DEL USUARIO --%>

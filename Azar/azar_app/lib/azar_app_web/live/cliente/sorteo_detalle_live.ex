@@ -47,8 +47,11 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
   # ==========================================
 
   @doc """
-  Alterna el modo de selección de tickets entre individual y múltiple.
-  Limpia cualquier selección previa al cambiar de modo.
+  Maneja los eventos de interacción del usuario en la interfaz del sorteo.
+
+  * `"toggle_multi"`: Alterna el modo de selección de tickets entre individual y múltiple.
+  * `"show_ticket"` (modo individual): Selecciona un ticket y hace un scroll suave hacia el panel de compra.
+  * `"show_ticket"` (modo múltiple): Agrega o elimina el ticket de la lista de selecciones.
   """
   @impl true
   def handle_event("toggle_multi", _, socket) do
@@ -59,10 +62,7 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
      |> assign(selected_ticket: nil)}
   end
 
-  @doc """
-  Maneja el clic en un ticket cuando el modo múltiple está DESACTIVADO.
-  Selecciona el ticket y hace scroll suave hacia el panel de compra.
-  """
+  @impl true
   def handle_event("show_ticket", %{"id" => ticket_id}, %{assigns: %{modo_multi: false}} = socket) do
     ticket = Enum.find(socket.assigns.sorteo.tickets, fn t ->
       t.id == String.to_integer(ticket_id)
@@ -71,13 +71,10 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
     {:noreply,
      socket
      |> assign(selected_ticket: ticket)
-     |> push_event("scroll_to_panel", %{})} # Dispara el evento JS para el scroll
+     |> push_event("scroll_to_panel", %{})}
   end
 
-  @doc """
-  Maneja el clic en un ticket cuando el modo múltiple está ACTIVADO.
-  Agrega o elimina el ticket de la lista de selecciones, permitiendo solo tickets disponibles.
-  """
+  @impl true
   def handle_event("show_ticket", %{"id" => ticket_id, "num" => num}, %{assigns: %{modo_multi: true}} = socket) do
     ticket = Enum.find(socket.assigns.sorteo.tickets, fn t ->
       t.id == String.to_integer(ticket_id)
@@ -97,10 +94,7 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
     end
   end
 
-  @doc """
-  Procesa la compra de un único ticket seleccionado en modo individual.
-  Valida el saldo y emite un broadcast a todos los conectados si es exitoso.
-  """
+  @impl true
   def handle_event("comprar_ticket", %{"num" => num}, socket) do
     usuario = Cuentas.obtener_usuario!(socket.assigns.usuario_id)
     sorteo = socket.assigns.sorteo
@@ -121,10 +115,7 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
     end
   end
 
-  @doc """
-  Procesa la compra en lote de todos los tickets seleccionados en modo múltiple.
-  Valida el saldo total necesario y reporta cuántos se compraron con éxito frente a los fallidos.
-  """
+  @impl true
   def handle_event("comprar_multiples", _, socket) do
     usuario = Cuentas.obtener_usuario!(socket.assigns.usuario_id)
     sorteo = socket.assigns.sorteo
@@ -140,14 +131,12 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
         {:noreply, put_flash(socket, :error, "❌ Saldo insuficiente para #{cantidad} tickets ($#{costo_total})")}
 
       true ->
-        # Intentar comprar todos los tickets seleccionados
         resultados = Enum.map(nums, fn num ->
           Sorteos.comprar_ticket(usuario, sorteo, num)
         end)
 
         errores = Enum.filter(resultados, &match?({:error, _}, &1))
 
-        # Notificar actualizaciones a la red
         PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo.id}", :ticket_comprado)
         PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
 
@@ -182,7 +171,6 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
   def handle_info(:ticket_comprado, socket) do
     sorteo_actualizado = Sorteos.get_sorteo_con_tickets!(socket.assigns.sorteo.id)
 
-    # Actualizar la referencia del ticket seleccionado (por si alguien más lo compró)
     nuevo_selected = if socket.assigns.selected_ticket do
       Enum.find(sorteo_actualizado.tickets, &(&1.id == socket.assigns.selected_ticket.id))
     else
@@ -346,7 +334,6 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
                 phx-value-num={ticket.numero}
                 class={[
                   "h-16 flex items-center justify-center rounded-2xl cursor-pointer text-xl font-black transition-all duration-200 select-none shadow-sm",
-                  # Lógica de colores según estado y modo
                   ticket.numero in (@sorteo.numeros_ganadores || []) && "bg-warning text-warning-content border-b-4 border-warning-content/40 shadow-lg scale-110 z-10",
                   @modo_multi && ticket.numero in @tickets_seleccionados && "bg-secondary text-secondary-content ring-4 ring-secondary/30 scale-110 shadow-lg",
                   @modo_multi && ticket.estado == "vendido" && ticket.numero not in (@sorteo.numeros_ganadores || []) && "bg-base-300 opacity-20 cursor-not-allowed",

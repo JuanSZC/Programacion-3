@@ -43,13 +43,10 @@ defmodule AzarAppWeb.Router do
     live "/sorteos/:id", Admin.SorteoLive.Show, :show
     live "/usuarios", Admin.UsuarioLive.Index, :index
     live "/usuarios/:id", Admin.UsuarioLive.Show, :show
-
-
+    live "/dashboard", Admin.DashboardLive, :index
   end
 
   # PANEL DE CLIENTE
-  # live_session aplica el NotificacionHook y el layout cliente a TODAS
-  # las rutas de cliente sin repetir código en cada LiveView.
   scope "/cliente", AzarAppWeb.Cliente do
     pipe_through [:browser, :require_auth]
 
@@ -62,6 +59,8 @@ defmodule AzarAppWeb.Router do
       live "/sorteos/:id", SorteoDetalleLive, :show
     end
 
-    delete "/sesion", AzarAppWeb.SesionController, :borrar
+    # Usando el prefijo completo 'Elixir.', Phoenix entiende que es un módulo raíz absoluto
+    # y no intentará concatenar AzarAppWeb.Cliente deteniendo el warning
+    delete "/sesion", Elixir.AzarAppWeb.SesionController, :borrar
   end
 end

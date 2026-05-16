@@ -1,25 +1,18 @@
 defmodule AzarApp.Cuentas do
-  @moduledoc """
-  Contexto principal para el manejo de Cuentas, Usuarios y Autenticación.
-
-  Se encarga de la gestión del ciclo de vida del usuario (creación, actualización,
-  eliminación), autenticación, y toda la lógica financiera relacionada con los
-  saldos virtuales, recargas y estadísticas de juego.
-  """
+  @moduledoc false
 
   alias AzarApp.Repo
   alias AzarApp.Cuentas.Usuario
   import Ecto.Query, warn: false
 
+  # Límite máximo permitido para una sola transacción de ajuste (Evita desbordes numéricos)
+  @limite_max_ajuste Decimal.new(10_000_000)
+
   # ==========================================
   # AUTENTICACIÓN
   # ==========================================
 
-  @doc """
-  Verifica las credenciales de un usuario.
-  Si son correctas, actualiza su último login y devuelve `{:ok, usuario}`.
-  Si fallan, devuelve un error seguro.
-  """
+  # Verifica credenciales y actualiza último login
   def autenticar_usuario(email, password) do
     usuario = obtener_usuario_por_email(email)
 
@@ -29,8 +22,7 @@ defmodule AzarApp.Cuentas do
         {:error, _} -> {:ok, usuario}
       end
     else
-      # Previene ataques de timing (enumeración de usuarios)
-      Pbkdf2.no_user_verify()
+      Pbkdf2.no_user_verify() # Previene enumeración de usuarios
       {:error, "Correo o contraseña inválidos"}
     end
   end
@@ -45,73 +37,65 @@ defmodule AzarApp.Cuentas do
   # CONSULTAS DE LECTURA
   # ==========================================
 
-  @doc "Obtiene un usuario por su ID, devuelve nil si no existe."
-  def obtener_usuario(id), do: Repo.get(Usuario, id)
+  # Obtiene usuario de forma segura (tupla)
+  def obtener_usuario(id) do
+    case Repo.get(Usuario, id) do
+      nil -> {:error, :not_found}
+      usuario -> {:ok, usuario}
+    end
+  end
 
-  @doc "Obtiene un usuario por su ID, lanza un error si no existe."
   def obtener_usuario!(id), do: Repo.get!(Usuario, id)
 
-  @doc "Busca un usuario por su correo electrónico (case-insensitive)."
   def obtener_usuario_por_email(email) do
     Repo.get_by(Usuario, email: String.downcase(email || ""))
   end
 
-  @doc "Devuelve absolutamente todos los usuarios de la base de datos (Admin y Clientes)."
   def listar_usuarios, do: Repo.all(Usuario)
 
-  @doc "Devuelve únicamente los usuarios con rol 'cliente', ordenados por fecha de creación descendente."
   def list_usuarios do
-    query = from(u in Usuario, where: u.rol == "cliente", order_by: [desc: u.inserted_at])
-    Repo.all(query)
+    from(u in Usuario, where: u.rol == "cliente", order_by: [desc: u.inserted_at])
+    |> Repo.all()
   end
 
-  @doc """
-  Busca clientes usando un término de búsqueda.
-  Coincide parcialmente con nombre, email o cédula.
-  """
+  # Búsqueda parcial case-insensitive
   def buscar_usuarios(query) do
     q = "%#{String.downcase(query)}%"
 
-    sql = from(u in Usuario,
+    from(u in Usuario,
       where: u.rol == "cliente" and
         (ilike(u.nombre, ^q) or ilike(u.email, ^q) or ilike(u.cedula, ^q)),
       order_by: [desc: u.inserted_at]
     )
-
-    Repo.all(sql)
+    |> Repo.all()
   end
 
   # ==========================================
-  # GESTIÓN DE USUARIOS (ACCIONES)
+  # GESTIÓN DE USUARIOS
   # ==========================================
 
-  @doc "Crea un nuevo usuario usando el changeset de registro."
   def crear_usuario(attrs \\ %{}) do
     %Usuario{}
     |> Usuario.registration_changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc "Actualiza un usuario con los parámetros generales (perfil)."
   def actualizar_usuario(%Usuario{} = usuario, attrs) do
     usuario
     |> Usuario.update_changeset(attrs)
     |> Repo.update()
   end
 
-  @doc "Actualiza un usuario usando el changeset de administrador (permite saltar validaciones estrictas)."
   def actualizar_usuario_admin(%Usuario{} = usuario, params) do
     usuario
     |> Usuario.changeset_admin(params)
     |> Repo.update()
   end
 
-  @doc "Devuelve un changeset para un usuario (útil para formularios)."
   def change_usuario(%Usuario{} = usuario, attrs \\ %{}) do
     Usuario.update_changeset(usuario, attrs)
   end
 
-  @doc "Actualiza un único campo específico del usuario (nombre, email, o password)."
   def actualizar_campo_usuario(usuario, campo, valor) do
     changeset = case campo do
       "nombre" -> Ecto.Changeset.change(usuario, %{nombre: valor})
@@ -125,45 +109,53 @@ defmodule AzarApp.Cuentas do
     Repo.update(changeset)
   end
 
-  @doc "Activa o inactiva un usuario (Toggle)."
+  # Activa/inactiva previniendo dejar el sistema sin admins
   def toggle_activo(%Usuario{} = usuario) do
+    if usuario.rol == "admin" && usuario.activo do
+      admins_activos = Repo.one(from u in Usuario, where: u.rol == "admin" and u.activo == true, select: count(u.id))
+
+      if admins_activos <= 1 do
+        {:error, "No puedes desactivar al único administrador activo"}
+      else
+        do_toggle(usuario)
+      end
+    else
+      do_toggle(usuario)
+    end
+  end
+
+  defp do_toggle(usuario) do
     usuario
     |> Ecto.Changeset.change(activo: !usuario.activo)
     |> Repo.update()
   end
 
-  @doc """
-  Verifica si un usuario tiene tickets comprados en sorteos que aún están activos.
-  """
   def tiene_tickets_activos?(usuario_id) do
     query = from(t in AzarApp.Sorteos.Ticket,
       join: s in AzarApp.Sorteos.Sorteo, on: t.sorteo_id == s.id,
       where: t.usuario_id == ^usuario_id and s.estado == "activo" and t.estado == "vendido"
     )
-
     Repo.exists?(query)
   end
 
-  @doc """
-  Elimina un usuario de forma segura.
-  Impide la eliminación si el usuario tiene tickets en sorteos activos.
-  """
+  # Elimina validando rol y tickets
   def eliminar_usuario(%Usuario{} = usuario) do
-    if tiene_tickets_activos?(usuario.id) do
-      {:error, "No se puede eliminar el usuario porque tiene tickets en sorteos activos."}
-    else
-      Repo.delete(usuario)
+    cond do
+      usuario.rol == "admin" ->
+        {:error, "No se puede eliminar una cuenta de administrador"}
+      tiene_tickets_activos?(usuario.id) ->
+        {:error, "El usuario tiene tickets en sorteos activos"}
+      true ->
+        Repo.delete(usuario)
     end
   end
 
   # ==========================================
-  # LÓGICA DE DINERO Y FINANZAS
+  # LÓGICA FINANCIERA (Uso estricto de Decimal)
   # ==========================================
 
-  @doc "Añade saldo a un usuario y suma al total histórico recargado."
   def recargar_saldo(usuario, monto) do
     monto_decimal = Decimal.new("#{monto}")
-
     nuevo_saldo = Decimal.add(usuario.saldo_virtual || Decimal.new(0), monto_decimal)
     nuevo_total_recargado = Decimal.add(usuario.total_recargado || Decimal.new(0), monto_decimal)
 
@@ -175,7 +167,6 @@ defmodule AzarApp.Cuentas do
     |> Repo.update()
   end
 
-  @doc "Añade saldo por un premio ganado y suma al total histórico ganado."
   def registrar_premio(usuario, monto) do
     monto_decimal = Decimal.new("#{monto}")
 
@@ -187,65 +178,95 @@ defmodule AzarApp.Cuentas do
     |> Repo.update()
   end
 
-  @doc "Ajuste manual de saldo desde el panel de administrador (puede ser suma o resta)."
+  # Ajusta saldo previniendo saldos negativos y valores inválidos/exagerados.
+  # Normaliza comas decimales, espacios y signos antes del parse.
   def ajustar_saldo_admin(%Usuario{} = usuario, monto) do
-    nuevo = Decimal.add(usuario.saldo_virtual || Decimal.new(0), Decimal.new("#{monto}"))
+    try do
+      # Limpieza defensiva: espacios, comas como separador decimal, caracteres no numéricos
+      # Se preserva el signo negativo al inicio si existe (viene del LiveView para "restar")
+      monto_limpio =
+        "#{monto}"
+        |> String.trim()
+        |> String.replace(",", ".")          # "1,500" → "1.500"
+        |> String.replace(~r/[^\d.\-]/, "")  # elimina cualquier otro carácter extraño
 
-    usuario
-    |> Ecto.Changeset.change(saldo_virtual: nuevo)
-    |> Repo.update()
+      # Validación temprana: string vacío tras limpieza
+      if monto_limpio == "" or monto_limpio == "-" do
+        raise ArgumentError, "vacío"
+      end
+
+      monto_decimal = Decimal.new(monto_limpio)
+      monto_absoluto = Decimal.abs(monto_decimal)
+      saldo_actual = usuario.saldo_virtual || Decimal.new(0)
+      nuevo_saldo = Decimal.add(saldo_actual, monto_decimal)
+
+      cond do
+        # 1. Validar que el monto no sea cero
+        Decimal.equal?(monto_decimal, Decimal.new(0)) ->
+          {:error, "El monto de ajuste no puede ser cero ($0)"}
+
+        # 2. Validar que no exceda el límite máximo permitido por transacción
+        Decimal.gt?(monto_absoluto, @limite_max_ajuste) ->
+          {:error, "Monto inválido. El ajuste máximo permitido es de $#{@limite_max_ajuste}"}
+
+        # 3. Validar que el saldo final no quede negativo
+        Decimal.lt?(nuevo_saldo, Decimal.new(0)) ->
+          {:error, "El saldo no puede quedar negativo (Saldo actual: $#{saldo_actual})"}
+
+        # 4. Si todo es correcto, proceder con la actualización
+        true ->
+          usuario
+          |> Ecto.Changeset.change(saldo_virtual: nuevo_saldo)
+          |> Repo.update()
+      end
+    rescue
+      _ -> {:error, "El valor ingresado no es un número válido"}
+    end
   end
 
-  @doc """
-  Calcula el balance financiero integral y las estadísticas de juego de un usuario.
-  Obtiene dinámicamente los datos de tickets comprados y premios ganados cruzando la BD.
-  """
-  def obtener_balance_personal(%Usuario{} = usuario) do
-    # Total gastado = suma de precio_ticket de todos sus tickets comprados
-    gastado =
-      Repo.one(
-        from t in AzarApp.Sorteos.Ticket,
-          join: s in AzarApp.Sorteos.Sorteo, on: t.sorteo_id == s.id,
-          where: t.usuario_id == ^usuario.id and t.estado == "vendido",
-          select: coalesce(sum(s.precio_ticket), 0)
-      ) || Decimal.new(0)
+  # Vacía el saldo del usuario dejándolo en $0 de forma explícita.
+  # Valida que el saldo no esté ya en cero para evitar operaciones innecesarias.
+  def vaciar_cuenta_admin(%Usuario{} = usuario) do
+    saldo_actual = usuario.saldo_virtual || Decimal.new(0)
 
-    # Total ganado = precio_ticket de tickets ganadores (o premio_fijo si aplica)
-    ganado =
-      Repo.one(
-        from t in AzarApp.Sorteos.Ticket,
-          join: s in AzarApp.Sorteos.Sorteo, on: t.sorteo_id == s.id,
-          where:
-            t.usuario_id == ^usuario.id and
-            t.estado == "vendido" and
-            s.estado == "finalizado" and
-            fragment("? = ANY(?)", t.numero, s.numeros_ganadores),
-          select: coalesce(sum(
-            fragment("CASE WHEN ? = 'fijo' THEN ? ELSE ? END",
-              s.tipo_premio, s.premio_fijo, s.precio_ticket)
-          ), 0)
-      ) || Decimal.new(0)
+    cond do
+      Decimal.equal?(saldo_actual, Decimal.new(0)) ->
+        {:error, "La cuenta ya está en $0, no hay nada que vaciar"}
+
+      true ->
+        usuario
+        |> Ecto.Changeset.change(saldo_virtual: Decimal.new(0))
+        |> Repo.update()
+    end
+  end
+
+  # Balance dinámico cruzando BD
+  def obtener_balance_personal(%Usuario{} = usuario) do
+    gastado = Repo.one(
+      from t in AzarApp.Sorteos.Ticket,
+        join: s in AzarApp.Sorteos.Sorteo, on: t.sorteo_id == s.id,
+        where: t.usuario_id == ^usuario.id and t.estado == "vendido",
+        select: coalesce(sum(s.precio_ticket), 0)
+    ) || Decimal.new(0)
+
+    ganado = Repo.one(
+      from t in AzarApp.Sorteos.Ticket,
+        join: s in AzarApp.Sorteos.Sorteo, on: t.sorteo_id == s.id,
+        where: t.usuario_id == ^usuario.id and
+               t.estado == "vendido" and
+               s.estado == "finalizado" and
+               fragment("? = ANY(?)", t.numero, s.numeros_ganadores),
+        select: coalesce(sum(
+          fragment("CASE WHEN ? = 'fijo' THEN ? ELSE ? END", s.tipo_premio, s.premio_fijo, s.precio_ticket)
+        ), 0)
+    ) || Decimal.new(0)
 
     recargado = usuario.total_recargado || Decimal.new(0)
     saldo = usuario.saldo_virtual || Decimal.new(0)
-
-    # Rendimiento neto de juego (ganado - gastado)
     rendimiento = Decimal.sub(ganado, gastado)
 
-    # Estadísticas de participación
-    tickets_count =
-      Repo.one(
-        from t in AzarApp.Sorteos.Ticket,
-          where: t.usuario_id == ^usuario.id and t.estado == "vendido",
-          select: count(t.id)
-      ) || 0
-
-    sorteos_count =
-      Repo.one(
-        from t in AzarApp.Sorteos.Ticket,
-          where: t.usuario_id == ^usuario.id and t.estado == "vendido",
-          select: count(t.sorteo_id, :distinct)
-      ) || 0
+    tickets_count = Repo.one(from t in AzarApp.Sorteos.Ticket, where: t.usuario_id == ^usuario.id and t.estado == "vendido", select: count(t.id)) || 0
+    sorteos_count = Repo.one(from t in AzarApp.Sorteos.Ticket, where: t.usuario_id == ^usuario.id and t.estado == "vendido", select: count(t.sorteo_id, :distinct)) || 0
 
     %{
       gastado: gastado,
@@ -258,5 +279,4 @@ defmodule AzarApp.Cuentas do
       es_ganancia: Decimal.compare(rendimiento, 0) != :lt
     }
   end
-
 end

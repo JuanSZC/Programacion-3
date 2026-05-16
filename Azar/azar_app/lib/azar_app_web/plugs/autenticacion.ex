@@ -12,7 +12,16 @@ defmodule AzarAppWeb.Plugs.CargarUsuario do
 
   def call(conn, _opts) do
     usuario_id = get_session(conn, :usuario_id)
-    usuario = if usuario_id, do: Cuentas.obtener_usuario(usuario_id), else: nil
+
+    usuario =
+      if usuario_id do
+        case Cuentas.obtener_usuario(usuario_id) do
+          {:ok, usuario} -> usuario
+          _ -> nil
+        end
+      else
+        nil
+      end
 
     # Asignamos :usuario_actual para que esté disponible en layouts y LiveViews
     assign(conn, :usuario_actual, usuario)
@@ -28,7 +37,16 @@ defmodule AzarAppWeb.Plugs.RequireAuth do
 
   def call(conn, _opts) do
     usuario_id = get_session(conn, :usuario_id)
-    usuario = if usuario_id, do: Cuentas.obtener_usuario(usuario_id), else: nil
+
+    usuario =
+      if usuario_id do
+        case Cuentas.obtener_usuario(usuario_id) do
+          {:ok, usuario} -> usuario
+          _ -> nil
+        end
+      else
+        nil
+      end
 
     if usuario && usuario.activo do
       assign(conn, :usuario_actual, usuario)
@@ -50,7 +68,16 @@ defmodule AzarAppWeb.Plugs.RequireAdmin do
 
   def call(conn, _opts) do
     usuario_id = get_session(conn, :usuario_id)
-    usuario = if usuario_id, do: Cuentas.obtener_usuario(usuario_id), else: nil
+
+    usuario =
+      if usuario_id do
+        case Cuentas.obtener_usuario(usuario_id) do
+          {:ok, usuario} -> usuario
+          _ -> nil
+        end
+      else
+        nil
+      end
 
     if usuario && usuario.activo && usuario.rol == "admin" do
       assign(conn, :usuario_actual, usuario)
