@@ -29,6 +29,8 @@ defmodule AzarAppWeb.Router do
 
     post "/sesion", SesionController, :crear
     delete "/sesion", SesionController, :borrar
+
+    get "/forzar_logout", SesionForzadaController, :cerrar
   end
 
   # PANEL DE ADMINISTRACIÓN
@@ -39,6 +41,10 @@ defmodule AzarAppWeb.Router do
     live "/sorteos/new", Admin.SorteoLive.Index, :new
     live "/sorteos/:id/edit", Admin.SorteoLive.Index, :edit
     live "/sorteos/:id", Admin.SorteoLive.Show, :show
+    live "/usuarios", Admin.UsuarioLive.Index, :index
+    live "/usuarios/:id", Admin.UsuarioLive.Show, :show
+
+
   end
 
   # PANEL DE CLIENTE

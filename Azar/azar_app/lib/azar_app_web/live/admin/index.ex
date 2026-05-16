@@ -2,13 +2,17 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
   use AzarAppWeb, :live_view
   alias AzarApp.Sorteos
 
+  # MOUNT
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteos")
+
     sorteos = Sorteos.list_sorteos()
     socket = assign(socket, :esta_vacio, Enum.empty?(sorteos))
     {:ok, stream(socket, :sorteos, sorteos)}
   end
 
+  # ROUTING & PARAMS
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
@@ -26,6 +30,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
     |> assign(:sorteo, nil)
   end
 
+  # UI
   @impl true
   def render(assigns) do
     ~H"""
@@ -35,8 +40,8 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div class="flex flex-col gap-2">
             <div class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 w-fit">
-               <.icon name="hero-command-line-solid" class="size-4 text-primary" />
-               <span class="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Administración</span>
+                <.icon name="hero-command-line-solid" class="size-4 text-primary" />
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Administración</span>
             </div>
             <h1 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-base-content mt-1">
               Panel de <span class="text-primary drop-shadow-md">Sorteos</span>
@@ -74,7 +79,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
 
               <div class="p-8 flex flex-col h-full">
 
-                <%!-- Header: título + estado --%>
                 <div class="flex justify-between items-start gap-4 mb-4">
                   <h2 class="text-2xl font-black italic uppercase tracking-tight text-base-content leading-tight line-clamp-2 drop-shadow-sm">
                     <%= sorteo.titulo %>
@@ -89,7 +93,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
                   </div>
                 </div>
 
-                <%!-- Badges: tipo premio + tickets --%>
                 <div class="flex flex-wrap gap-3 mt-2">
                   <span class={[
                     "inline-flex items-center gap-2 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border border-base-300/30",
@@ -111,7 +114,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
 
                 <div class="w-full h-px bg-gradient-to-r from-transparent via-base-300/50 to-transparent my-6"></div>
 
-                <%!-- Premio y fecha --%>
                 <div class="flex items-center justify-between mb-4">
                   <div>
                     <p class="text-[9px] uppercase font-black text-base-content/40 tracking-[0.2em] mb-1">Precio Ticket</p>
@@ -127,7 +129,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
                   </div>
                 </div>
 
-                <%!-- Banner ganador (solo si está finalizado y tiene ganador) --%>
                 <%= if sorteo.estado == "finalizado" and not Enum.empty?(sorteo.numeros_ganadores || []) do %>
                   <div class="flex items-center gap-4 bg-warning/10 border border-warning/20 rounded-2xl px-5 py-4 mb-4">
                     <div class="p-2 bg-warning/20 rounded-xl shrink-0">
@@ -142,7 +143,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
                   </div>
                 <% end %>
 
-                <%!-- Acciones --%>
                 <div class="flex justify-between items-center mt-auto pt-2">
                   <button
                     phx-click="delete"
@@ -201,11 +201,14 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
     """
   end
 
+  # EVENTS
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     sorteo = Sorteos.get_sorteo!(id)
     {:ok, _} = Sorteos.delete_sorteo(sorteo)
 
+    # El broadcast disparará el handle_info y actualizará la lista,
+    # pero actualizamos el estado local por si acaso para reactividad inmediata.
     vacio? = Enum.empty?(Sorteos.list_sorteos())
 
     {:noreply,
@@ -214,11 +217,38 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
       |> assign(:esta_vacio, vacio?)}
   end
 
+  # PUBSUB / INFO
   @impl true
   def handle_info({:saved, sorteo}, socket) do
     {:noreply,
       socket
-      |> stream_insert(:sorteos, sorteo)
+      |> stream_insert(:sorteos, sorteo, at: 0)
       |> assign(:esta_vacio, false)}
+  end
+
+  @impl true
+  def handle_info({:sorteo_creado, sorteo}, socket) do
+    {:noreply,
+     socket
+     |> stream_insert(:sorteos, sorteo, at: 0)
+     |> assign(:esta_vacio, false)}
+  end
+
+  @impl true
+  def handle_info({:sorteo_eliminado, sorteo}, socket) do
+    vacio? = Enum.empty?(Sorteos.list_sorteos())
+    {:noreply,
+     socket
+     |> stream_delete(:sorteos, sorteo)
+     |> assign(:esta_vacio, vacio?)}
+  end
+
+  @impl true
+  def handle_info(:lista_actualizada, socket) do
+    sorteos = Sorteos.list_sorteos()
+    {:noreply,
+     socket
+     |> stream(:sorteos, sorteos, reset: true)
+     |> assign(:esta_vacio, Enum.empty?(sorteos))}
   end
 end

@@ -1,13 +1,26 @@
 defmodule AzarAppWeb.Cliente.PerfilLive do
+  @moduledoc """
+  LiveView para el panel de control del perfil del cliente.
+  Maneja la visualización y edición de datos personales, ajustes de seguridad,
+  historial de fondos (balance general) y recargas de saldo virtual.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
 
+  @impl true
   def mount(_params, session, socket) do
     usuario_id = session["usuario_id"]
 
     if usuario_id do
       usuario = Cuentas.obtener_usuario!(usuario_id)
-      # Calculamos el balance inicial
+
+      # Suscripción para forzar logout si un admin lo expulsa o desactiva
+      if connected?(socket) do
+        Phoenix.PubSub.subscribe(AzarApp.PubSub, "usuario:#{usuario_id}")
+      end
+
+      # Calculamos el balance inicial con la nueva función robusta
       balance_info = Cuentas.obtener_balance_personal(usuario)
 
       {:ok,
@@ -26,16 +39,48 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
     end
   end
 
-  # --- EVENTOS DE NAVEGACIÓN Y UI ---
-  def handle_event("set_seccion", %{"sec" => sec}, socket), do: {:noreply, assign(socket, seccion_activa: sec, editando_campo: nil)}
-  def handle_event("editar", %{"campo" => campo}, socket), do: {:noreply, assign(socket, editando_campo: campo)}
-  def handle_event("cancelar_edicion", _, socket), do: {:noreply, assign(socket, editando_campo: nil)}
+  # ==========================================
+  # MANEJO DE MENSAJES (PubSub)
+  # ==========================================
 
-  # --- EVENTOS DE HISTORIAL ---
-  def handle_event("abrir_historial", _, socket), do: {:noreply, assign(socket, show_historial_modal: true)}
-  def handle_event("cerrar_historial", _, socket), do: {:noreply, assign(socket, show_historial_modal: false)}
+  @impl true
+  def handle_info(:forzar_logout, socket) do
+    {:noreply, push_navigate(socket, to: "/forzar_logout")}
+  end
 
-  # --- EVENTOS DE ACTUALIZACIÓN DE PERFIL ---
+  # ==========================================
+  # EVENTOS DE NAVEGACIÓN Y UI
+  # ==========================================
+
+  @impl true
+  def handle_event("set_seccion", %{"sec" => sec}, socket) do
+    {:noreply, assign(socket, seccion_activa: sec, editando_campo: nil)}
+  end
+
+  def handle_event("editar", %{"campo" => campo}, socket) do
+    {:noreply, assign(socket, editando_campo: campo)}
+  end
+
+  def handle_event("cancelar_edicion", _, socket) do
+    {:noreply, assign(socket, editando_campo: nil)}
+  end
+
+  # ==========================================
+  # EVENTOS DE HISTORIAL
+  # ==========================================
+
+  def handle_event("abrir_historial", _, socket) do
+    {:noreply, assign(socket, show_historial_modal: true)}
+  end
+
+  def handle_event("cerrar_historial", _, socket) do
+    {:noreply, assign(socket, show_historial_modal: false)}
+  end
+
+  # ==========================================
+  # EVENTOS DE ACTUALIZACIÓN DE PERFIL
+  # ==========================================
+
   def handle_event("guardar_cambios", %{"campo" => campo, "valor" => valor}, socket) do
     case Cuentas.actualizar_campo_usuario(socket.assigns.usuario, campo, valor) do
       {:ok, usuario_actualizado} ->
@@ -48,12 +93,17 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
     end
   end
 
-  # --- EVENTOS DEL MODAL DE RECARGA ---
+  # ==========================================
+  # EVENTOS DEL MODAL DE RECARGA
+  # ==========================================
+
   def handle_event("abrir_modal", _, socket) do
     {:noreply, assign(socket, show_modal: true, modo_monto: "rapido", monto_seleccionado: 20000, metodo_pago: "pse")}
   end
 
-  def handle_event("cerrar_modal", _, socket), do: {:noreply, assign(socket, show_modal: false)}
+  def handle_event("cerrar_modal", _, socket) do
+    {:noreply, assign(socket, show_modal: false)}
+  end
 
   def handle_event("seleccionar_monto", %{"monto" => monto}, socket) do
     {:noreply, assign(socket, modo_monto: "rapido", monto_seleccionado: String.to_integer(monto))}
@@ -86,10 +136,14 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
       case Cuentas.recargar_saldo(socket.assigns.usuario, monto) do
         {:ok, usuario_actualizado} ->
           metodo_bonito = String.upcase(metodo)
+
+          # Recalculamos el balance inmediatamente después de recargar
+          nuevo_balance = Cuentas.obtener_balance_personal(usuario_actualizado)
+
           {:noreply,
            socket
            |> assign(usuario: usuario_actualizado)
-           |> assign(balance: Cuentas.obtener_balance_personal(usuario_actualizado))
+           |> assign(balance: nuevo_balance)
            |> assign(show_modal: false)
            |> put_flash(:info, "¡Recarga de $#{monto} exitosa vía #{metodo_bonito}!")}
         _ ->
@@ -98,6 +152,11 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
     end
   end
 
+  # ==========================================
+  # RENDER (HEEx Template)
+  # ==========================================
+
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="min-h-screen bg-gradient-to-b from-base-200/30 to-base-100 pb-20 animate-in fade-in zoom-in-95 duration-700">
@@ -132,10 +191,10 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
           </.link>
 
           <div class="flex items-center gap-4 md:gap-6">
-             <button phx-click="abrir_historial" class="flex flex-col items-end px-4 border-r border-base-300/50 hover:opacity-70 transition-opacity text-right">
+             <button phx-click="abrir_historial" class="flex flex-col items-end px-4 border-r border-base-300/50 hover:opacity-70 transition-opacity text-right group">
                 <p class="text-[9px] font-black opacity-40 uppercase tracking-[0.2em]">Saldo Disponible</p>
                 <p class="text-xl md:text-2xl font-black leading-none italic text-success group-hover:scale-105 transition-transform">
-                  $<%= @usuario.saldo_virtual || 0 %>
+                  $<%= @balance.saldo %>
                 </p>
              </button>
              <button phx-click="abrir_modal" class="btn btn-primary h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:-translate-y-1 hover:shadow-primary/40 transition-all gap-2">
@@ -190,7 +249,9 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                   </div>
                 </div>
               </div>
+
               <div class="p-4 md:p-6 divide-y divide-base-200/60">
+                <%!-- Nombre --%>
                 <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-base-200/30 transition-colors rounded-[2rem] group">
                   <div class="md:w-1/3"><p class="font-black text-[10px] uppercase tracking-[0.2em] opacity-40">Nombre Completo</p></div>
                   <div class="flex-1">
@@ -211,6 +272,8 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                     <button phx-click="editar" phx-value-campo="nombre" class="btn btn-ghost btn-sm bg-base-200/50 hover:bg-primary/10 hover:text-primary rounded-xl font-black text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Editar</button>
                   <% end %>
                 </div>
+
+                <%!-- Email --%>
                 <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-base-200/30 transition-colors rounded-[2rem] group">
                   <div class="md:w-1/3"><p class="font-black text-[10px] uppercase tracking-[0.2em] opacity-40">Correo Electrónico</p></div>
                   <div class="flex-1">
@@ -244,6 +307,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                   <p class="text-[11px] font-black uppercase tracking-widest text-base-content/40 mt-3">Protege tu acceso a la plataforma.</p>
                 </div>
               </div>
+
               <div class="p-6 md:p-10">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-base-200/50 border border-base-300/50 p-8 rounded-[2.5rem] shadow-inner gap-6">
                   <div class="flex items-center gap-5">
@@ -278,57 +342,103 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
         </div>
       </div>
 
-      <%!-- MODAL HISTORIAL DE FONDOS (CON DATOS DE BALANCE) --%>
+      <%!-- ========================================== --%>
+      <%!-- MODAL HISTORIAL DE FONDOS Y RENDIMIENTO    --%>
+      <%!-- ========================================== --%>
       <%= if @show_historial_modal do %>
         <div class="fixed inset-0 z-[100] flex items-center justify-center px-4">
           <div phx-click="cerrar_historial" class="absolute inset-0 bg-base-300/80 backdrop-blur-md"></div>
-          <div class="relative bg-base-100/95 backdrop-blur-3xl border border-base-200/60 rounded-[3rem] p-6 md:p-10 w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+
+          <div class="relative bg-base-100/95 backdrop-blur-3xl border border-base-200/60 rounded-[3rem] p-6 md:p-10 w-full max-w-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200">
             <button phx-click="cerrar_historial" class="absolute top-6 right-6 p-2 bg-base-200/50 hover:bg-error/10 hover:text-error rounded-xl transition-colors">
               <.icon name="hero-x-mark-solid" class="size-6" />
             </button>
+
             <div class="text-center mb-8">
-              <div class="inline-flex p-3 bg-info/10 text-info rounded-2xl mb-4 shadow-inner">
-                <.icon name="hero-chart-pie-solid" class="size-8" />
+              <div class="inline-flex p-3 bg-primary/10 text-primary rounded-2xl mb-4 shadow-inner">
+                <.icon name="hero-chart-bar-solid" class="size-8" />
               </div>
-              <h3 class="font-black text-2xl md:text-3xl text-base-content uppercase italic tracking-tighter">Resumen de Fondos</h3>
+              <h3 class="font-black text-2xl md:text-3xl text-base-content uppercase italic tracking-tighter">Mis Fondos</h3>
+              <p class="text-[10px] font-black uppercase tracking-widest text-base-content/40 mt-1">Resumen financiero de tu cuenta</p>
             </div>
-            <div class="space-y-4">
-              <div class="bg-base-200/50 p-4 rounded-2xl border border-base-300/50 flex justify-between items-center">
-                <span class="text-[11px] font-black uppercase tracking-widest opacity-60 flex items-center gap-2">
-                  <.icon name="hero-wallet-solid" class="size-4" /> Saldo Actual
-                </span>
-                <span class="text-xl font-black text-success">$<%= @usuario.saldo_virtual || 0 %></span>
+
+            <div class="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-[2rem] p-6 mb-6 flex items-center justify-between">
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-primary/70">Saldo Disponible</p>
+                <p class="text-4xl font-black italic text-primary leading-none mt-1">
+                  $<%= @balance.saldo %>
+                </p>
               </div>
-              <div class="bg-base-200/50 p-4 rounded-2xl border border-base-300/50 flex justify-between items-center">
-                <span class="text-[11px] font-black uppercase tracking-widest opacity-60 flex items-center gap-2">
-                  <.icon name="hero-arrow-down-tray-solid" class="size-4" /> Total Recargado
-                </span>
-                <span class="text-lg font-black text-white">$<%= @usuario.total_recargado || 0 %></span>
-              </div>
-              <div class="bg-error/10 p-4 rounded-2xl border border-error/20 flex justify-between items-center">
-                <span class="text-[11px] font-black uppercase tracking-widest text-error/80 flex items-center gap-2">
-                  <.icon name="hero-ticket-solid" class="size-4" /> Total Gastado
-                </span>
-                <span class="text-lg font-black text-error">-$<%= @balance.gastado %></span>
-              </div>
-              <div class="bg-warning/10 p-4 rounded-2xl border border-warning/20 flex justify-between items-center shadow-[0_0_15px_rgba(255,193,7,0.1)]">
-                <span class="text-[11px] font-black uppercase tracking-widest text-warning/80 flex items-center gap-2">
-                  <.icon name="hero-trophy-solid" class="size-4" /> Total Ganado
-                </span>
-                <span class="text-lg font-black text-warning">+$<%= @balance.premios %></span>
-              </div>
-              <div class="mt-6 pt-4 border-t border-base-300/50 flex justify-between items-center px-2">
-                 <p class="text-[10px] font-black uppercase tracking-widest opacity-40">Rendimiento Neto</p>
-                 <p class={["text-2xl font-black italic", Decimal.compare(@balance.balance, 0) == :lt && "text-error", Decimal.compare(@balance.balance, 0) != :lt && "text-primary"]}>
-                   <%= if Decimal.compare(@balance.balance, 0) != :lt, do: "+" %>$<%= @balance.balance %>
-                 </p>
+              <div class="p-4 bg-primary/10 rounded-2xl">
+                <.icon name="hero-wallet-solid" class="size-8 text-primary" />
               </div>
             </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div class="bg-base-200/50 p-4 rounded-2xl border border-base-300/30 flex flex-col gap-1">
+                <span class="text-[9px] font-black uppercase tracking-widest text-base-content/40 flex items-center gap-1">
+                  <.icon name="hero-ticket-solid" class="size-3" /> Tickets
+                </span>
+                <span class="text-2xl font-black italic text-base-content"><%= @balance.tickets %></span>
+              </div>
+              <div class="bg-base-200/50 p-4 rounded-2xl border border-base-300/30 flex flex-col gap-1">
+                <span class="text-[9px] font-black uppercase tracking-widest text-base-content/40 flex items-center gap-1">
+                  <.icon name="hero-sparkles-solid" class="size-3" /> Sorteos
+                </span>
+                <span class="text-2xl font-black italic text-base-content"><%= @balance.sorteos %></span>
+              </div>
+            </div>
+
+            <div class="space-y-2 mb-4">
+              <div class="bg-base-200/40 p-4 rounded-2xl border border-base-300/30 flex justify-between items-center">
+                <span class="text-[11px] font-black uppercase tracking-widest text-base-content/50 flex items-center gap-2">
+                  <.icon name="hero-arrow-down-circle-solid" class="size-4 text-info" /> Total Recargado
+                </span>
+                <span class="font-black text-base-content">+$<%= @balance.recargado %></span>
+              </div>
+
+              <div class="bg-error/5 p-4 rounded-2xl border border-error/15 flex justify-between items-center">
+                <span class="text-[11px] font-black uppercase tracking-widest text-error/70 flex items-center gap-2">
+                  <.icon name="hero-shopping-cart-solid" class="size-4" /> Gastado en Tickets
+                </span>
+                <span class="font-black text-error">-$<%= @balance.gastado %></span>
+              </div>
+
+              <div class="bg-warning/5 p-4 rounded-2xl border border-warning/15 flex justify-between items-center">
+                <span class="text-[11px] font-black uppercase tracking-widest text-warning/70 flex items-center gap-2">
+                  <.icon name="hero-trophy-solid" class="size-4" /> Ganado en Premios
+                </span>
+                <span class="font-black text-warning">+$<%= @balance.ganado %></span>
+              </div>
+            </div>
+
+            <div class={[
+              "p-5 rounded-2xl border flex items-center justify-between",
+              if(@balance.es_ganancia,
+                do: "bg-success/10 border-success/20",
+                else: "bg-error/10 border-error/20")
+            ]}>
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-base-content/50">Rendimiento Neto</p>
+                <p class="text-[9px] text-base-content/30 mt-0.5 uppercase tracking-wider">Premios vs Tickets comprados</p>
+              </div>
+              <div class="text-right">
+                <p class={["text-3xl font-black italic", if(@balance.es_ganancia, do: "text-success", else: "text-error")]}>
+                  <%= if @balance.es_ganancia, do: "+", else: "" %>$<%= @balance.rendimiento %>
+                </p>
+                <p class={["text-[9px] font-black uppercase tracking-widest mt-0.5", if(@balance.es_ganancia, do: "text-success/60", else: "text-error/60")]}>
+                  <%= if @balance.es_ganancia, do: "¡Vas ganando!", else: "Sigue intentando" %>
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
       <% end %>
 
-      <%!-- MODAL DE RECARGA --%>
+      <%!-- ========================================== --%>
+      <%!-- MODAL DE RECARGA                           --%>
+      <%!-- ========================================== --%>
       <%= if @show_modal do %>
         <div class="fixed inset-0 z-[100] flex items-center justify-center px-4">
           <div phx-click="cerrar_modal" class="absolute inset-0 bg-base-300/80 backdrop-blur-md"></div>
@@ -342,6 +452,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
               </div>
               <h3 class="font-black text-2xl md:text-3xl text-base-content uppercase italic tracking-tighter">Cargar Saldo</h3>
             </div>
+
             <form phx-submit="confirmar_recarga" class="space-y-8">
               <div class="space-y-4">
                 <div class="flex items-center gap-3">
@@ -371,6 +482,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                   </div>
                 <% end %>
               </div>
+
               <div class="space-y-4">
                 <div class="flex items-center gap-3">
                   <div class="h-6 w-1.5 bg-primary rounded-full"></div>
@@ -386,6 +498,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                   <% end %>
                 </div>
               </div>
+
               <div class="pt-6 border-t border-base-200/60">
                 <button type="submit" phx-disable-with="Procesando..." class="btn btn-primary h-16 w-full rounded-[1.5rem] text-sm font-black uppercase tracking-widest shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1 transition-all gap-3">
                   Pagar <%= if @modo_monto == "rapido", do: "$#{@monto_seleccionado}" %>
@@ -396,6 +509,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
           </div>
         </div>
       <% end %>
+
     </div>
     """
   end

@@ -63,8 +63,18 @@ defmodule AzarAppWeb.AdminSidebar do
                 <span>Gestión de Sorteos</span>
               </.link>
             </li>
+            <li>
+        <.link navigate={~p"/admin/usuarios"} class={[
+          "flex items-center gap-3 px-4 py-4 rounded-2xl transition-all duration-300 group",
+          @current_page == "usuarios" && "bg-secondary text-secondary-content shadow-xl shadow-secondary/30 font-black italic",
+          @current_page != "usuarios" && "text-base-content/60 hover:bg-base-200 hover:text-base-content"
+        ]}>
+          <.icon name="hero-users-solid" class={["size-5 transition-transform group-hover:scale-110", @current_page == "usuarios" && "text-white"]} />
+          <span>Gestión de Clientes</span>
+        </.link>
+      </li>
 
-            <%!-- Agrega aquí más ítems de menú si los necesitas --%>
+
           </ul>
 
           <%!-- SECCIÓN INFERIOR: PERFIL Y LOGOUT --%>

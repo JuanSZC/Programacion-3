@@ -47,4 +47,13 @@ defmodule AzarApp.Cuentas.Usuario do
     put_change(changeset, :password_hash, Pbkdf2.hash_pwd_salt(password))
   end
   defp hash_password(changeset), do: changeset
+
+  def changeset_admin(usuario, params) do
+  usuario
+  |> cast(params, [:nombre, :cedula, :email])
+  |> validate_required([:nombre, :cedula, :email])
+  |> validate_format(:email, ~r/@/)
+  |> unique_constraint(:email)
+  |> unique_constraint(:cedula)
+end
 end

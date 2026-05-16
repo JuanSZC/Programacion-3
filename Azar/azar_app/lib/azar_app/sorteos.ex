@@ -5,10 +5,7 @@ defmodule AzarApp.Sorteos do
   alias AzarApp.Sorteos.Ticket
   alias AzarApp.Cuentas
 
-  # ---------------------------------------------------------------------------
   # LECTURA DE SORTEOS
-  # ---------------------------------------------------------------------------
-
   def get_sorteo!(id), do: Repo.get!(Sorteo, id) |> Repo.preload([:tickets])
 
   def get_sorteo_con_tickets!(id) do
@@ -37,12 +34,8 @@ defmodule AzarApp.Sorteos do
     Repo.all(from s in Sorteo, where: s.estado == "activo")
   end
 
-  # ---------------------------------------------------------------------------
   # GESTIÓN DE TICKETS
-  # ---------------------------------------------------------------------------
-
   def comprar_ticket(usuario, sorteo, numero_ticket) do
-    # Guarda de seguridad: no permitir compra si el sorteo ya no está activo
     if sorteo.estado != "activo" do
       {:error, "Este sorteo ya no acepta compras"}
     else
@@ -89,16 +82,27 @@ defmodule AzarApp.Sorteos do
       end)
       |> Repo.transaction()
       |> case do
-        {:ok, %{asignar_ticket: ticket}} -> {:ok, ticket}
-        {:error, _op, razon, _} -> {:error, razon}
+        {:ok, %{asignar_ticket: ticket}} ->
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo.id}", :ticket_comprado)
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
+          {:ok, ticket}
+
+        {:error, _op, razon, _} ->
+          {:error, razon}
       end
     end
   end
 
-  # ---------------------------------------------------------------------------
-  # LÓGICA DE CASINO
-  # ---------------------------------------------------------------------------
+  def list_tickets_por_usuario(usuario_id) do
+    Repo.all(
+      from t in Ticket,
+      where: t.usuario_id == ^usuario_id,
+      preload: [:sorteo],
+      order_by: [desc: t.inserted_at]
+    )
+  end
 
+  # LÓGICA DE CASINO
   def recaudo_actual(sorteo) do
     tickets_vendidos =
       Repo.aggregate(
@@ -139,14 +143,6 @@ defmodule AzarApp.Sorteos do
     end
   end
 
-  @doc """
-  Determina si un sorteo puede ejecutarse ahora mismo.
-
-  Reglas:
-  - FIJO: el recaudo acumulado debe ser >= al premio fijo (casa cubre el premio).
-  - ACUMULADO: debe haber al menos 1 ticket vendido (premio > 0).
-  - En ambos casos el sorteo debe estar en estado "activo".
-  """
   def puede_jugar_ahora?(sorteo) do
     if sorteo.estado != "activo" do
       false
@@ -161,19 +157,13 @@ defmodule AzarApp.Sorteos do
           end
 
         recaudo = recaudo_actual(sorteo)
-        # El recaudo debe cubrir al menos el premio para poder jugarse
         Decimal.compare(recaudo, premio) in [:gt, :eq]
       else
-        # Acumulado: no tiene sentido jugar con premio $0
         vendidos > 0
       end
     end
   end
 
-  @doc """
-  Motivo por el que un sorteo no puede jugarse todavía.
-  Útil para mostrar mensajes descriptivos en la UI.
-  """
   def razon_no_puede_jugar(sorteo) do
     cond do
       sorteo.estado != "activo" ->
@@ -202,13 +192,6 @@ defmodule AzarApp.Sorteos do
     end
   end
 
-  @doc """
-  Realiza el sorteo eligiendo ganador(es) aleatoriamente y pagando el premio.
-  """
-   @doc """
-  Realiza el sorteo, paga el premio y notifica al ganador en tiempo real
-  (o guarda la notificación para cuando se conecte).
-  """
   def realizar_sorteo!(sorteo) do
     cond do
       sorteo.estado != "activo" ->
@@ -251,8 +234,9 @@ defmodule AzarApp.Sorteos do
 
         case resultado do
           {:ok, %{sorteo: sorteo_actualizado}} ->
-            # Notificamos FUERA de la transacción para no bloquearla
             notificar_ganadores(ganadores, sorteo_actualizado, premio_por_ganador)
+            Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo_actualizado.id}", :sorteo_ejecutado)
+            Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
             {:ok, sorteo_actualizado}
 
           {:error, _op, razon, _} ->
@@ -261,7 +245,6 @@ defmodule AzarApp.Sorteos do
     end
   end
 
-  # Crea la notificación en BD y hace broadcast PubSub a cada ganador
   defp notificar_ganadores(ganadores, sorteo, premio_por_ganador) do
     alias AzarApp.Notificaciones
     alias Phoenix.PubSub
@@ -274,7 +257,6 @@ defmodule AzarApp.Sorteos do
              premio_por_ganador
            ) do
         {:ok, notificacion} ->
-          # Precargamos el sorteo para que el modal tenga el título disponible
           notificacion_completa = Repo.preload(notificacion, :sorteo)
 
           PubSub.broadcast(
@@ -289,11 +271,6 @@ defmodule AzarApp.Sorteos do
     end)
   end
 
-
-  @doc """
-  Cancela un sorteo y devuelve el saldo a todos los compradores.
-  Se usa cuando expira la fecha sin cumplir las condiciones mínimas.
-  """
   def cancelar_sorteo(sorteo, motivo \\ "Condiciones mínimas no alcanzadas") do
     if sorteo.estado != "activo" do
       {:error, "Solo se pueden cancelar sorteos activos"}
@@ -322,31 +299,22 @@ defmodule AzarApp.Sorteos do
     end
   end
 
-  @doc """
-  Revisa todos los sorteos activos con fecha vencida y los cancela si no
-  cumplen las condiciones mínimas para ejecutarse.
-  Llamado periódicamente por el Scheduler.
-  """
   def verificar_y_cancelar_expirados do
     ahora = NaiveDateTime.utc_now()
 
     sorteos_vencidos =
       Repo.all(
         from s in Sorteo,
-          where: s.estado == "activo" and not is_nil(s.fecha_ejecucion) and s.fecha_ejecucion <= ^ahora
+        where: s.estado == "activo" and not is_nil(s.fecha_ejecucion) and s.fecha_ejecucion <= ^ahora
       )
 
     Enum.each(sorteos_vencidos, fn sorteo ->
       if puede_jugar_ahora?(sorteo) do
-        # Tiene condiciones, lo ejecutamos automáticamente
         case realizar_sorteo!(sorteo) do
-          {:ok, _} ->
-            IO.puts("[Sorteos] Sorteo ##{sorteo.id} ejecutado automáticamente al vencer la fecha.")
-          {:error, razon} ->
-            IO.puts("[Sorteos] Error al ejecutar sorteo ##{sorteo.id}: #{razon}")
+          {:ok, _} -> IO.puts("[Sorteos] Sorteo ##{sorteo.id} ejecutado automáticamente al vencer la fecha.")
+          {:error, razon} -> IO.puts("[Sorteos] Error al ejecutar sorteo ##{sorteo.id}: #{razon}")
         end
       else
-        # No cumple condiciones → cancelar con reembolso
         motivo = razon_no_puede_jugar(sorteo) || "Fecha vencida sin condiciones mínimas"
         cancelar_sorteo(sorteo, motivo)
       end
@@ -355,12 +323,9 @@ defmodule AzarApp.Sorteos do
     {:ok, length(sorteos_vencidos)}
   end
 
-  # ---------------------------------------------------------------------------
   # CRUD
-  # ---------------------------------------------------------------------------
-
   def create_sorteo(attrs \\ %{}) do
-    Repo.transaction(fn ->
+    case Repo.transaction(fn ->
       case %Sorteo{} |> Sorteo.changeset(attrs) |> Repo.insert() do
         {:ok, sorteo} ->
           ahora = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
@@ -382,18 +347,30 @@ defmodule AzarApp.Sorteos do
         {:error, changeset} ->
           Repo.rollback(changeset)
       end
-    end)
+    end) do
+      {:ok, sorteo} ->
+        Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_creado, sorteo})
+        {:ok, sorteo}
+      {:error, error} ->
+        {:error, error}
+    end
   end
 
   def update_sorteo(s, attrs), do: s |> Sorteo.changeset(attrs) |> Repo.update()
-  def delete_sorteo(s), do: Repo.delete(s)
+
+  def delete_sorteo(s) do
+    case Repo.delete(s) do
+      {:ok, sorteo} ->
+        Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_eliminado, sorteo})
+        {:ok, sorteo}
+      error ->
+        error
+    end
+  end
+
   def change_sorteo(s, attrs \\ %{}), do: Sorteo.changeset(s, attrs)
 
-  # ---------------------------------------------------------------------------
   # HELPERS PRIVADOS
-  # ---------------------------------------------------------------------------
-
-  # Agrega pasos al Multi para pagar a cada ganador
   defp pagar_ganadores_multi(multi, ganadores, premio_por_ganador) do
     Enum.reduce(ganadores, multi, fn ticket, acc ->
       Ecto.Multi.run(acc, {:pagar, ticket.id}, fn _repo, _changes ->
@@ -402,7 +379,6 @@ defmodule AzarApp.Sorteos do
     end)
   end
 
-  # Agrega pasos al Multi para reembolsar a cada comprador
   defp reembolsar_compradores_multi(multi, tickets, precio_ticket) do
     Enum.reduce(tickets, multi, fn ticket, acc ->
       Ecto.Multi.run(acc, {:reembolso, ticket.id}, fn _repo, _changes ->

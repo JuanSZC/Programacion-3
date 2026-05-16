@@ -3,9 +3,18 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
   alias AzarApp.Sorteos
   alias AzarApp.Cuentas
 
+  # MOUNT
+  @impl true
   def mount(_params, session, socket) do
-    usuario = if id = session["usuario_id"], do: Cuentas.obtener_usuario!(id), else: nil
-    sorteos = Sorteos.list_sorteos_futuros()
+    usuario_id = session["usuario_id"]
+    usuario = if usuario_id, do: Cuentas.obtener_usuario!(usuario_id), else: nil
+
+    if connected?(socket) do
+      if usuario_id, do: Phoenix.PubSub.subscribe(AzarApp.PubSub, "usuario:#{usuario_id}")
+      Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteos")
+    end
+
+    sorteos = fetch_sorteos("actuales")
 
     {:ok,
      socket
@@ -15,11 +24,10 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
      |> assign(tab_activa: "actuales")}
   end
 
+  # EVENTS
+  @impl true
   def handle_event("cambiar_tab", %{"tab" => tab}, socket) do
-    sorteos = case tab do
-      "actuales" -> Sorteos.list_sorteos_futuros()
-      "pasados"  -> Sorteos.list_sorteos_pasados()
-    end
+    sorteos = fetch_sorteos(tab)
 
     {:noreply,
      socket
@@ -28,15 +36,38 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
      |> assign(tab_activa: tab)}
   end
 
+  # PUBSUB / INFO
+  @impl true
+  def handle_info(:forzar_logout, socket) do
+    {:noreply, push_navigate(socket, to: "/forzar_logout")}
+  end
+
+  @impl true
+  def handle_info(event, socket) when event in [:lista_actualizada, :sorteo_ejecutado, :ticket_comprado] do
+    sorteos = fetch_sorteos(socket.assigns.tab_activa)
+    {:noreply, assign(socket, sorteos: sorteos, premios: calcular_premios(sorteos))}
+  end
+
+  @impl true
+  def handle_info({event, _sorteo}, socket) when event in [:sorteo_creado, :sorteo_eliminado, :saved] do
+    sorteos = fetch_sorteos(socket.assigns.tab_activa)
+    {:noreply, assign(socket, sorteos: sorteos, premios: calcular_premios(sorteos))}
+  end
+
+  # HELPERS
+  defp fetch_sorteos("actuales"), do: Sorteos.list_sorteos_futuros()
+  defp fetch_sorteos("pasados"), do: Sorteos.list_sorteos_pasados()
+
   defp calcular_premios(sorteos) do
     Map.new(sorteos, fn sorteo ->
       {sorteo.id, Sorteos.premio_actual(sorteo)}
     end)
   end
 
+  # UI
+  @impl true
   def render(assigns) do
     ~H"""
-    <%!-- Navegación Premium Flotante --%>
     <nav class="bg-base-100/80 backdrop-blur-2xl border-b border-base-200/60 sticky top-0 z-50 shadow-sm transition-all">
       <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <div class="flex items-center gap-3 group cursor-default">
@@ -127,7 +158,6 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
 
                 <div class="p-8 md:p-10 flex-1 flex flex-col">
 
-                  <%!-- Header tarjeta --%>
                   <div class="flex justify-between items-center mb-6">
                     <div class={[
                       "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-black text-[9px] uppercase tracking-widest border shadow-inner",
@@ -146,7 +176,6 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
                     </div>
                   </div>
 
-                  <%!-- Título y descripción --%>
                   <h2 class="text-3xl font-black uppercase tracking-tighter mb-3 italic leading-tight text-base-content group-hover:text-primary transition-colors">
                     <%= sorteo.titulo %>
                   </h2>
@@ -154,7 +183,6 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
                     <%= sorteo.descripcion %>
                   </p>
 
-                  <%!-- Banner ganador (solo finalizados con ganador) --%>
                   <%= if sorteo.estado == "finalizado" and not Enum.empty?(sorteo.numeros_ganadores || []) do %>
                     <div class="mt-6 flex items-center gap-4 bg-warning/10 border border-warning/20 rounded-2xl px-5 py-4">
                       <div class="p-2 bg-warning/20 rounded-xl shrink-0">
@@ -169,7 +197,6 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
                     </div>
                   <% end %>
 
-                  <%!-- Footer tarjeta --%>
                   <div class="mt-6 pt-6 border-t border-base-200/60 flex items-end justify-between gap-4">
                     <div class="flex flex-col gap-1.5">
                       <div>
