@@ -1,0 +1,3 @@
+[2026-05-17 03:20:38] [SESION_CERRADA] usuario_id=1 email=admin@azar.com
+[2026-05-17 03:20:54] [SESION_INICIADA] usuario_id=2 email=cliente@azar.com rol=cliente
+[2026-05-17 03:21:02] [RECARGA_SALDO] usuario_id=2 monto=100000 metodo=plataforma

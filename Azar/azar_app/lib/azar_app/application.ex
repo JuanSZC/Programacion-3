@@ -13,6 +13,7 @@ children = [
       {DNSCluster, query: Application.get_env(:azar_app, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: AzarApp.PubSub},
       AzarAppWeb.Endpoint,
+      AzarApp.BackupSync,
       # Tus módulos core aquí abajo:
       AzarApp.Core.SorteoSupervisor,
       # Tarea que arranca los sorteos guardados una vez el supervisor ya está listo

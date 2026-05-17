@@ -74,11 +74,24 @@ defmodule AzarApp.Cuentas do
   # GESTIÓN DE USUARIOS
   # ==========================================
 
-  def crear_usuario(attrs \\ %{}) do
-    %Usuario{}
-    |> Usuario.registration_changeset(attrs)
-    |> Repo.insert()
+ def crear_usuario(attrs \\ %{}) do
+  case %Usuario{}
+       |> Usuario.registration_changeset(attrs)
+       |> Repo.insert() do
+
+    {:ok, usuario} ->
+      AzarApp.Auditoria.log(:usuario_creado, %{
+        usuario_id: usuario.id,
+        email: usuario.email,
+        rol: usuario.rol
+      })
+
+      {:ok, usuario}
+
+    error ->
+      error
   end
+end
 
   def actualizar_usuario(%Usuario{} = usuario, attrs) do
     usuario
@@ -124,11 +137,29 @@ defmodule AzarApp.Cuentas do
     end
   end
 
-  defp do_toggle(usuario) do
-    usuario
-    |> Ecto.Changeset.change(activo: !usuario.activo)
-    |> Repo.update()
+defp do_toggle(usuario) do
+  case usuario
+       |> Ecto.Changeset.change(activo: !usuario.activo)
+       |> Repo.update() do
+
+    {:ok, usuario_actualizado} ->
+
+      AzarApp.Auditoria.log(
+        if(usuario_actualizado.activo,
+          do: :usuario_activado,
+          else: :usuario_desactivado
+        ),
+        %{
+          usuario_id: usuario_actualizado.id
+        }
+      )
+
+      {:ok, usuario_actualizado}
+
+    error ->
+      error
   end
+end
 
   def tiene_tickets_activos?(usuario_id) do
     query = from(t in AzarApp.Sorteos.Ticket,
@@ -146,7 +177,13 @@ defmodule AzarApp.Cuentas do
       tiene_tickets_activos?(usuario.id) ->
         {:error, "El usuario tiene tickets en sorteos activos"}
       true ->
-        Repo.delete(usuario)
+
+  AzarApp.Auditoria.log(:usuario_eliminado, %{
+    usuario_id: usuario.id,
+    email: usuario.email
+  })
+
+  Repo.delete(usuario)
     end
   end
 
@@ -174,7 +211,15 @@ def recargar_saldo(usuario, monto) do
   )
   |> Repo.transaction()
   |> case do
-    {:ok, %{usuario: u}} -> {:ok, u}
+    {:ok, %{usuario: u}} ->
+
+  AzarApp.Auditoria.log(:recarga_saldo, %{
+    usuario_id: u.id,
+    monto: monto_d,
+    metodo: "plataforma"
+  })
+
+  {:ok, u}
     {:error, _, changeset, _} -> {:error, changeset}
   end
 end
@@ -242,9 +287,29 @@ end
 
         # 4. Si todo es correcto, proceder con la actualización
         true ->
-          usuario
-          |> Ecto.Changeset.change(saldo_virtual: nuevo_saldo)
-          |> Repo.update()
+
+  case usuario
+       |> Ecto.Changeset.change(saldo_virtual: nuevo_saldo)
+       |> Repo.update() do
+
+    {:ok, usuario_actualizado} ->
+
+      AzarApp.Auditoria.log(:saldo_ajustado_admin, %{
+        usuario_id: usuario.id,
+        monto: monto_decimal,
+        operacion:
+          if(Decimal.negative?(monto_decimal),
+            do: "restar",
+            else: "sumar"
+          ),
+        admin_id: "admin"
+      })
+
+      {:ok, usuario_actualizado}
+
+    error ->
+      error
+  end
       end
     rescue
       _ -> {:error, "El valor ingresado no es un número válido"}
@@ -261,9 +326,23 @@ end
         {:error, "La cuenta ya está en $0, no hay nada que vaciar"}
 
       true ->
-        usuario
-        |> Ecto.Changeset.change(saldo_virtual: Decimal.new(0))
-        |> Repo.update()
+
+  case usuario
+       |> Ecto.Changeset.change(saldo_virtual: Decimal.new(0))
+       |> Repo.update() do
+
+    {:ok, usuario_actualizado} ->
+
+      AzarApp.Auditoria.log(:cuenta_vaciada_admin, %{
+        usuario_id: usuario_actualizado.id,
+        admin_id: "admin"
+      })
+
+      {:ok, usuario_actualizado}
+
+    error ->
+      error
+  end
     end
   end
 
@@ -348,4 +427,57 @@ end
 defp decimal_seguro(nil), do: Decimal.new(0)
 defp decimal_seguro(%Decimal{} = v), do: v
 defp decimal_seguro(v), do: Decimal.new(to_string(v))
+
+# Agrega esto en lib/azar_app/cuentas.ex
+
+def limpiar_sistema_completo() do
+  emails_protegidos = ["admin@azar.com", "cliente@azar.com"]
+
+  Ecto.Multi.new()
+  # 1. Borra todos los logs de transacciones
+  |> Ecto.Multi.delete_all(:transacciones,
+      from(t in AzarApp.Cuentas.Transaccion, select: t))
+  # 2. Borra todos los tickets
+  |> Ecto.Multi.delete_all(:tickets,
+      from(t in AzarApp.Sorteos.Ticket, select: t))
+  # 3. Borra todos los sorteos
+  |> Ecto.Multi.delete_all(:sorteos,
+      from(s in AzarApp.Sorteos.Sorteo, select: s))
+  # 4. Borra usuarios que NO sean los predeterminados
+  |> Ecto.Multi.delete_all(:usuarios,
+      from(u in AzarApp.Cuentas.Usuario,
+        where: u.email not in ^emails_protegidos,
+        select: u))
+  # 5. Resetea saldo y contadores de los usuarios protegidos
+  |> Ecto.Multi.update_all(:reset_usuarios,
+      from(u in AzarApp.Cuentas.Usuario,
+        where: u.email in ^emails_protegidos),
+      set: [
+        saldo_virtual: Decimal.new("0"),
+        total_recargado: Decimal.new("0"),
+        total_gastado: Decimal.new("0"),
+        total_ganado: Decimal.new("0")
+      ])
+  |> Repo.transaction()
+  |> case do
+    {:ok, resultado} ->
+      # Borra el archivo de auditoría
+      File.rm("log/auditoria.log")
+
+      AzarApp.Auditoria.log(:sistema_limpiado, %{
+        tickets: resultado.tickets |> elem(0),
+        sorteos: resultado.sorteos |> elem(0),
+        usuarios: resultado.usuarios |> elem(0)
+      })
+      {:ok, resultado} ->
+  AzarApp.Backup.limpiar_todo()   # vacía los JSON
+  AzarApp.AuditoriaJSON.limpiar()
+  {:ok, resultado}
+
+      {:ok, resultado}
+
+    {:error, op, razon, _} ->
+      {:error, "Falló en #{op}: #{inspect(razon)}"}
+  end
+end
 end

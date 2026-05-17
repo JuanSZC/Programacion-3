@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "email": "admin@azar.com",
+    "ultimo_login": "2026-05-17 03:19:08",
+    "rol": "admin",
+    "nombre": "Administrador Azar",
+    "cedula": "1234567890",
+    "activo": true,
+    "saldo_virtual": "0.00",
+    "total_recargado": "0.0",
+    "total_ganado": "0.0",
+    "total_gastado": "0.0",
+    "edad": 35,
+    "insertado": "2026-05-17 01:30:21Z"
+  },
+  {
+    "id": 2,
+    "email": "cliente@azar.com",
+    "ultimo_login": "2026-05-17 03:20:54",
+    "rol": "cliente",
+    "nombre": "Juan Pérez",
+    "cedula": "9876543210",
+    "activo": true,
+    "saldo_virtual": "100000.00",
+    "total_recargado": "100000.0",
+    "total_ganado": "0.0",
+    "total_gastado": "0.0",
+    "edad": 28,
+    "insertado": "2026-05-17 01:30:21Z"
+  }
+]

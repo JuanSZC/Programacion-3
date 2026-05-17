@@ -10,6 +10,7 @@ defmodule AzarAppWeb.Admin.PerfilLive do
 
       id ->
         admin = Cuentas.obtener_usuario!(id)
+
         {:ok,
          socket
          |> assign(:admin, admin)
@@ -200,7 +201,44 @@ defmodule AzarAppWeb.Admin.PerfilLive do
               <.icon name="hero-clock-solid" class="size-5 text-base-content/50" />
             </div>
             <h3 class="font-black text-lg italic uppercase tracking-tight">Info de Sesión</h3>
-          </div>
+         <%!-- ZONA DE PELIGRO: LIMPIEZA TOTAL --%>
+    <div class="bg-error/5 backdrop-blur-xl rounded-[3rem] border border-error/20 shadow-xl p-8">
+    <div class="flex items-center gap-3 mb-4">
+    <div class="p-2 bg-error/10 rounded-xl">
+      <.icon name="hero-trash-solid" class="size-5 text-error" />
+    </div>
+    <h3 class="font-black text-lg italic uppercase tracking-tight text-error">Zona de Peligro</h3>
+    </div>
+
+    <p class="text-[11px] font-bold text-base-content/50 uppercase tracking-wider leading-relaxed mb-6">
+    Esta acción elimina <span class="text-error font-black">permanentemente</span> todos los sorteos,
+    tickets, usuarios no predeterminados y el archivo de auditoría.
+    Los usuarios <span class="font-black text-base-content/70">admin@azar.com</span> y
+    <span class="font-black text-base-content/70">cliente@azar.com</span> se conservan con saldo en $0.
+    Esta acción es <span class="text-error font-black">irreversible</span>.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-error/5 border border-error/15 p-5 rounded-2xl">
+    <div class="flex items-center gap-3">
+      <.icon name="hero-exclamation-triangle-solid" class="size-6 text-error shrink-0" />
+      <div>
+        <p class="font-black text-sm text-error uppercase tracking-wide">Limpiar Sistema Completo</p>
+        <p class="text-[10px] text-base-content/40 uppercase tracking-widest mt-0.5">
+          Sorteos · Tickets · Usuarios extra · Logs · Saldos
+        </p>
+      </div>
+    </div>
+
+    <button
+      phx-click="limpiar_sistema"
+      data-confirm="⚠️ ADVERTENCIA: Esto eliminará TODOS los sorteos, tickets, usuarios extra y logs del sistema. Los usuarios predeterminados se conservan con saldo $0. ¿Estás completamente seguro?"
+      class="btn bg-error text-white border-error hover:bg-error/80 h-12 px-8 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-error/20 transition-all hover:-translate-y-0.5 gap-2 shrink-0">
+      <.icon name="hero-trash-solid" class="size-4" />
+      Limpiar Todo
+    </button>
+    </div>
+    </div>
+            </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="bg-base-200/40 p-4 rounded-2xl border border-base-300/30">

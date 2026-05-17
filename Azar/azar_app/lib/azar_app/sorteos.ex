@@ -105,6 +105,12 @@ defmodule AzarApp.Sorteos do
     |> Repo.transaction()
     |> case do
       {:ok, %{asignar_ticket: ticket}} ->
+        AzarApp.Auditoria.log(:ticket_comprado, %{
+  usuario_id: usuario.id,
+  sorteo_id: sorteo.id,
+  numero: ticket.numero,
+  monto: sorteo.precio_ticket
+})
         Phoenix.PubSub.broadcast(
           AzarApp.PubSub,
           "sorteo:#{sorteo.id}",
@@ -202,6 +208,12 @@ end
 
         case resultado do
           {:ok, %{sorteo: sorteo_actualizado}} ->
+            AzarApp.Auditoria.log(:sorteo_ejecutado, %{
+  sorteo_id: sorteo_actualizado.id,
+  titulo: sorteo_actualizado.titulo,
+  ganadores: sorteo_actualizado.numeros_ganadores,
+  premio: premio_por_ganador
+})
             notificar_ganadores(ganadores, sorteo_actualizado, premio_por_ganador)
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo_actualizado.id}", :sorteo_ejecutado)
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
@@ -223,7 +235,11 @@ end
       |> Repo.transaction()
       |> case do
         {:ok, %{sorteo: sorteo_cancelado}} ->
-          IO.puts("[Sorteos] Sorteo ##{sorteo.id} cancelado: #{motivo}. #{length(tickets_con_dueno)} reembolsos.")
+          AzarApp.Auditoria.log(:sorteo_cancelado, %{
+  sorteo_id: sorteo_cancelado.id,
+  titulo: sorteo_cancelado.titulo,
+  motivo: motivo
+})
           {:ok, sorteo_cancelado}
         {:error, _op, razon, _} -> {:error, razon}
       end
@@ -252,6 +268,12 @@ end
     case Repo.transaction(fn ->
       case %Sorteo{} |> Sorteo.changeset(attrs) |> Repo.insert() do
         {:ok, sorteo} ->
+          AzarApp.Auditoria.log(:sorteo_creado, %{
+  sorteo_id: sorteo.id,
+  titulo: sorteo.titulo,
+  tipo: sorteo.tipo_premio
+})
+
           ahora = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
           tickets = Enum.map(1..sorteo.total_tickets, fn num ->
             %{sorteo_id: sorteo.id, numero: to_string(num), estado: "disponible", inserted_at: ahora, updated_at: ahora}
@@ -272,6 +294,10 @@ end
   def delete_sorteo(s) do
     case Repo.delete(s) do
       {:ok, sorteo} ->
+        AzarApp.Auditoria.log(:sorteo_eliminado, %{
+  sorteo_id: s.id,
+  titulo: s.titulo
+})
         Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_eliminado, sorteo})
         {:ok, sorteo}
       error -> error
@@ -291,18 +317,30 @@ end
 
   defp reembolsar_compradores_multi(multi, tickets, precio_ticket) do
     Enum.reduce(tickets, multi, fn ticket, acc ->
-      Ecto.Multi.run(acc, {:reembolso, ticket.id}, fn _repo, _ -> Cuentas.recargar_saldo(ticket.usuario, precio_ticket) end)
+      Ecto.Multi.run(acc, {:reembolso, ticket.id}, fn _repo, _ -> Cuentas.recargar_saldo(ticket.usuario, precio_ticket)
+    AzarApp.Auditoria.log(:devolucion_cancelacion, %{
+  usuario_id: ticket.usuario_id,
+  sorteo_id: ticket.sorteo_id,
+  monto: precio_ticket
+})
+    end)
     end)
   end
 
-  defp notificar_ganadores(ganadores, sorteo, premio_por_ganador) do
-    Enum.each(ganadores, fn ticket ->
-      case AzarApp.Notificaciones.crear_notificacion_premio(ticket.usuario_id, sorteo, ticket.numero, premio_por_ganador) do
-        {:ok, notif} -> Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{ticket.usuario_id}", {:premio_ganado, Repo.preload(notif, :sorteo)})
-        {:error, _} -> :ok
-      end
-    end)
-  end
+defp notificar_ganadores(ganadores, sorteo, premio_por_ganador) do
+  Enum.each(ganadores, fn ticket ->
+    AzarApp.Auditoria.log(:premio_pagado, %{
+      usuario_id: ticket.usuario_id,
+      sorteo_id: sorteo.id,
+      monto: premio_por_ganador
+    })
+
+    case AzarApp.Notificaciones.crear_notificacion_premio(ticket.usuario_id, sorteo, ticket.numero, premio_por_ganador) do
+      {:ok, notif} -> Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{ticket.usuario_id}", {:premio_ganado, Repo.preload(notif, :sorteo)})
+      {:error, _} -> :ok
+    end
+  end)
+end
 
   def devolver_ticket(usuario, ticket_id) do
   ticket = Repo.get!(Ticket, ticket_id) |> Repo.preload(:sorteo)
@@ -338,6 +376,12 @@ end
       |> Repo.transaction()
       |> case do
           {:ok, _} ->
+            AzarApp.Auditoria.log(:ticket_devuelto, %{
+  usuario_id: usuario.id,
+  sorteo_id: ticket.sorteo_id,
+  numero: ticket.numero,
+  monto: precio
+})
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{ticket.sorteo_id}", :ticket_comprado)
             {:ok, ticket}
           {:error, _, razon, _} -> {:error, razon}

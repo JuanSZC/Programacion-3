@@ -1,13 +1,21 @@
 defmodule AzarAppWeb.SesionController do
   use AzarAppWeb, :controller
+
   alias AzarApp.Cuentas
 
   # Procesa el inicio de sesión para Clientes y Admins
   def crear(conn, %{"email" => email, "password" => password, "tipo" => tipo}) do
     case Cuentas.autenticar_usuario(email, password) do
       {:ok, usuario} ->
-        intentando_admin = (tipo == "admin")
-        es_admin = (usuario.rol == "admin")
+
+        AzarApp.Auditoria.log(:sesion_iniciada, %{
+          usuario_id: usuario.id,
+          email: usuario.email,
+          rol: usuario.rol
+        })
+
+        intentando_admin = tipo == "admin"
+        es_admin = usuario.rol == "admin"
 
         cond do
           # SEGURIDAD: Si intenta entrar por /admin/login pero es un cliente
@@ -19,13 +27,21 @@ defmodule AzarAppWeb.SesionController do
 
           # ÉXITO: Redirige según el rol real del usuario
           true ->
-            ruta = if es_admin, do: ~p"/admin/sorteos", else: ~p"/cliente/sorteos"
+            ruta =
+              if es_admin,
+                do: ~p"/admin/sorteos",
+                else: ~p"/cliente/sorteos"
+
             iniciar_sesion(conn, usuario, ruta)
         end
 
       {:error, _razon} ->
-        # MANEJO DE EXCEPCIÓN: Si fallan las credenciales, vuelve al login correspondiente
-        ruta_origen = if tipo == "admin", do: ~p"/admin/login", else: ~p"/login"
+        # MANEJO DE EXCEPCIÓN: Si fallan las credenciales
+        ruta_origen =
+          if tipo == "admin",
+            do: ~p"/admin/login",
+            else: ~p"/login"
+
         conn
         |> put_flash(:error, "Correo o contraseña incorrectos.")
         |> redirect(to: ruta_origen)
@@ -37,15 +53,26 @@ defmodule AzarAppWeb.SesionController do
   defp iniciar_sesion(conn, usuario, ruta_destino) do
     conn
     |> put_session(:usuario_id, usuario.id)
-    |> configure_session(renew: true) # Regenera el ID de sesión para evitar Session Fixation
+    |> configure_session(renew: true)
     |> put_flash(:info, "¡Bienvenido, #{usuario.nombre}!")
     |> redirect(to: ruta_destino)
   end
 
   # Cierre de sesión (Logout)
   def borrar(conn, _params) do
+    usuario_id = get_session(conn, :usuario_id)
+
+    if usuario_id do
+      usuario = AzarApp.Cuentas.obtener_usuario!(usuario_id)
+
+      AzarApp.Auditoria.log(:sesion_cerrada, %{
+        usuario_id: usuario.id,
+        email: usuario.email
+      })
+    end
+
     conn
-    |> clear_session() # Limpia todos los datos de la cookie
+    |> clear_session()
     |> put_flash(:info, "Sesión cerrada correctamente.")
     |> redirect(to: ~p"/")
   end
