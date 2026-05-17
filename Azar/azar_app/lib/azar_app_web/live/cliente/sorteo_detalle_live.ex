@@ -160,13 +160,12 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
   # MANEJO DE MENSAJES EN TIEMPO REAL (PUBSUB)
   # ==========================================
 
-  @doc "Fuerza el cierre de sesión del usuario si recibe la señal del sistema."
   @impl true
   def handle_info(:forzar_logout, socket) do
     {:noreply, push_navigate(socket, to: "/forzar_logout")}
   end
 
-  @doc "Actualiza el estado del sorteo y del panel actual cuando cualquier usuario compra un ticket."
+
   @impl true
   def handle_info(:ticket_comprado, socket) do
     sorteo_actualizado = Sorteos.get_sorteo_con_tickets!(socket.assigns.sorteo.id)

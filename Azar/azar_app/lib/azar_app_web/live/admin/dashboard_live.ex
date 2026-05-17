@@ -65,8 +65,6 @@ defmodule AzarAppWeb.Admin.DashboardLive do
   defp color_tipo("fijo"), do: "bg-warning/10 text-warning border-warning/20"
   defp color_tipo(_), do: "bg-info/10 text-info border-info/20"
 
-  defp icono_tipo("fijo"), do: "hero-lock-closed-solid"
-  defp icono_tipo(_), do: "hero-arrow-trending-up-solid"
 
   # ==========================================
   # RENDER
@@ -487,23 +485,23 @@ defmodule AzarAppWeb.Admin.DashboardLive do
               <p class="text-3xl font-black italic text-secondary">$<%= fmt(@datos.financiero.recaudo_sorteos) %></p>
             </div>
           </div>
-<%!-- Gráfica recaudo mensual aquí también --%>
-<div class="bg-base-100/80 p-8 rounded-[2rem] border border-base-200/60 shadow-xl mb-8">
-  <h3 class="font-black text-lg italic uppercase tracking-tight mb-6 flex items-center gap-3">
+    <%!-- Gráfica recaudo mensual aquí también --%>
+    <div class="bg-base-100/80 p-8 rounded-[2rem] border border-base-200/60 shadow-xl mb-8">
+    <h3 class="font-black text-lg italic uppercase tracking-tight mb-6 flex items-center gap-3">
     <div class="p-2 bg-primary/10 rounded-xl">
       <.icon name="hero-chart-bar-solid" class="size-5 text-primary" />
     </div>
     Recaudo Mensual — Año en Curso
-  </h3>
+    </h3>
 
-  <% max_r =
+    <% max_r =
     Enum.reduce(@datos.recaudo_por_mes, Decimal.new("0"), fn mapa, acc ->
       Decimal.max(acc, mapa.recaudo)
     end) %>
 
-  <% meses = ~w(Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic) %>
+    <% meses = ~w(Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic) %>
 
-  <div class="flex items-end gap-2 h-48">
+    <div class="flex items-end gap-2 h-48">
     <%= for mes <- 1..12 do %>
       <% md = Enum.find(@datos.recaudo_por_mes, fn m -> m.mes == mes end) %>
 
@@ -538,8 +536,8 @@ defmodule AzarAppWeb.Admin.DashboardLive do
         </span>
       </div>
     <% end %>
-  </div>
-</div>
+    </div>
+    </div>
           <%!-- Top sorteos por tickets vendidos --%>
           <div class="bg-base-100/80 p-8 rounded-[2rem] border border-base-200/60 shadow-xl">
             <h3 class="font-black text-lg italic uppercase tracking-tight mb-5 flex items-center gap-3">

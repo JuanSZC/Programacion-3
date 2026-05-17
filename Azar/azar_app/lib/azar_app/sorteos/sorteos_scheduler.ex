@@ -33,8 +33,6 @@ defmodule AzarApp.Sorteos.Scheduler do
       {:ok, cantidad} ->
         Logger.info("[Scheduler] #{cantidad} sorteo(s) procesados por fecha vencida.")
 
-      {:error, razon} ->
-        Logger.error("[Scheduler] Error al verificar sorteos: #{inspect(razon)}")
     end
 
     schedule_check()

@@ -11,7 +11,7 @@ defmodule AzarApp.Compra do
   ]
 
 
-  def crear(id, cliente, billete, tipo \\ :compra) do
+  def crear(id, cliente, billete, _tipo \\ :compra) do
     cond do
       cliente.saldo < billete.precio ->
         {:error, :saldo_insuficiente}

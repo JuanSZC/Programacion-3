@@ -58,9 +58,6 @@ defmodule AzarAppWeb.Router do
       live "/sorteos", SorteosLive, :index
       live "/sorteos/:id", SorteoDetalleLive, :show
     end
-
-    # Usando el prefijo completo 'Elixir.', Phoenix entiende que es un módulo raíz absoluto
-    # y no intentará concatenar AzarAppWeb.Cliente deteniendo el warning
-    delete "/sesion", Elixir.AzarAppWeb.SesionController, :borrar
   end
+
 end

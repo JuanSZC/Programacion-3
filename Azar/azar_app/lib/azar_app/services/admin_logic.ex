@@ -210,17 +210,6 @@ def total_premios_entregados(sorteo) do
 
 end
 
-#Sorteo?
-def total_premios_entregados(sorteo) do
-
-  premios_entregados(sorteo)
-  |> Enum.reduce(0, fn premio, acumulador ->
-
-    acumulador + premio.monto_neto
-
-  end)
-
-end
 
 #Sorteo?
 def ganancias_o_perdidas(sorteo) do
@@ -280,7 +269,7 @@ end
 
 def crear_premio(sorteo, id, monto_bruto, categoria) do
 
-  case Premio.nuevo(id, monto_bruto, categoria) do
+  case AzarApp.Premio.nuevo(id, monto_bruto, categoria) do
 
     {:ok, premio} ->
 
