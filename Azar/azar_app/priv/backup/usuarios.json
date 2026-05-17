@@ -1,32 +1,32 @@
 [
   {
     "id": 1,
-    "saldo_virtual": "0.00",
-    "total_gastado": "0.0",
-    "nombre": "Administrador Azar",
+    "insertado": "2026-05-17 01:30:21Z",
     "email": "admin@azar.com",
-    "total_ganado": "0.0",
-    "activo": true,
+    "nombre": "Administrador Azar",
     "cedula": "1234567890",
     "edad": 35,
     "rol": "admin",
+    "activo": true,
+    "saldo_virtual": "0.00",
     "total_recargado": "0.0",
-    "ultimo_login": "2026-05-17 04:26:58",
-    "insertado": "2026-05-17 01:30:21Z"
+    "total_gastado": "0.0",
+    "total_ganado": "0.0",
+    "ultimo_login": "2026-05-17 15:57:23"
   },
   {
     "id": 2,
-    "saldo_virtual": "100000.00",
-    "total_gastado": "0.0",
-    "nombre": "Juan Pérez",
+    "insertado": "2026-05-17 01:30:21Z",
     "email": "cliente@azar.com",
-    "total_ganado": "0.0",
-    "activo": true,
+    "nombre": "Juan Pérez",
     "cedula": "9876543210",
     "edad": 28,
     "rol": "cliente",
-    "total_recargado": "100000.0",
-    "ultimo_login": "2026-05-17 03:20:54",
-    "insertado": "2026-05-17 01:30:21Z"
+    "activo": true,
+    "saldo_virtual": "7000.00",
+    "total_recargado": "110000.0",
+    "total_gastado": "10000.0",
+    "total_ganado": "7000.0",
+    "ultimo_login": "2026-05-17 16:00:58"
   }
 ]

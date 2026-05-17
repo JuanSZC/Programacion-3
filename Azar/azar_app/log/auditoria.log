@@ -2,3 +2,31 @@
 [2026-05-17 04:27:30] [SORTEO_CREADO] sorteo_id=1 titulo="Sorteo de prueba" tipo=acumulado
 [2026-05-17 04:28:41] [SORTEO_CANCELADO] sorteo_id=1 titulo="Sorteo de prueba" motivo="No se han vendido tickets aún"
 [2026-05-17 04:29:27] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=2
+[2026-05-17 04:30:44] [SESION_CERRADA] usuario_id=1 email=admin@azar.com
+[2026-05-17 04:30:53] [SESION_INICIADA] usuario_id=2 email=cliente@azar.com rol=cliente
+[2026-05-17 04:31:22] [SESION_INICIADA] usuario_id=1 email=admin@azar.com rol=admin
+[2026-05-17 04:31:43] [SORTEO_CREADO] sorteo_id=2 titulo="Sorteo express" tipo=acumulado
+[2026-05-17 04:31:58] [RECARGA_SALDO] usuario_id=2 monto=10000 metodo=plataforma
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#10 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#9 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#8 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#7 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#6 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#5 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#4 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#3 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#2 monto=1000
+[2026-05-17 04:32:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#1 monto=1000
+[2026-05-17 04:33:41] [SORTEO_EJECUTADO] sorteo_id=2 titulo="Sorteo express" ganadores=["8"] premio=7000
+[2026-05-17 04:33:41] [PREMIO_PAGADO] usuario_id=2 sorteo_id=2 monto=7000
+[2026-05-17 04:35:33] [SESION_CERRADA] usuario_id=1 email=admin@azar.com
+[2026-05-17 04:36:00] [SESION_INICIADA] usuario_id=2 email=cliente@azar.com rol=cliente
+[2026-05-17 04:37:11] [SORTEO_CREADO] sorteo_id=3 titulo="Rifa Navideña" tipo=fijo
+[2026-05-17 15:45:01] [SESION_INICIADA] usuario_id=2 email=cliente@azar.com rol=cliente
+[2026-05-17 15:45:49] [SESION_CERRADA] usuario_id=2 email=cliente@azar.com
+[2026-05-17 15:46:03] [SESION_INICIADA] usuario_id=1 email=admin@azar.com rol=admin
+[2026-05-17 15:54:08] [SESION_INICIADA] usuario_id=1 email=admin@azar.com rol=admin
+[2026-05-17 15:55:22] [SESION_INICIADA] usuario_id=1 email=admin@azar.com rol=admin
+[2026-05-17 15:57:23] [SESION_INICIADA] usuario_id=1 email=admin@azar.com rol=admin
+[2026-05-17 16:00:58] [SESION_INICIADA] usuario_id=2 email=cliente@azar.com rol=cliente
+[2026-05-17 16:01:45] [SESION_CERRADA] usuario_id=2 email=cliente@azar.com

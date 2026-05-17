@@ -3,15 +3,47 @@
     "id": 1,
     "titulo": "Sorteo de prueba",
     "tipo_premio": "acumulado",
-    "estado": "activo",
     "descripcion": "Pruebita!!!!",
     "precio_ticket": "5000",
     "total_tickets": 100,
     "cantidad_ganadores": 1,
     "premio_fijo": "",
     "porcentaje_casa": 30,
+    "estado": "cancelado",
     "numeros_ganadores": [],
     "fecha_ejecucion": "2026-05-16 23:28:00",
     "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 2,
+    "titulo": "Sorteo express",
+    "tipo_premio": "acumulado",
+    "descripcion": "si...",
+    "precio_ticket": "1000",
+    "total_tickets": 10,
+    "cantidad_ganadores": 1,
+    "premio_fijo": "",
+    "porcentaje_casa": 30,
+    "estado": "finalizado",
+    "numeros_ganadores": [
+      "8"
+    ],
+    "fecha_ejecucion": "2026-05-16 23:33:00",
+    "insertado": "2026-05-17 04:31:43"
+  },
+  {
+    "id": 3,
+    "titulo": "Rifa Navideña",
+    "tipo_premio": "fijo",
+    "descripcion": "Santa claus.",
+    "precio_ticket": "10000",
+    "total_tickets": 250,
+    "cantidad_ganadores": 1,
+    "premio_fijo": "1000000.00",
+    "porcentaje_casa": 30,
+    "estado": "activo",
+    "numeros_ganadores": [],
+    "fecha_ejecucion": "2026-12-25 19:22:00",
+    "insertado": "2026-05-17 04:37:11"
   }
 ]

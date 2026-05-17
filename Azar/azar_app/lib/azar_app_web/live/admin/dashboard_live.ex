@@ -5,21 +5,21 @@ defmodule AzarAppWeb.Admin.DashboardLive do
 
   use AzarAppWeb, :live_view
   alias AzarApp.Reportes
-
-  @impl true
-  def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteos")
-    end
-
-    datos = Reportes.resumen_completo()
-
-    {:ok,
-     socket
-     |> assign(:page_title, "Dashboard — Centro de Control")
-     |> assign(:datos, datos)
-     |> assign(:tab_activa, "general")}
+@impl true
+def mount(_params, _session, socket) do
+  if connected?(socket) do
+    Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteos")
   end
+
+  datos = Reportes.resumen_completo()
+
+  {:ok,
+   socket
+   |> assign(:page_title, "Dashboard — Centro de Control")
+   |> assign(:datos, datos)
+   |> assign(:tab_activa, "general")
+   |> assign(:mes_vista, Date.utc_today())}
+end
 
   @impl true
   def handle_params(_params, _url, socket) do
@@ -31,6 +31,18 @@ defmodule AzarAppWeb.Admin.DashboardLive do
     {:noreply, assign(socket, :tab_activa, tab)}
   end
 
+  def handle_event("mes_anterior", _, socket) do
+    fecha_actual = socket.assigns.mes_vista
+    nuevo_mes = Date.add(Date.beginning_of_month(fecha_actual), -1)
+    {:noreply, assign(socket, :mes_vista, nuevo_mes)}
+  end
+
+  def handle_event("mes_siguiente", _, socket) do
+    fecha_actual = socket.assigns.mes_vista
+    nuevo_mes = fecha_actual |> Date.end_of_month() |> Date.add(1)
+    {:noreply, assign(socket, :mes_vista, nuevo_mes)}
+  end
+
   @impl true
   def handle_info(:lista_actualizada, socket) do
     {:noreply, assign(socket, :datos, Reportes.resumen_completo())}
@@ -38,7 +50,6 @@ defmodule AzarAppWeb.Admin.DashboardLive do
 
   @impl true
   def handle_info(_, socket), do: {:noreply, socket}
-
 
   defp fmt(nil), do: "0"
   defp fmt(%Decimal{} = d), do: d |> Decimal.round(0) |> Decimal.to_string() |> fmt_miles()
@@ -66,7 +77,10 @@ defmodule AzarAppWeb.Admin.DashboardLive do
   defp color_tipo("fijo"), do: "bg-warning/10 text-warning border-warning/20"
   defp color_tipo(_), do: "bg-info/10 text-info border-info/20"
 
-
+  defp nombre_mes(mes) do
+  ~w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)
+  |> Enum.at(mes - 1)
+end
 
   @impl true
   def render(assigns) do
@@ -746,93 +760,115 @@ defmodule AzarAppWeb.Admin.DashboardLive do
               <% end %>
             </div>
 
-            <%!-- Calendario visual --%>
-            <div class="lg:col-span-3">
-              <div class="bg-base-100/80 p-8 rounded-[2rem] border border-base-200/60 shadow-xl">
-                <% hoy = Date.utc_today() %>
-                <% primer_dia = Date.beginning_of_month(hoy) %>
-                <% dias_en_mes = Date.days_in_month(hoy) %>
-                <% dia_semana_inicio = Date.day_of_week(primer_dia) |> rem(7) %>
-                <%!-- Convertimos fechas de sorteos próximos a un Set de días --%>
-                <% dias_con_sorteo = @datos.proximos_sorteos
-                    |> Enum.filter(fn s ->
-                      fecha = NaiveDateTime.to_date(s.fecha_ejecucion)
-                      fecha.year == hoy.year and fecha.month == hoy.month
-                    end)
-                    |> Enum.map(fn s -> NaiveDateTime.to_date(s.fecha_ejecucion).day end)
-                    |> MapSet.new() %>
+          <%!-- Calendario visual --%>
+    <div class="lg:col-span-3">
+    <div class="bg-base-100/80 p-8 rounded-[2rem] border border-base-200/60 shadow-xl">
+    <% hoy = Date.utc_today() %>
+    <% primer_dia = Date.beginning_of_month(@mes_vista) %>
+    <% dias_en_mes = Date.days_in_month(@mes_vista) %>
+    <% dia_semana_inicio = Date.day_of_week(primer_dia) |> rem(7) %>
+    <%!-- Convertimos fechas de sorteos próximos a un Set de días --%>
+    <% dias_con_sorteo = @datos.proximos_sorteos
+        |> Enum.filter(fn s ->
+          fecha = NaiveDateTime.to_date(s.fecha_ejecucion)
+          fecha.year == @mes_vista.year and fecha.month == @mes_vista.month
+        end)
+        |> Enum.map(fn s -> NaiveDateTime.to_date(s.fecha_ejecucion).day end)
+        |> MapSet.new() %>
 
-                <div class="flex items-center justify-between mb-6">
-                  <h3 class="font-black text-xl italic uppercase tracking-tight">
-                    <%= Calendar.strftime(hoy, "%B %Y") %>
-                  </h3>
-                  <div class="flex items-center gap-3 text-[10px] font-black uppercase">
-                    <span class="flex items-center gap-1">
-                      <span class="size-3 rounded-full bg-primary inline-block"></span> Hoy
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <span class="size-3 rounded-full bg-success inline-block"></span> Sorteo
-                    </span>
-                  </div>
-                </div>
+    <div class="flex items-center justify-between mb-6">
+      <button
+        phx-click="mes_anterior"
+        disabled={@mes_vista.month == 1 and @mes_vista.year == hoy.year}
+        class="size-9 flex items-center justify-center rounded-full border border-base-200/60 bg-base-100 hover:bg-base-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+        aria-label="Mes anterior"
+      >
+        <.icon name="hero-chevron-left" class="size-4" />
+      </button>
 
-                <%!-- Encabezados días --%>
-                <div class="grid grid-cols-7 gap-1 mb-2">
-                  <%= for dia <- ~w(Dom Lun Mar Mié Jue Vie Sáb) do %>
-                    <div class="text-center text-[9px] font-black uppercase tracking-widest text-base-content/40 py-2"><%= dia %></div>
-                  <% end %>
-                </div>
+      <h3 class="font-black text-xl italic uppercase tracking-tight">
+        <%= nombre_mes(@mes_vista.month) %> <%= @mes_vista.year %>
+      </h3>
 
-                <%!-- Grid del calendario --%>
-                <div class="grid grid-cols-7 gap-1">
-                  <%!-- Espacios vacíos al inicio --%>
-                  <%= for _ <- 1..dia_semana_inicio do %>
-                    <div></div>
-                  <% end %>
+      <button
+        phx-click="mes_siguiente"
+        disabled={@mes_vista.month == 12 and @mes_vista.year == hoy.year}
+        class="size-9 flex items-center justify-center rounded-full border border-base-200/60 bg-base-100 hover:bg-base-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+        aria-label="Mes siguiente"
+      >
+        <.icon name="hero-chevron-right" class="size-4" />
+      </button>
+    </div>
 
-                  <%= for dia <- 1..dias_en_mes do %>
-                    <div class={[
-                      "aspect-square flex flex-col items-center justify-center rounded-xl text-sm font-black transition-all cursor-default relative",
-                      cond do
-                        dia == hoy.day -> "bg-primary text-white shadow-lg shadow-primary/30"
-                        MapSet.member?(dias_con_sorteo, dia) -> "bg-success/15 text-success border border-success/30"
-                        true -> "hover:bg-base-200/60 text-base-content/70"
-                      end
-                    ]}>
-                      <%= dia %>
-                      <%= if MapSet.member?(dias_con_sorteo, dia) and dia != hoy.day do %>
-                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 size-1 bg-success rounded-full"></span>
-                      <% end %>
-                    </div>
-                  <% end %>
-                </div>
+    <div class="flex items-center gap-3 text-[10px] font-black uppercase mb-6">
+      <span class="flex items-center gap-1">
+        <span class="size-3 rounded-full bg-primary inline-block"></span> Hoy
+      </span>
+      <span class="flex items-center gap-1">
+        <span class="size-3 rounded-full bg-success inline-block"></span> Sorteo
+      </span>
+    </div>
 
-                <%!-- Leyenda de sorteos del mes --%>
-                <% sorteos_este_mes = Enum.filter(@datos.proximos_sorteos, fn s ->
-                  fecha = NaiveDateTime.to_date(s.fecha_ejecucion)
-                  fecha.year == hoy.year and fecha.month == hoy.month
-                end) %>
+    <%!-- Encabezados días --%>
+    <div class="grid grid-cols-7 gap-1 mb-2">
+      <%= for dia <- ~w(Dom Lun Mar Mié Jue Vie Sáb) do %>
+        <div class="text-center text-[9px] font-black uppercase tracking-widest text-base-content/40 py-2"><%= dia %></div>
+      <% end %>
+    </div>
 
-                <%= if not Enum.empty?(sorteos_este_mes) do %>
-                  <div class="mt-6 pt-5 border-t border-base-200/60">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-base-content/40 mb-3">Sorteos este mes</p>
-                    <div class="space-y-2">
-                      <%= for s <- sorteos_este_mes do %>
-                        <div class="flex items-center gap-3">
-                          <span class="size-6 bg-success/20 text-success rounded-lg flex items-center justify-center text-[10px] font-black shrink-0">
-                            <%= NaiveDateTime.to_date(s.fecha_ejecucion).day %>
-                          </span>
-                          <span class="text-xs font-bold text-base-content/70 flex-1 truncate"><%= s.titulo %></span>
-                          <span class="text-[10px] font-black text-base-content/40">
-                            <%= Calendar.strftime(s.fecha_ejecucion, "%H:%M") %>
-                          </span>
-                        </div>
-                      <% end %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
+    <%!-- Grid del calendario --%>
+    <div class="grid grid-cols-7 gap-1">
+      <%!-- Espacios vacíos al inicio --%>
+      <%= for _ <- 1..dia_semana_inicio//1 do %>
+        <div></div>
+      <% end %>
+
+      <%= for dia <- 1..dias_en_mes do %>
+        <div class={[
+          "aspect-square flex flex-col items-center justify-center rounded-xl text-sm font-black transition-all cursor-default relative",
+          cond do
+            @mes_vista.year == hoy.year and @mes_vista.month == hoy.month and dia == hoy.day ->
+              "bg-primary text-white shadow-lg shadow-primary/30"
+            MapSet.member?(dias_con_sorteo, dia) ->
+              "bg-success/15 text-success border border-success/30"
+            true ->
+              "hover:bg-base-200/60 text-base-content/70"
+          end
+        ]}>
+          <%= dia %>
+          <%= if MapSet.member?(dias_con_sorteo, dia) and not (@mes_vista.year == hoy.year and @mes_vista.month == hoy.month and dia == hoy.day) do %>
+            <span class="absolute bottom-1 left-1/2 -translate-x-1/2 size-1 bg-success rounded-full"></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <%!-- Leyenda de sorteos del mes --%>
+    <% sorteos_este_mes = Enum.filter(@datos.proximos_sorteos, fn s ->
+      fecha = NaiveDateTime.to_date(s.fecha_ejecucion)
+      fecha.year == @mes_vista.year and fecha.month == @mes_vista.month
+    end) %>
+
+    <%= if not Enum.empty?(sorteos_este_mes) do %>
+      <div class="mt-6 pt-5 border-t border-base-200/60">
+        <p class="text-[10px] font-black uppercase tracking-widest text-base-content/40 mb-3">Sorteos este mes</p>
+        <div class="space-y-2">
+          <%= for s <- sorteos_este_mes do %>
+            <div class="flex items-center gap-3">
+              <span class="size-6 bg-success/20 text-success rounded-lg flex items-center justify-center text-[10px] font-black shrink-0">
+                <%= NaiveDateTime.to_date(s.fecha_ejecucion).day %>
+              </span>
+              <span class="text-xs font-bold text-base-content/70 flex-1 truncate"><%= s.titulo %></span>
+              <span class="text-[10px] font-black text-base-content/40">
+                <%= Calendar.strftime(s.fecha_ejecucion, "%H:%M") %>
+              </span>
             </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    </div>
+    </div>
           </div>
 
         <% end %>
