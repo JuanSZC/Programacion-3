@@ -44,6 +44,7 @@ defmodule AzarAppWeb.Router do
     live "/usuarios", Admin.UsuarioLive.Index, :index
     live "/usuarios/:id", Admin.UsuarioLive.Show, :show
     live "/dashboard", Admin.DashboardLive, :index
+    live "/perfil", Admin.PerfilLive, :index
   end
 
   # PANEL DE CLIENTE
