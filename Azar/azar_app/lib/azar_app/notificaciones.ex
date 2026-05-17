@@ -3,11 +3,14 @@ defmodule AzarApp.Notificaciones do
   import Ecto.Query
   alias AzarApp.Repo
   alias AzarApp.Notificaciones.Notificacion
+  alias AzarApp.Mailer.NotificacionEmail
+  alias AzarApp.Cuentas
 
   @doc """
   Breve: crear_notificacion_premio.
   """
-  def crear_notificacion_premio(usuario_id, sorteo, ticket_numero, monto) do
+def crear_notificacion_premio(usuario_id, sorteo, ticket_numero, monto) do
+  result =
     %Notificacion{}
     |> Notificacion.changeset(%{
       usuario_id: usuario_id,
@@ -18,7 +21,24 @@ defmodule AzarApp.Notificaciones do
       leida: false
     })
     |> Repo.insert()
+
+  case result do
+   {:ok, notificacion} ->
+  Task.start(fn ->
+    case Cuentas.obtener_usuario(usuario_id) do
+      {:ok, usuario} ->
+        NotificacionEmail.premio_ganado(usuario, sorteo, ticket_numero, monto)
+      {:error, _} ->
+        :ignore
+    end
+  end)
+
+  {:ok, notificacion}
+
+    error ->
+      error
   end
+end
 
   @doc """
   Breve: pendientes.

@@ -16,7 +16,7 @@ alias AzarApp.Cuentas
 
 # Crear usuario admin
 Cuentas.crear_usuario(%{
-  email: "admin@azar.com",
+  email: "notificaciones.azarapp@gmail.com",
   password: "admin123456",
   nombre: "Administrador Azar",
   rol: "admin",
@@ -26,12 +26,12 @@ Cuentas.crear_usuario(%{
 
 # Crear usuario cliente de prueba
 Cuentas.crear_usuario(%{
-  email: "cliente@azar.com",
+  email: "sebastianzambrano2809@gmail.com",
   password: "cliente123456",
-  nombre: "Juan Pérez",
+  nombre: "Sebastian Zambrano",
   rol: "cliente",
   edad: 28,
   cedula: "9876543210"
 })
 
-IO.puts("✓ Usuarios creados: admin@azar.com y cliente@azar.com")
+IO.puts("✓ Usuarios creados: notificaciones.azarapp@gmail.com y sebastianzambrano2809@gmail.com")

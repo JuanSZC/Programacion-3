@@ -5,6 +5,9 @@ defmodule AzarApp.Sorteos do
   alias AzarApp.Repo
   alias AzarApp.Sorteos.{Sorteo, Ticket}
   alias AzarApp.Cuentas
+  alias AzarApp.Mailer.NotificacionEmail
+
+  @admin_email "sebastianzambrano2809@gmail.com"
 
   @doc """
   Breve: get_sorteo.
@@ -123,6 +126,9 @@ defmodule AzarApp.Sorteos do
           })
           Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo.id}", :ticket_comprado)
           Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
+          Task.start(fn ->
+            NotificacionEmail.ticket_comprado(usuario, sorteo, ticket.numero)
+          end)
           {:ok, ticket}
 
         {:error, _op, razon, _} ->
@@ -228,6 +234,14 @@ defmodule AzarApp.Sorteos do
               premio: premio_por_ganador
             })
             notificar_ganadores(ganadores, sorteo_actualizado, premio_por_ganador)
+            Task.start(fn ->
+              NotificacionEmail.sorteo_ejecutado(
+                @admin_email,
+                sorteo_actualizado,
+                ganadores,
+                premio_por_ganador
+              )
+            end)
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo_actualizado.id}", :sorteo_ejecutado)
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
             {:ok, sorteo_actualizado}
@@ -266,7 +280,6 @@ defmodule AzarApp.Sorteos do
   Breve: verificar_y_cancelar_expirados.
   """
   def verificar_y_cancelar_expirados do
-    # Ajuste de zona horaria para Colombia (UTC-5)
     ahora_colombia = NaiveDateTime.utc_now() |> NaiveDateTime.add(-5, :hour)
     sorteos_vencidos = Repo.all(from s in Sorteo, where: s.estado == "activo" and not is_nil(s.fecha_ejecucion) and s.fecha_ejecucion <= ^ahora_colombia)
 
@@ -304,6 +317,9 @@ defmodule AzarApp.Sorteos do
     end) do
       {:ok, sorteo} ->
         Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_creado, sorteo})
+        Task.start(fn ->
+          NotificacionEmail.sorteo_creado(@admin_email, sorteo)
+        end)
         {:ok, sorteo}
       {:error, error} -> {:error, error}
     end
@@ -313,6 +329,7 @@ defmodule AzarApp.Sorteos do
   Breve: update_sorteo.
   """
   def update_sorteo(s, attrs), do: s |> Sorteo.changeset(attrs) |> Repo.update()
+
   @doc """
   Breve: delete_sorteo.
   """
@@ -328,6 +345,7 @@ defmodule AzarApp.Sorteos do
       error -> error
     end
   end
+
   @doc """
   Breve: change_sorteo.
   """
