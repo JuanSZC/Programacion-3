@@ -7,3 +7,8 @@
 [2026-05-17 16:51:33] [SESION_INICIADA] usuario_id=1 email=notificaciones.azarapp@gmail.com rol=admin
 [2026-05-17 16:51:58] [SESION_INICIADA] usuario_id=2 email=sebastianzambrano2809@gmail.com rol=cliente
 [2026-05-17 16:53:17] [SORTEO_CREADO] sorteo_id=1 titulo="Sorteo de prueba" tipo=fijo
+[2026-05-17 16:59:12] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-17 16:59:18] [SORTEO_ELIMINADO] sorteo_id=1 titulo="Sorteo de prueba"
+[2026-05-17 16:59:44] [SORTEO_CREADO] sorteo_id=2 titulo="Sorteo de prueba" tipo=fijo
+[2026-05-17 17:03:46] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-17 17:04:09] [SORTEO_CREADO] sorteo_id=3 titulo="Sorteo de prueba 2" tipo=acumulado

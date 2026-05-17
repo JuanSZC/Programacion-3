@@ -2,11 +2,11 @@
   {
     "id": 1,
     "ticket_numero": null,
-    "descripcion": "Recarga de saldo",
-    "insertado": "2026-05-17 16:47:12Z",
     "sorteo_id": null,
     "usuario_id": 2,
+    "monto": "10000000",
     "tipo": "recarga",
-    "monto": "10000000"
+    "descripcion": "Recarga de saldo",
+    "insertado": "2026-05-17 16:47:12Z"
   }
 ]

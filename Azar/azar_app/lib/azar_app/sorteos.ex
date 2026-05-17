@@ -315,11 +315,11 @@ defmodule AzarApp.Sorteos do
         {:error, changeset} -> Repo.rollback(changeset)
       end
     end) do
-      {:ok, sorteo} ->
-        Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_creado, sorteo})
-        Task.start(fn ->
-          NotificacionEmail.sorteo_creado(@admin_email, sorteo)
-        end)
+{:ok, sorteo} ->
+  Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_creado, sorteo})
+  result = NotificacionEmail.sorteo_creado(@admin_email, sorteo)
+  IO.inspect(result, label: "RESULTADO EMAIL")
+  {:ok, sorteo}
         {:ok, sorteo}
       {:error, error} -> {:error, error}
     end

@@ -1,32 +1,32 @@
 [
   {
     "id": 1,
-    "insertado": "2026-05-17 16:46:26Z",
-    "email": "sebastianzambrano2809@gmail.com",
-    "nombre": "Administrador Azar",
-    "cedula": "1234567890",
-    "edad": 35,
-    "rol": "admin",
-    "activo": true,
     "saldo_virtual": "0.00",
-    "total_recargado": "0.0",
     "total_gastado": "0.0",
+    "nombre": "Administrador Azar",
+    "email": "sebastianzambrano2809@gmail.com",
+    "cedula": "1234567890",
+    "activo": true,
+    "ultimo_login": "2026-05-17 17:03:46",
+    "rol": "admin",
+    "total_recargado": "0.0",
     "total_ganado": "0.0",
-    "ultimo_login": "2026-05-17 16:51:33"
+    "edad": 35,
+    "insertado": "2026-05-17 16:46:26Z"
   },
   {
     "id": 2,
-    "insertado": "2026-05-17 16:46:26Z",
-    "email": "jusezaca2024@gmail.com",
-    "nombre": "Sebastian Zambrano",
-    "cedula": "9876543210",
-    "edad": 28,
-    "rol": "cliente",
-    "activo": true,
     "saldo_virtual": "10000000.00",
-    "total_recargado": "10000000.0",
     "total_gastado": "0.0",
+    "nombre": "Sebastian Zambrano",
+    "email": "jusezaca2024@gmail.com",
+    "cedula": "9876543210",
+    "activo": true,
+    "ultimo_login": "2026-05-17 16:51:58",
+    "rol": "cliente",
+    "total_recargado": "10000000.0",
     "total_ganado": "0.0",
-    "ultimo_login": "2026-05-17 16:51:58"
+    "edad": 28,
+    "insertado": "2026-05-17 16:46:26Z"
   }
 ]
