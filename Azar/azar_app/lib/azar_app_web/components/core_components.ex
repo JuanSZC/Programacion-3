@@ -121,18 +121,12 @@ defmodule AzarAppWeb.CoreComponents do
     |> input()
   end
 
-  @doc """
-  Breve: input.
-  """
   def input(%{type: "hidden"} = assigns) do
     ~H"""
     <input type="hidden" id={@id} name={@name} value={@value} {@rest} />
     """
   end
 
-  @doc """
-  Breve: input.
-  """
   def input(%{type: "checkbox"} = assigns) do
     assigns = assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value]) end)
     ~H"""
@@ -155,9 +149,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Breve: input.
-  """
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div class="fieldset mb-2 w-full">
@@ -182,9 +173,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Breve: input.
-  """
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div class="fieldset mb-2 w-full">
@@ -205,9 +193,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Breve: input.
-  """
   def input(assigns) do
     ~H"""
     <div class="fieldset mb-2 w-full">

@@ -9,7 +9,7 @@ cls
 :: CONFIGURACION
 :: =====================================================
 
-set "PROYECTO=C:\Users\Sebastian\Documents\Proyecto Final\Programacion-3\Azar\azar_app"
+set "PROYECTO=%~dp0azar_app"
 set "PG_SERVICE=postgresql-x64-18"
 set "APP_PORT=4000"
 set "APP_URL=http://localhost:4000/"

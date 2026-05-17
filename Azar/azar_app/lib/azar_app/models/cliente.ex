@@ -17,10 +17,7 @@ defmodule AzarApp.Cliente do
       {:error, :email_invalido}
     end
   end
-  @doc """
-  Breve: nuevo.
-  """
-  def nuevo(_c, _n, _e, _edad), do: {:error, :datos_invalidos}
 
+  def nuevo(_c, _n, _e, _edad), do: {:error, :datos_invalidos}
 
 end
