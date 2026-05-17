@@ -154,29 +154,56 @@ defmodule AzarApp.Cuentas do
   # LÓGICA FINANCIERA (Uso estricto de Decimal)
   # ==========================================
 
-  def recargar_saldo(usuario, monto) do
-    monto_decimal = Decimal.new("#{monto}")
-    nuevo_saldo = Decimal.add(usuario.saldo_virtual || Decimal.new(0), monto_decimal)
-    nuevo_total_recargado = Decimal.add(usuario.total_recargado || Decimal.new(0), monto_decimal)
+def recargar_saldo(usuario, monto) do
+  monto_d = decimal_seguro(monto)
+  nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
+  nuevo_recargado = Decimal.add(decimal_seguro(usuario.total_recargado), monto_d)
 
-    usuario
-    |> Ecto.Changeset.cast(%{
+  Ecto.Multi.new()
+  |> Ecto.Multi.update(:usuario, Usuario.update_changeset(usuario, %{
       saldo_virtual: nuevo_saldo,
-      total_recargado: nuevo_total_recargado
-    }, [:saldo_virtual, :total_recargado])
-    |> Repo.update()
+      total_recargado: nuevo_recargado
+    }))
+|> Ecto.Multi.insert(:transaccion,
+    AzarApp.Cuentas.Transaccion.changeset(%AzarApp.Cuentas.Transaccion{}, %{
+      usuario_id: usuario.id,
+      tipo: "recarga",
+      monto: monto_d,
+      descripcion: "Recarga de saldo"
+    })
+  )
+  |> Repo.transaction()
+  |> case do
+    {:ok, %{usuario: u}} -> {:ok, u}
+    {:error, _, changeset, _} -> {:error, changeset}
   end
+end
 
-  def registrar_premio(usuario, monto) do
-    monto_decimal = Decimal.new("#{monto}")
+def registrar_premio(usuario, monto, sorteo_id \\ nil) do
+  monto_d = decimal_seguro(monto)
+  nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
+  nuevo_ganado = Decimal.add(decimal_seguro(usuario.total_ganado), monto_d)
 
-    usuario
-    |> Ecto.Changeset.cast(%{
-      saldo_virtual: Decimal.add(usuario.saldo_virtual || Decimal.new(0), monto_decimal),
-      total_ganado: Decimal.add(usuario.total_ganado || Decimal.new(0), monto_decimal)
-    }, [:saldo_virtual, :total_ganado])
-    |> Repo.update()
+  Ecto.Multi.new()
+  |> Ecto.Multi.update(:usuario, Usuario.update_changeset(usuario, %{
+      saldo_virtual: nuevo_saldo,
+      total_ganado: nuevo_ganado
+    }))
+  |> Ecto.Multi.insert(:transaccion,
+    AzarApp.Cuentas.Transaccion.changeset(%AzarApp.Cuentas.Transaccion{}, %{
+      usuario_id: usuario.id,
+      tipo: "premio",
+      monto: monto_d,
+      descripcion: "Premio ganado",
+      sorteo_id: sorteo_id
+    })
+  )
+  |> Repo.transaction()
+  |> case do
+    {:ok, %{usuario: u}} -> {:ok, u}
+    {:error, _, changeset, _} -> {:error, changeset}
   end
+end
 
   # Ajusta saldo previniendo saldos negativos y valores inválidos/exagerados.
   # Normaliza comas decimales, espacios y signos antes del parse.
@@ -279,4 +306,46 @@ defmodule AzarApp.Cuentas do
       es_ganancia: Decimal.compare(rendimiento, 0) != :lt
     }
   end
+
+  def registrar_compra_ticket(usuario_id, sorteo_id, numero, monto) do
+  %AzarApp.Cuentas.Transaccion{}
+  |> AzarApp.Cuentas.Transaccion.changeset(%{
+      usuario_id: usuario_id,
+      tipo: "compra_ticket",
+      monto: decimal_seguro(monto),
+      descripcion: "Compra ticket ##{numero}",
+      sorteo_id: sorteo_id,
+      ticket_numero: to_string(numero)
+    })
+  |> Repo.insert()
+end
+
+# ── NUEVA: registrar devolución ──
+def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
+  %AzarApp.Cuentas.Transaccion{}
+  |> AzarApp.Cuentas.Transaccion.changeset(%{
+      usuario_id: usuario_id,
+      tipo: "devolucion_ticket",
+      monto: decimal_seguro(monto),
+      descripcion: "Devolución ticket ##{numero}",
+      sorteo_id: sorteo_id,
+      ticket_numero: to_string(numero)
+    })
+  |> Repo.insert()
+end
+
+# ── NUEVA: obtener historial de transacciones ──
+def listar_transacciones(usuario_id) do
+  Repo.all(
+    from t in AzarApp.Cuentas.Transaccion,
+    where: t.usuario_id == ^usuario_id,
+    order_by: [desc: t.inserted_at],
+    preload: [:sorteo]
+  )
+end
+
+# helper privado (si no lo tienes ya)
+defp decimal_seguro(nil), do: Decimal.new(0)
+defp decimal_seguro(%Decimal{} = v), do: v
+defp decimal_seguro(v), do: Decimal.new(to_string(v))
 end

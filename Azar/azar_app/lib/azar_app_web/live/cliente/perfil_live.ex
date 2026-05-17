@@ -8,36 +8,38 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
 
-  @impl true
-  def mount(_params, session, socket) do
-    usuario_id = session["usuario_id"]
+ @impl true
+def mount(_params, session, socket) do
+  usuario_id = session["usuario_id"]
 
-    if usuario_id do
-      usuario = Cuentas.obtener_usuario!(usuario_id)
+  if usuario_id do
+    usuario = Cuentas.obtener_usuario!(usuario_id)
+    transacciones = Cuentas.listar_transacciones(usuario_id)
+    tickets_usuario = AzarApp.Sorteos.list_tickets_por_usuario(usuario_id)
 
-      # Suscripción para forzar logout si un admin lo expulsa o desactiva
-      if connected?(socket) do
-        Phoenix.PubSub.subscribe(AzarApp.PubSub, "usuario:#{usuario_id}")
-      end
-
-      # Calculamos el balance inicial con la nueva función robusta
-      balance_info = Cuentas.obtener_balance_personal(usuario)
-
-      {:ok,
-       socket
-       |> assign(usuario: usuario)
-       |> assign(balance: balance_info)
-       |> assign(show_modal: false)
-       |> assign(show_historial_modal: false)
-       |> assign(seccion_activa: "info")
-       |> assign(editando_campo: nil)
-       |> assign(modo_monto: "rapido")
-       |> assign(monto_seleccionado: 20000)
-       |> assign(metodo_pago: "pse")}
-    else
-      {:ok, push_navigate(socket, to: "/login")}
+    if connected?(socket) do
+      Phoenix.PubSub.subscribe(AzarApp.PubSub, "usuario:#{usuario_id}")
     end
+
+    balance_info = Cuentas.obtener_balance_personal(usuario)
+
+    {:ok,
+     socket
+     |> assign(usuario: usuario)
+     |> assign(balance: balance_info)
+     |> assign(transacciones: transacciones)
+     |> assign(tickets_usuario: tickets_usuario)
+     |> assign(show_modal: false)
+     |> assign(show_historial_modal: false)
+     |> assign(seccion_activa: "info")
+     |> assign(editando_campo: nil)
+     |> assign(modo_monto: "rapido")
+     |> assign(monto_seleccionado: 20000)
+     |> assign(metodo_pago: "pse")}
+  else
+    {:ok, push_navigate(socket, to: "/login")}
   end
+end
 
   # ==========================================
   # MANEJO DE MENSAJES (PubSub)
@@ -88,6 +90,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
          socket
          |> assign(usuario: usuario_actualizado, editando_campo: nil)
          |> put_flash(:info, "¡#{String.capitalize(campo)} actualizado!")}
+
       {:error, _mensaje} ->
         {:noreply, put_flash(socket, :error, "Error al actualizar")}
     end
@@ -98,7 +101,13 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
   # ==========================================
 
   def handle_event("abrir_modal", _, socket) do
-    {:noreply, assign(socket, show_modal: true, modo_monto: "rapido", monto_seleccionado: 20000, metodo_pago: "pse")}
+    {:noreply,
+     assign(socket,
+       show_modal: true,
+       modo_monto: "rapido",
+       monto_seleccionado: 20000,
+       metodo_pago: "pse"
+     )}
   end
 
   def handle_event("cerrar_modal", _, socket) do
@@ -115,6 +124,29 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
 
   def handle_event("seleccionar_metodo", %{"metodo" => metodo}, socket) do
     {:noreply, assign(socket, metodo_pago: metodo)}
+  end
+
+  def handle_event("devolver_ticket", %{"ticket_id" => ticket_id}, socket) do
+    usuario = socket.assigns.usuario
+
+    case AzarApp.Sorteos.devolver_ticket(usuario, String.to_integer(ticket_id)) do
+      {:ok, _ticket} ->
+        usuario_actualizado = AzarApp.Cuentas.obtener_usuario!(usuario.id)
+        transacciones = AzarApp.Cuentas.listar_transacciones(usuario.id)
+        tickets_usuario = AzarApp.Sorteos.list_tickets_por_usuario(usuario.id)
+        nuevo_balance = AzarApp.Cuentas.obtener_balance_personal(usuario_actualizado)
+
+        {:noreply,
+         socket
+         |> assign(usuario: usuario_actualizado)
+         |> assign(balance: nuevo_balance)
+         |> assign(transacciones: transacciones)
+         |> assign(tickets_usuario: tickets_usuario)
+         |> put_flash(:info, "✅ Ticket devuelto y saldo reembolsado")}
+
+      {:error, mensaje} ->
+        {:noreply, put_flash(socket, :error, "❌ #{mensaje}")}
+    end
   end
 
   def handle_event("confirmar_recarga", params, socket) do
@@ -146,6 +178,7 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
            |> assign(balance: nuevo_balance)
            |> assign(show_modal: false)
            |> put_flash(:info, "¡Recarga de $#{monto} exitosa vía #{metodo_bonito}!")}
+
         _ ->
           {:noreply, put_flash(socket, :error, "Error al procesar la recarga")}
       end
@@ -224,6 +257,23 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                   class={["w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all duration-300", @seccion_activa == "seguridad" && "bg-base-content text-base-100 shadow-lg shadow-base-content/20", @seccion_activa != "seguridad" && "text-base-content/50 hover:bg-base-200/80 hover:text-base-content"]}>
                   <.icon name="hero-shield-check-solid" class="size-5" /> Seguridad
                 </button>
+                <%!-- Agrega después del botón "Seguridad" en el <ul> del menú --%>
+    <li>
+    <button phx-click="set_seccion" phx-value-sec="historial_tickets"
+    class={["w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all duration-300",
+      @seccion_activa == "historial_tickets" && "bg-info text-info-content shadow-lg shadow-info/30",
+      @seccion_activa != "historial_tickets" && "text-base-content/50 hover:bg-base-200/80 hover:text-base-content"]}>
+    <.icon name="hero-ticket-solid" class="size-5" /> Mis Tickets
+    </button>
+    </li>
+    <li>
+    <button phx-click="set_seccion" phx-value-sec="historial_sorteos"
+    class={["w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all duration-300",
+      @seccion_activa == "historial_sorteos" && "bg-warning text-warning-content shadow-lg shadow-warning/30",
+      @seccion_activa != "historial_sorteos" && "text-base-content/50 hover:bg-base-200/80 hover:text-base-content"]}>
+    <.icon name="hero-trophy-solid" class="size-5" /> Mis Sorteos
+    </button>
+    </li>
               </li>
             </ul>
           </div>
@@ -307,6 +357,211 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
                   <p class="text-[11px] font-black uppercase tracking-widest text-base-content/40 mt-3">Protege tu acceso a la plataforma.</p>
                 </div>
               </div>
+              <%!-- ═══════════════════════════════════ --%>
+    <%!-- SECCIÓN: MIS TICKETS               --%>
+    <%!-- ═══════════════════════════════════ --%>
+    <%= if @seccion_activa == "historial_tickets" do %>
+    <div class="relative bg-base-100/90 backdrop-blur-3xl rounded-[3rem] shadow-2xl border border-base-200/60 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div class="relative p-8 md:p-12 border-b border-base-200/60 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-info/5 to-transparent pointer-events-none"></div>
+      <div class="relative z-10">
+        <h2 class="text-3xl md:text-4xl font-black italic uppercase tracking-tighter">Mis Tickets</h2>
+        <p class="text-[11px] font-black uppercase tracking-widest text-base-content/40 mt-3">
+          Tickets activos y devueltos
+        </p>
+      </div>
+    </div>
+
+    <div class="p-6 md:p-10 space-y-4">
+      <%= if Enum.empty?(@tickets_usuario) do %>
+        <div class="flex flex-col items-center justify-center py-16 text-base-content/30">
+          <.icon name="hero-ticket-solid" class="size-12 mb-3 opacity-20" />
+          <p class="font-black text-[11px] uppercase tracking-widest">Aún no has comprado tickets</p>
+        </div>
+      <% else %>
+        <%= for ticket <- @tickets_usuario do %>
+          <div class={[
+            "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-[2rem] border transition-all",
+            ticket.estado == "vendido" && "bg-base-200/40 border-base-300/40",
+            ticket.estado == "disponible" && "bg-success/5 border-success/20 opacity-50"
+          ]}>
+            <div class="flex items-center gap-4">
+              <div class={[
+                "size-14 rounded-2xl flex items-center justify-center font-black text-xl shadow-inner",
+                ticket.estado == "vendido" && "bg-primary/10 text-primary",
+                ticket.estado == "disponible" && "bg-base-300/50 text-base-content/40"
+              ]}>
+                #<%= ticket.numero %>
+              </div>
+              <div>
+                <p class="font-black text-base-content"><%= ticket.sorteo.titulo %></p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-base-content/40 mt-0.5">
+                  $<%= ticket.sorteo.precio_ticket %> · <%= Calendar.strftime(ticket.inserted_at, "%d/%m/%Y") %>
+                </p>
+                <div class={[
+                  "inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest",
+                  ticket.sorteo.estado == "activo" && "bg-success/10 text-success",
+                  ticket.sorteo.estado == "finalizado" && "bg-base-300/50 text-base-content/40",
+                  ticket.sorteo.estado == "cancelado" && "bg-error/10 text-error"
+                ]}>
+                  Sorteo: <%= ticket.sorteo.estado %>
+                </div>
+              </div>
+            </div>
+
+            <%= if ticket.estado == "vendido" and ticket.sorteo.estado == "activo" do %>
+              <button
+                phx-click="devolver_ticket"
+                phx-value-ticket_id={ticket.id}
+                data-confirm="¿Seguro que quieres devolver el ticket ##{ticket.numero}? Se te reembolsará $#{ticket.sorteo.precio_ticket}."
+                class="btn btn-ghost btn-sm bg-error/5 hover:bg-error/10 text-error border border-error/20 rounded-2xl font-black text-[9px] uppercase tracking-widest gap-2 shrink-0">
+                <.icon name="hero-arrow-uturn-left-solid" class="size-4" />
+                Devolver
+              </button>
+            <% end %>
+
+            <%= if ticket.sorteo.estado == "finalizado" do %>
+              <% es_ganador = ticket.numero in (ticket.sorteo.numeros_ganadores || []) %>
+              <div class={[
+                "px-4 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest shrink-0",
+                es_ganador && "bg-warning/10 text-warning border border-warning/20",
+                not es_ganador && "bg-base-300/30 text-base-content/30 border border-base-300/20"
+              ]}>
+                <%= if es_ganador, do: "🏆 Ganador", else: "Sin suerte" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    </div>
+    <% end %>
+
+    <%!-- ═══════════════════════════════════ --%>
+    <%!-- SECCIÓN: MIS SORTEOS               --%>
+    <%!-- ═══════════════════════════════════ --%>
+    <%= if @seccion_activa == "historial_sorteos" do %>
+    <div class="relative bg-base-100/90 backdrop-blur-3xl rounded-[3rem] shadow-2xl border border-base-200/60 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div class="relative p-8 md:p-12 border-b border-base-200/60 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-warning/5 to-transparent pointer-events-none"></div>
+      <div class="relative z-10">
+        <h2 class="text-3xl md:text-4xl font-black italic uppercase tracking-tighter">Mis Sorteos</h2>
+        <p class="text-[11px] font-black uppercase tracking-widest text-base-content/40 mt-3">
+          Resumen de cada sorteo en que participaste
+        </p>
+      </div>
+    </div>
+
+    <div class="p-6 md:p-10 space-y-6">
+      <%
+        # Agrupa los tickets por sorteo para mostrar un resumen por sorteo
+        sorteos_agrupados =
+          @tickets_usuario
+          |> Enum.group_by(& &1.sorteo_id)
+          |> Enum.map(fn {_id, tickets} ->
+            sorteo = hd(tickets).sorteo
+            tickets_comprados = Enum.filter(tickets, & &1.estado == "vendido")
+            cantidad = length(tickets_comprados)
+            gasto = Decimal.mult(sorteo.precio_ticket, Decimal.new(cantidad))
+            es_ganador = Enum.any?(tickets_comprados, & &1.numero in (sorteo.numeros_ganadores || []))
+            %{sorteo: sorteo, tickets: tickets_comprados, cantidad: cantidad, gasto: gasto, es_ganador: es_ganador}
+          end)
+          |> Enum.sort_by(& &1.sorteo.inserted_at, {:desc, NaiveDateTime})
+      %>
+
+      <%= if Enum.empty?(sorteos_agrupados) do %>
+        <div class="flex flex-col items-center justify-center py-16 text-base-content/30">
+          <.icon name="hero-trophy-solid" class="size-12 mb-3 opacity-20" />
+          <p class="font-black text-[11px] uppercase tracking-widest">No has participado en sorteos aún</p>
+        </div>
+      <% else %>
+        <%= for item <- sorteos_agrupados do %>
+          <div class={[
+            "p-6 rounded-[2.5rem] border transition-all",
+            item.sorteo.estado == "finalizado" && item.es_ganador && "bg-warning/5 border-warning/20",
+            item.sorteo.estado == "finalizado" && not item.es_ganador && "bg-base-200/30 border-base-300/30",
+            item.sorteo.estado == "activo" && "bg-primary/5 border-primary/20",
+            item.sorteo.estado == "cancelado" && "bg-error/5 border-error/20"
+          ]}>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+              <div>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h3 class="font-black text-xl italic"><%= item.sorteo.titulo %></h3>
+                  <div class={[
+                    "px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border",
+                    item.sorteo.estado == "activo" && "bg-success/10 text-success border-success/20",
+                    item.sorteo.estado == "finalizado" && "bg-base-300/30 text-base-content/40 border-base-300/20",
+                    item.sorteo.estado == "cancelado" && "bg-error/10 text-error border-error/20"
+                  ]}>
+                    <%= item.sorteo.estado %>
+                  </div>
+                  <%= if item.sorteo.estado == "finalizado" do %>
+                    <div class={[
+                      "px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border",
+                      item.es_ganador && "bg-warning/10 text-warning border-warning/20",
+                      not item.es_ganador && "bg-base-300/20 text-base-content/30 border-transparent"
+                    ]}>
+                      <%= if item.es_ganador, do: "🏆 Ganaste", else: "Sin premio" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="bg-base-100/50 p-3 rounded-2xl border border-base-200/40">
+                <p class="text-[9px] font-black uppercase tracking-widest text-base-content/40">Tickets</p>
+                <p class="text-2xl font-black italic"><%= item.cantidad %></p>
+              </div>
+              <div class="bg-base-100/50 p-3 rounded-2xl border border-base-200/40">
+                <p class="text-[9px] font-black uppercase tracking-widest text-base-content/40">Invertido</p>
+                <p class="text-2xl font-black italic text-error">-$<%= item.gasto %></p>
+              </div>
+              <%= if item.sorteo.estado == "cancelado" do %>
+                <div class="bg-info/5 p-3 rounded-2xl border border-info/20 col-span-2">
+                  <p class="text-[9px] font-black uppercase tracking-widest text-info/60">Reembolsado</p>
+                  <p class="text-2xl font-black italic text-info">+$<%= item.gasto %></p>
+                </div>
+              <% end %>
+              <%= if item.sorteo.estado == "finalizado" do %>
+                <%
+                  trans_premios = Enum.filter(@transacciones, fn t ->
+                    t.tipo == "premio" and t.sorteo_id == item.sorteo.id
+                  end)
+                  total_premio = Enum.reduce(trans_premios, Decimal.new(0), fn t, acc ->
+                    Decimal.add(acc, t.monto)
+                  end)
+                %>
+                <div class={[
+                  "p-3 rounded-2xl border col-span-2 md:col-span-2",
+                  item.es_ganador && "bg-warning/5 border-warning/20",
+                  not item.es_ganador && "bg-base-200/20 border-transparent"
+                ]}>
+                  <p class="text-[9px] font-black uppercase tracking-widest text-base-content/40">Premio recibido</p>
+                  <p class={["text-2xl font-black italic", item.es_ganador && "text-warning", not item.es_ganador && "text-base-content/20"]}>
+                    <%= if item.es_ganador, do: "+$#{total_premio}", else: "$0" %>
+                  </p>
+                </div>
+              <% end %>
+            </div>
+
+        <%!-- Numeros jugados --%>            <div class="mt-4 flex flex-wrap gap-2">
+              <%= for t <- item.tickets do %>
+                <span class={[
+                  "inline-flex items-center justify-center size-10 rounded-xl font-black text-sm border",
+                  t.numero in (item.sorteo.numeros_ganadores || []) && "bg-warning text-warning-content border-warning shadow-md",
+                  t.numero not in (item.sorteo.numeros_ganadores || []) && "bg-base-200/60 text-base-content/50 border-base-300/30"
+                ]}>
+                  <%= t.numero %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    </div>
+    <% end %>
 
               <div class="p-6 md:p-10">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-base-200/50 border border-base-300/50 p-8 rounded-[2.5rem] shadow-inner gap-6">

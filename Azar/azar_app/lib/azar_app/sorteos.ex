@@ -40,54 +40,90 @@ defmodule AzarApp.Sorteos do
 
   # Compra segura usando transacciones y bloqueo de fila (FOR UPDATE)
   def comprar_ticket(usuario, sorteo, numero_ticket) do
-    if sorteo.estado != "activo" do
-      {:error, "Este sorteo ya no acepta compras"}
-    else
-      Ecto.Multi.new()
-      |> Ecto.Multi.run(:usuario, fn repo, _ ->
-        case repo.one(from u in Cuentas.Usuario, where: u.id == ^usuario.id, lock: "FOR UPDATE") do
-          nil -> {:error, "Usuario no encontrado"}
-          u -> {:ok, u}
-        end
-      end)
-      |> Ecto.Multi.run(:ticket, fn repo, _ ->
-        query = from t in Ticket,
-          where: t.sorteo_id == ^sorteo.id and t.numero == ^to_string(numero_ticket) and t.estado == "disponible",
+  if sorteo.estado != "activo" do
+    {:error, "Este sorteo ya no acepta compras"}
+  else
+    Ecto.Multi.new()
+    |> Ecto.Multi.run(:usuario, fn repo, _ ->
+      case repo.one(
+             from u in Cuentas.Usuario,
+             where: u.id == ^usuario.id,
+             lock: "FOR UPDATE"
+           ) do
+        nil -> {:error, "Usuario no encontrado"}
+        u -> {:ok, u}
+      end
+    end)
+    |> Ecto.Multi.run(:ticket, fn repo, _ ->
+      query =
+        from t in Ticket,
+          where:
+            t.sorteo_id == ^sorteo.id and
+              t.numero == ^to_string(numero_ticket) and
+              t.estado == "disponible",
           lock: "FOR UPDATE"
 
-        case repo.one(query) do
-          nil -> {:error, "El ticket #{numero_ticket} ya fue vendido o no existe"}
-          t -> {:ok, t}
-        end
-      end)
-      |> Ecto.Multi.run(:cobro, fn _repo, %{usuario: u} ->
-        precio = decimal_seguro(sorteo.precio_ticket)
-        saldo_actual = decimal_seguro(u.saldo_virtual)
-
-        if Decimal.compare(saldo_actual, precio) in [:gt, :eq] do
-          nuevo_saldo = Decimal.sub(saldo_actual, precio)
-          nuevo_gastado = Decimal.add(decimal_seguro(u.total_gastado), precio)
-
-          Cuentas.actualizar_usuario(u, %{saldo_virtual: nuevo_saldo, total_gastado: nuevo_gastado})
-        else
-          {:error, "Saldo insuficiente. Necesitas $#{precio}"}
-        end
-      end)
-      |> Ecto.Multi.run(:asignar_ticket, fn repo, %{ticket: t, usuario: u} ->
-        repo.update(Ticket.changeset(t, %{usuario_id: u.id, estado: "vendido"}))
-      end)
-      |> Repo.transaction()
-      |> case do
-        {:ok, %{asignar_ticket: ticket}} ->
-          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo.id}", :ticket_comprado)
-          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
-          {:ok, ticket}
-
-        {:error, _op, razon, _} ->
-          {:error, razon}
+      case repo.one(query) do
+        nil -> {:error, "El ticket #{numero_ticket} ya fue vendido o no existe"}
+        t -> {:ok, t}
       end
+    end)
+    |> Ecto.Multi.run(:cobro, fn _repo, %{usuario: u} ->
+      precio = decimal_seguro(sorteo.precio_ticket)
+      saldo_actual = decimal_seguro(u.saldo_virtual)
+
+      if Decimal.compare(saldo_actual, precio) in [:gt, :eq] do
+        nuevo_saldo = Decimal.sub(saldo_actual, precio)
+
+        nuevo_gastado =
+          Decimal.add(decimal_seguro(u.total_gastado), precio)
+
+        Cuentas.actualizar_usuario(u, %{
+          saldo_virtual: nuevo_saldo,
+          total_gastado: nuevo_gastado
+        })
+      else
+        {:error, "Saldo insuficiente. Necesitas $#{precio}"}
+      end
+    end)
+    |> Ecto.Multi.run(:asignar_ticket, fn repo, %{ticket: t, usuario: u} ->
+      repo.update(
+        Ticket.changeset(t, %{
+          usuario_id: u.id,
+          estado: "vendido"
+        })
+      )
+    end)
+    |> Ecto.Multi.run(:registrar_transaccion, fn _repo, %{usuario: u, ticket: t} ->
+      AzarApp.Cuentas.registrar_compra_ticket(
+        u.id,
+        sorteo.id,
+        t.numero,
+        sorteo.precio_ticket
+      )
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{asignar_ticket: ticket}} ->
+        Phoenix.PubSub.broadcast(
+          AzarApp.PubSub,
+          "sorteo:#{sorteo.id}",
+          :ticket_comprado
+        )
+
+        Phoenix.PubSub.broadcast(
+          AzarApp.PubSub,
+          "sorteos",
+          :lista_actualizada
+        )
+
+        {:ok, ticket}
+
+      {:error, _op, razon, _} ->
+        {:error, razon}
     end
   end
+end
 
   def list_tickets_por_usuario(usuario_id) do
     Repo.all(from t in Ticket, where: t.usuario_id == ^usuario_id, preload: [:sorteo], order_by: [desc: t.inserted_at])
@@ -268,6 +304,47 @@ defmodule AzarApp.Sorteos do
     end)
   end
 
+  def devolver_ticket(usuario, ticket_id) do
+  ticket = Repo.get!(Ticket, ticket_id) |> Repo.preload(:sorteo)
+
+  cond do
+    ticket.usuario_id != usuario.id ->
+      {:error, "Este ticket no te pertenece"}
+
+    ticket.estado != "vendido" ->
+      {:error, "Este ticket no está vendido"}
+
+    ticket.sorteo.estado != "activo" ->
+      {:error, "No se puede devolver: el sorteo ya fue #{ticket.sorteo.estado}"}
+
+    true ->
+      precio = decimal_seguro(ticket.sorteo.precio_ticket)
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:ticket, Ticket.changeset(ticket, %{estado: "disponible", usuario_id: nil}))
+      |> Ecto.Multi.run(:reembolso, fn _repo, _ ->
+          usuario_fresco = Cuentas.obtener_usuario!(usuario.id)
+          nuevo_saldo   = Decimal.add(decimal_seguro(usuario_fresco.saldo_virtual), precio)
+          nuevo_gastado = Decimal.sub(decimal_seguro(usuario_fresco.total_gastado), precio)
+
+          Cuentas.actualizar_usuario(usuario_fresco, %{
+            saldo_virtual: nuevo_saldo,
+            total_gastado: nuevo_gastado
+          })
+        end)
+      |> Ecto.Multi.run(:transaccion, fn _repo, _ ->
+          Cuentas.registrar_devolucion_ticket(usuario.id, ticket.sorteo_id, ticket.numero, precio)
+        end)
+      |> Repo.transaction()
+      |> case do
+          {:ok, _} ->
+            Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{ticket.sorteo_id}", :ticket_comprado)
+            {:ok, ticket}
+          {:error, _, razon, _} -> {:error, razon}
+        end
+  end
+end
+
   # Garantiza que el valor devuelto sea siempre una estructura Decimal
   defp decimal_seguro(nil), do: Decimal.new(0)
   defp decimal_seguro(%Decimal{} = val), do: val
@@ -275,4 +352,6 @@ defmodule AzarApp.Sorteos do
 
   defp calcular_premio_dividido(total, cantidad) when cantidad > 1, do: Decimal.div(total, Decimal.new(cantidad)) |> Decimal.round(0)
   defp calcular_premio_dividido(total, _), do: total
+
+
 end
