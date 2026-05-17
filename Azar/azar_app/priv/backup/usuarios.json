@@ -1,32 +1,32 @@
 [
   {
     "id": 1,
-    "saldo_virtual": "0.00",
-    "total_gastado": "0.0",
-    "nombre": "Administrador Azar",
+    "insertado": "2026-05-17 16:46:26Z",
     "email": "sebastianzambrano2809@gmail.com",
+    "nombre": "Administrador Azar",
     "cedula": "1234567890",
-    "activo": true,
-    "ultimo_login": "2026-05-17 17:03:46",
-    "rol": "admin",
-    "total_recargado": "0.0",
-    "total_ganado": "0.0",
     "edad": 35,
-    "insertado": "2026-05-17 16:46:26Z"
+    "rol": "admin",
+    "activo": true,
+    "saldo_virtual": "0.00",
+    "total_recargado": "0.0",
+    "total_gastado": "0.0",
+    "total_ganado": "0.0",
+    "ultimo_login": "2026-05-17 17:11:26"
   },
   {
     "id": 2,
-    "saldo_virtual": "10000000.00",
-    "total_gastado": "0.0",
-    "nombre": "Sebastian Zambrano",
+    "insertado": "2026-05-17 16:46:26Z",
     "email": "jusezaca2024@gmail.com",
+    "nombre": "Sebastian Zambrano",
     "cedula": "9876543210",
-    "activo": true,
-    "ultimo_login": "2026-05-17 16:51:58",
-    "rol": "cliente",
-    "total_recargado": "10000000.0",
-    "total_ganado": "0.0",
     "edad": 28,
-    "insertado": "2026-05-17 16:46:26Z"
+    "rol": "cliente",
+    "activo": true,
+    "saldo_virtual": "9999940.00",
+    "total_recargado": "10000000.0",
+    "total_gastado": "60.0",
+    "total_ganado": "0.0",
+    "ultimo_login": "2026-05-17 17:12:44"
   }
 ]

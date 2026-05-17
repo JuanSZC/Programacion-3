@@ -11,10 +11,10 @@ config :azar_app, AzarApp.Mailer,
   adapter: Swoosh.Adapters.SMTP,
   relay: "smtp.gmail.com",
   port: 587,
-  username: "notificaciones.azarapp@gmail.com",
-  password: "buzo iljd noda bkbk",
-  tls: :always,
-  auth: :always
+  username: System.get_env("SMTP_USER") || "notificaciones.azarapp@gmail.com",
+password: System.get_env("SMTP_PASS") || "buzo iljd noda bkbk",  tls: :always,
+  auth: :always,
+  tls_options: [verify: :verify_none]
 
 if config_env() == :prod do
   database_url =
@@ -48,13 +48,4 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0, 0, 0, 0, 0}
     ],
     secret_key_base: secret_key_base
-
-  config :azar_app, AzarApp.Mailer,
-    adapter: Swoosh.Adapters.SMTP,
-    relay: "smtp.gmail.com",
-    port: 587,
-    username: "notificaciones.azarapp@gmail.com",
-    password: "buzo iljd noda bkbk",
-    tls: :always,
-    auth: :always
 end

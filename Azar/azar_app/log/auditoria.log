@@ -12,3 +12,12 @@
 [2026-05-17 16:59:44] [SORTEO_CREADO] sorteo_id=2 titulo="Sorteo de prueba" tipo=fijo
 [2026-05-17 17:03:46] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
 [2026-05-17 17:04:09] [SORTEO_CREADO] sorteo_id=3 titulo="Sorteo de prueba 2" tipo=acumulado
+[2026-05-17 17:11:26] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-17 17:11:50] [SORTEO_CREADO] sorteo_id=4 titulo="Sorteo de prueba3" tipo=acumulado
+[2026-05-17 17:12:44] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-17 17:12:58] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#6 monto=10
+[2026-05-17 17:12:58] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#5 monto=10
+[2026-05-17 17:12:58] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#4 monto=10
+[2026-05-17 17:12:58] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#3 monto=10
+[2026-05-17 17:12:58] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#2 monto=10
+[2026-05-17 17:12:58] [TICKET_COMPRADO] usuario_id=2 sorteo_id=2 ticket=#1 monto=10
