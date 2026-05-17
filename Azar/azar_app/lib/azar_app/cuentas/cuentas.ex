@@ -496,15 +496,13 @@ def limpiar_sistema_completo() do
     {:ok, resultado} ->
       File.rm("log/auditoria.log")
 
+      AzarApp.Backup.limpiar_todo()
+
       AzarApp.Auditoria.log(:sistema_limpiado, %{
         tickets: resultado.tickets |> elem(0),
         sorteos: resultado.sorteos |> elem(0),
         usuarios: resultado.usuarios |> elem(0)
       })
-      {:ok, resultado} ->
-  AzarApp.Backup.limpiar_todo()   # vacía los JSON
-  AzarApp.AuditoriaJSON.limpiar()
-  {:ok, resultado}
 
       {:ok, resultado}
 
