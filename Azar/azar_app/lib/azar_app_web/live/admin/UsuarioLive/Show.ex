@@ -6,7 +6,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    # Protección total: Si el ID no existe, redirige sin explotar.
     case ErrorHandler.safe_get(fn -> Cuentas.obtener_usuario!(id) end) do
       {:ok, usuario} ->
         tickets = Sorteos.list_tickets_por_usuario(usuario.id)
@@ -28,7 +27,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
 
   @impl true
   def handle_event("toggle_activo", _, socket) do
-    # Capturamos posible error si intentan desactivar al último admin
     case Cuentas.toggle_activo(socket.assigns.usuario) do
       {:ok, usuario} ->
         if not usuario.activo do
@@ -49,7 +47,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
   def handle_event("eliminar_usuario", _, socket) do
     usuario = socket.assigns.usuario
 
-    # Delegamos toda la lógica de validación al Contexto
     case Cuentas.eliminar_usuario(usuario) do
       {:ok, _} ->
         Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
@@ -87,8 +84,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
   def handle_event("ajustar_saldo", %{"monto" => monto_str, "operacion" => op}, socket) do
     usuario = socket.assigns.usuario
 
-    # Normalizamos el valor de la cadena para pasar el signo correcto al contexto financiero.
-    # La limpieza profunda (comas, espacios, caracteres inválidos) ocurre en el contexto.
     monto_formateado =
       if op == "restar" do
         "-" <> String.trim(monto_str)
@@ -96,7 +91,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
         String.trim(monto_str)
       end
 
-    # Invocamos la función del contexto que ya contiene todas las validaciones y límites
     case Cuentas.ajustar_saldo_admin(usuario, monto_formateado) do
       {:ok, usuario_actualizado} ->
         Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario_actualizado.id}", :ticket_comprado)

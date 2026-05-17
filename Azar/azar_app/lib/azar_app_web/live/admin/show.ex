@@ -3,12 +3,10 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
   alias AzarApp.Sorteos
   alias AzarApp.ErrorHandler
 
-  # MOUNT
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteo:#{id}")
 
-    # Protección total: Evitamos el crash si el ID del sorteo no existe
     case ErrorHandler.safe_get(fn -> Sorteos.get_sorteo_con_tickets!(id) end) do
       {:ok, sorteo} ->
         {:ok,
@@ -39,7 +37,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
     |> assign(:tickets_vendidos, tickets_vendidos)
   end
 
-  # UI
   @impl true
   def render(assigns) do
     ~H"""
@@ -158,7 +155,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
     """
   end
 
-  # EVENTS
   @impl true
   def handle_event("show_ticket", %{"id" => ticket_id}, socket) do
     ticket = Enum.find(socket.assigns.sorteo.tickets, fn t -> t.id == String.to_integer(ticket_id) end)
@@ -170,7 +166,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_event("jugar_ahora", _, socket) do
-    # Capturamos el posible error si la lógica de negocio lo impide
     case Sorteos.realizar_sorteo!(socket.assigns.sorteo) do
       {:ok, _sorteo_actualizado} ->
         {:noreply, put_flash(socket, :info, "Sorteo realizado con éxito")}
@@ -181,7 +176,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_event("cancelar_sorteo", _, socket) do
-    # Capturamos la lógica de cancelación (asumiendo que Sorteos.cancelar_sorteo maneja los reembolsos)
     case Sorteos.cancelar_sorteo(socket.assigns.sorteo) do
       {:ok, _sorteo_cancelado} ->
         {:noreply,
@@ -194,7 +188,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
     end
   end
 
-  # PUBSUB / INFO
   @impl true
   def handle_info(:ticket_comprado, socket) do
     sorteo_actualizado = Sorteos.get_sorteo_con_tickets!(socket.assigns.sorteo.id)
@@ -218,14 +211,12 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_info(:sorteo_cancelado, socket) do
-    # En caso de que se cancele desde otro lado y queramos actualizar en tiempo real
     {:noreply,
      socket
      |> put_flash(:warning, "Este sorteo ha sido cancelado.")
      |> push_navigate(to: ~p"/admin/sorteos")}
   end
 
-  # HELPERS
   defp update_selected_ticket(socket, sorteo) do
     if socket.assigns.selected_ticket do
       ticket_actualizado = Enum.find(sorteo.tickets, &(&1.id == socket.assigns.selected_ticket.id))

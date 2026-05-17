@@ -15,7 +15,6 @@ defmodule AzarApp.Core.SorteoSupervisor do
     DynamicSupervisor.start_child(__MODULE__, spec)
   end
 
-  # Función segura para levantar sorteos (ignorando los archivos de clientes)
   def restaurar_sorteos do
     if File.exists?("priv/data") do
       File.ls!("priv/data")

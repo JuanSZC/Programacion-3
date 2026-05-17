@@ -1,23 +1,11 @@
 defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
-  @moduledoc """
-  LiveView encargado de mostrar los detalles de un sorteo específico para el cliente.
-
-  Permite a los usuarios ver el estado de los tickets en tiempo real, alternar
-  entre selección individual o múltiple, y realizar la compra interactuando con
-  el sistema de saldo y notificando a otros clientes vía PubSub.
-  """
+  @moduledoc false
 
   use AzarAppWeb, :live_view
   alias AzarApp.Sorteos
   alias AzarApp.Cuentas
   alias Phoenix.PubSub
 
-  @doc """
-  Inicializa el LiveView.
-
-  Obtiene el usuario de la sesión, valida su existencia y lo suscribe a los canales
-  de PubSub necesarios para recibir actualizaciones en tiempo real del sorteo y de su cuenta.
-  """
   @impl true
   def mount(%{"id" => id}, session, socket) do
     usuario_id = session["usuario_id"]
@@ -42,17 +30,7 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
     end
   end
 
-  # ==========================================
-  # MANEJO DE EVENTOS (INTERACCIÓN DEL USUARIO)
-  # ==========================================
 
-  @doc """
-  Maneja los eventos de interacción del usuario en la interfaz del sorteo.
-
-  * `"toggle_multi"`: Alterna el modo de selección de tickets entre individual y múltiple.
-  * `"show_ticket"` (modo individual): Selecciona un ticket y hace un scroll suave hacia el panel de compra.
-  * `"show_ticket"` (modo múltiple): Agrega o elimina el ticket de la lista de selecciones.
-  """
   @impl true
   def handle_event("toggle_multi", _, socket) do
     {:noreply,
@@ -156,9 +134,6 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
     end
   end
 
-  # ==========================================
-  # MANEJO DE MENSAJES EN TIEMPO REAL (PUBSUB)
-  # ==========================================
 
   @impl true
   def handle_info(:forzar_logout, socket) do
@@ -183,7 +158,6 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
      |> assign(tickets_seleccionados: [])}
   end
 
-  @doc "Notifica al usuario y actualiza la vista si un administrador ejecuta el sorteo."
   @impl true
   def handle_info(:sorteo_ejecutado, socket) do
     sorteo_actualizado = Sorteos.get_sorteo_con_tickets!(socket.assigns.sorteo.id)
@@ -196,9 +170,6 @@ defmodule AzarAppWeb.Cliente.SorteoDetalleLive do
      |> put_flash(:info, "🏆 ¡El sorteo ha sido ejecutado!")}
   end
 
-  # ==========================================
-  # RENDERIZADO DE LA VISTA
-  # ==========================================
 
   @impl true
   def render(assigns) do

@@ -6,9 +6,6 @@ defmodule AzarApp.Sorteos do
   alias AzarApp.Sorteos.{Sorteo, Ticket}
   alias AzarApp.Cuentas
 
-  # ==========================================
-  # LECTURA DE SORTEOS
-  # ==========================================
 
   def get_sorteo!(id), do: Repo.get!(Sorteo, id) |> Repo.preload([:tickets])
 
@@ -34,11 +31,7 @@ defmodule AzarApp.Sorteos do
     Repo.all(from s in Sorteo, where: s.estado == "activo")
   end
 
-  # ==========================================
-  # GESTIÓN DE TICKETS Y COMPRAS
-  # ==========================================
 
-  # Compra segura usando transacciones y bloqueo de fila (FOR UPDATE)
   def comprar_ticket(usuario, sorteo, numero_ticket) do
   if sorteo.estado != "activo" do
     {:error, "Este sorteo ya no acepta compras"}
@@ -135,9 +128,6 @@ end
     Repo.all(from t in Ticket, where: t.usuario_id == ^usuario_id, preload: [:sorteo], order_by: [desc: t.inserted_at])
   end
 
-  # ==========================================
-  # LÓGICA DE CASINO Y SORTEOS
-  # ==========================================
 
   def recaudo_actual(sorteo) do
     vendidos = tickets_vendidos_count(sorteo)
@@ -186,9 +176,6 @@ end
     end
   end
 
-  # ==========================================
-  # EJECUCIÓN Y CANCELACIÓN DE SORTEOS
-  # ==========================================
 
   def realizar_sorteo!(sorteo) do
     cond do
@@ -260,9 +247,6 @@ end
     {:ok, length(sorteos_vencidos)}
   end
 
-  # ==========================================
-  # CRUD BÁSICO
-  # ==========================================
 
   def create_sorteo(attrs \\ %{}) do
     case Repo.transaction(fn ->
@@ -305,9 +289,6 @@ end
   end
   def change_sorteo(s, attrs \\ %{}), do: Sorteo.changeset(s, attrs)
 
-  # ==========================================
-  # HELPERS PRIVADOS
-  # ==========================================
 
   defp pagar_ganadores_multi(multi, ganadores, premio_por_ganador) do
     Enum.reduce(ganadores, multi, fn ticket, acc ->
@@ -389,7 +370,6 @@ end
   end
 end
 
-  # Garantiza que el valor devuelto sea siempre una estructura Decimal
   defp decimal_seguro(nil), do: Decimal.new(0)
   defp decimal_seguro(%Decimal{} = val), do: val
   defp decimal_seguro(val) when is_binary(val) or is_integer(val) or is_float(val), do: Decimal.new(to_string(val))

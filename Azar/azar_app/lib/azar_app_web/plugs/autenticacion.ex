@@ -1,7 +1,5 @@
 defmodule AzarAppWeb.Plugs.Autenticacion do
-  @moduledoc """
-  Agrupa los plugs de seguridad para la aplicación Azar.
-  """
+  @moduledoc false
 end
 
 defmodule AzarAppWeb.Plugs.CargarUsuario do
@@ -23,7 +21,6 @@ defmodule AzarAppWeb.Plugs.CargarUsuario do
         nil
       end
 
-    # Asignamos :usuario_actual para que esté disponible en layouts y LiveViews
     assign(conn, :usuario_actual, usuario)
   end
 end

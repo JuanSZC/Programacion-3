@@ -1,12 +1,9 @@
 defmodule AzarApp.Notificaciones do
-  @moduledoc """
-  Gestiona las notificaciones de premio para los ganadores de sorteos.
-  """
+  @moduledoc false
   import Ecto.Query
   alias AzarApp.Repo
   alias AzarApp.Notificaciones.Notificacion
 
-  @doc "Crea una notificación de premio para un ganador."
   def crear_notificacion_premio(usuario_id, sorteo, ticket_numero, monto) do
     %Notificacion{}
     |> Notificacion.changeset(%{
@@ -20,7 +17,6 @@ defmodule AzarApp.Notificaciones do
     |> Repo.insert()
   end
 
-  @doc "Devuelve todas las notificaciones no leídas de un usuario, con el sorteo precargado."
   def pendientes(usuario_id) do
     Notificacion
     |> where([n], n.usuario_id == ^usuario_id and n.leida == false)
@@ -29,7 +25,6 @@ defmodule AzarApp.Notificaciones do
     |> Repo.all()
   end
 
-  @doc "Marca una notificación específica como leída."
   def marcar_como_leida(notificacion_id) do
     case Repo.get(Notificacion, notificacion_id) do
       nil -> {:error, :not_found}

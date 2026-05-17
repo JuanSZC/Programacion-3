@@ -166,7 +166,6 @@ def buscar_por_id(lista_sorteos, id) do
 
 end
 
-#Sorteo?
 def premios_entregados(sorteo) do
 
   Enum.filter(sorteo.premios, fn premio ->
@@ -174,7 +173,6 @@ def premios_entregados(sorteo) do
   end)
 
 end
-#Sorteo?
 def nombres_ganadores(sorteo, clientes) do
 
   premios_entregados(sorteo)
@@ -194,7 +192,6 @@ def nombres_ganadores(sorteo, clientes) do
 
 end
 
-#Sorteo?
 def dinero_recolectado(sorteo) do
   sorteo.pozo_acumulado
 end
@@ -211,7 +208,6 @@ def total_premios_entregados(sorteo) do
 end
 
 
-#Sorteo?
 def ganancias_o_perdidas(sorteo) do
 
   dinero_recolectado(sorteo) -

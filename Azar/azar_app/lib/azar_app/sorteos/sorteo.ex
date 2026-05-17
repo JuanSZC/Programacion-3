@@ -51,9 +51,7 @@ defmodule AzarApp.Sorteos.Sorteo do
     |> validate_porcentaje_casa()
   end
 
-  # --- VALIDACIONES PRIVADAS ---
 
-  # La fecha del sorteo no puede ser en el pasado
   defp validate_fecha_futura(changeset) do
     case get_change(changeset, :fecha_ejecucion) do
       nil ->
@@ -68,7 +66,6 @@ defmodule AzarApp.Sorteos.Sorteo do
     end
   end
 
-  # La cantidad de ganadores no puede superar el total de tickets
   defp validate_ganadores_vs_tickets(changeset) do
     ganadores = get_field(changeset, :cantidad_ganadores)
     tickets = get_field(changeset, :total_tickets)
@@ -81,10 +78,6 @@ defmodule AzarApp.Sorteos.Sorteo do
     end
   end
 
-  # Reglas específicas del modelo FIJO:
-  # 1. El premio fijo es obligatorio y > 0
-  # 2. El recaudo máximo (tickets * precio) debe ser al menos el DOBLE del premio fijo
-  #    para garantizar rentabilidad mínima a la casa.
   defp validate_tipo_fijo(changeset) do
     if get_field(changeset, :tipo_premio) == "fijo" do
       changeset
@@ -124,7 +117,6 @@ defmodule AzarApp.Sorteos.Sorteo do
     end
   end
 
-  # El porcentaje de la casa en modo acumulado debe ser entre 1 y 99
   defp validate_porcentaje_casa(changeset) do
     if get_field(changeset, :tipo_premio) == "acumulado" do
       changeset

@@ -5,14 +5,9 @@ defmodule AzarApp.Cuentas do
   alias AzarApp.Cuentas.Usuario
   import Ecto.Query, warn: false
 
-  # Límite máximo permitido para una sola transacción de ajuste (Evita desbordes numéricos)
   @limite_max_ajuste Decimal.new(10_000_000)
 
-  # ==========================================
-  # AUTENTICACIÓN
-  # ==========================================
 
-  # Verifica credenciales y actualiza último login
   def autenticar_usuario(email, password) do
     usuario = obtener_usuario_por_email(email)
 
@@ -33,11 +28,7 @@ defmodule AzarApp.Cuentas do
     |> Repo.update()
   end
 
-  # ==========================================
-  # CONSULTAS DE LECTURA
-  # ==========================================
 
-  # Obtiene usuario de forma segura (tupla)
   def obtener_usuario(id) do
     case Repo.get(Usuario, id) do
       nil -> {:error, :not_found}
@@ -58,7 +49,6 @@ defmodule AzarApp.Cuentas do
     |> Repo.all()
   end
 
-  # Búsqueda parcial case-insensitive
   def buscar_usuarios(query) do
     q = "%#{String.downcase(query)}%"
 
@@ -70,9 +60,6 @@ defmodule AzarApp.Cuentas do
     |> Repo.all()
   end
 
-  # ==========================================
-  # GESTIÓN DE USUARIOS
-  # ==========================================
 
  def crear_usuario(attrs \\ %{}) do
   case %Usuario{}
@@ -122,7 +109,6 @@ end
     Repo.update(changeset)
   end
 
-  # Activa/inactiva previniendo dejar el sistema sin admins
   def toggle_activo(%Usuario{} = usuario) do
     if usuario.rol == "admin" && usuario.activo do
       admins_activos = Repo.one(from u in Usuario, where: u.rol == "admin" and u.activo == true, select: count(u.id))
@@ -169,7 +155,6 @@ end
     Repo.exists?(query)
   end
 
-  # Elimina validando rol y tickets
   def eliminar_usuario(%Usuario{} = usuario) do
     cond do
       usuario.rol == "admin" ->
@@ -187,9 +172,6 @@ end
     end
   end
 
-  # ==========================================
-  # LÓGICA FINANCIERA (Uso estricto de Decimal)
-  # ==========================================
 
 def recargar_saldo(usuario, monto) do
   monto_d = decimal_seguro(monto)
@@ -250,19 +232,14 @@ def registrar_premio(usuario, monto, sorteo_id \\ nil) do
   end
 end
 
-  # Ajusta saldo previniendo saldos negativos y valores inválidos/exagerados.
-  # Normaliza comas decimales, espacios y signos antes del parse.
   def ajustar_saldo_admin(%Usuario{} = usuario, monto) do
     try do
-      # Limpieza defensiva: espacios, comas como separador decimal, caracteres no numéricos
-      # Se preserva el signo negativo al inicio si existe (viene del LiveView para "restar")
       monto_limpio =
         "#{monto}"
         |> String.trim()
         |> String.replace(",", ".")          # "1,500" → "1.500"
         |> String.replace(~r/[^\d.\-]/, "")  # elimina cualquier otro carácter extraño
 
-      # Validación temprana: string vacío tras limpieza
       if monto_limpio == "" or monto_limpio == "-" do
         raise ArgumentError, "vacío"
       end
@@ -273,19 +250,15 @@ end
       nuevo_saldo = Decimal.add(saldo_actual, monto_decimal)
 
       cond do
-        # 1. Validar que el monto no sea cero
         Decimal.equal?(monto_decimal, Decimal.new(0)) ->
           {:error, "El monto de ajuste no puede ser cero ($0)"}
 
-        # 2. Validar que no exceda el límite máximo permitido por transacción
         Decimal.gt?(monto_absoluto, @limite_max_ajuste) ->
           {:error, "Monto inválido. El ajuste máximo permitido es de $#{@limite_max_ajuste}"}
 
-        # 3. Validar que el saldo final no quede negativo
         Decimal.lt?(nuevo_saldo, Decimal.new(0)) ->
           {:error, "El saldo no puede quedar negativo (Saldo actual: $#{saldo_actual})"}
 
-        # 4. Si todo es correcto, proceder con la actualización
         true ->
 
   case usuario
@@ -316,8 +289,6 @@ end
     end
   end
 
-  # Vacía el saldo del usuario dejándolo en $0 de forma explícita.
-  # Valida que el saldo no esté ya en cero para evitar operaciones innecesarias.
   def vaciar_cuenta_admin(%Usuario{} = usuario) do
     saldo_actual = usuario.saldo_virtual || Decimal.new(0)
 
@@ -346,7 +317,6 @@ end
     end
   end
 
-  # Balance dinámico cruzando BD
   def obtener_balance_personal(%Usuario{} = usuario) do
     gastado = Repo.one(
       from t in AzarApp.Sorteos.Ticket,
@@ -399,7 +369,6 @@ end
   |> Repo.insert()
 end
 
-# ── NUEVA: registrar devolución ──
 def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
   %AzarApp.Cuentas.Transaccion{}
   |> AzarApp.Cuentas.Transaccion.changeset(%{
@@ -413,7 +382,6 @@ def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
   |> Repo.insert()
 end
 
-# ── NUEVA: obtener historial de transacciones ──
 def listar_transacciones(usuario_id) do
   Repo.all(
     from t in AzarApp.Cuentas.Transaccion,
@@ -423,32 +391,25 @@ def listar_transacciones(usuario_id) do
   )
 end
 
-# helper privado (si no lo tienes ya)
 defp decimal_seguro(nil), do: Decimal.new(0)
 defp decimal_seguro(%Decimal{} = v), do: v
 defp decimal_seguro(v), do: Decimal.new(to_string(v))
 
-# Agrega esto en lib/azar_app/cuentas.ex
 
 def limpiar_sistema_completo() do
   emails_protegidos = ["admin@azar.com", "cliente@azar.com"]
 
   Ecto.Multi.new()
-  # 1. Borra todos los logs de transacciones
   |> Ecto.Multi.delete_all(:transacciones,
       from(t in AzarApp.Cuentas.Transaccion, select: t))
-  # 2. Borra todos los tickets
   |> Ecto.Multi.delete_all(:tickets,
       from(t in AzarApp.Sorteos.Ticket, select: t))
-  # 3. Borra todos los sorteos
   |> Ecto.Multi.delete_all(:sorteos,
       from(s in AzarApp.Sorteos.Sorteo, select: s))
-  # 4. Borra usuarios que NO sean los predeterminados
   |> Ecto.Multi.delete_all(:usuarios,
       from(u in AzarApp.Cuentas.Usuario,
         where: u.email not in ^emails_protegidos,
         select: u))
-  # 5. Resetea saldo y contadores de los usuarios protegidos
   |> Ecto.Multi.update_all(:reset_usuarios,
       from(u in AzarApp.Cuentas.Usuario,
         where: u.email in ^emails_protegidos),
@@ -461,7 +422,6 @@ def limpiar_sistema_completo() do
   |> Repo.transaction()
   |> case do
     {:ok, resultado} ->
-      # Borra el archivo de auditoría
       File.rm("log/auditoria.log")
 
       AzarApp.Auditoria.log(:sistema_limpiado, %{

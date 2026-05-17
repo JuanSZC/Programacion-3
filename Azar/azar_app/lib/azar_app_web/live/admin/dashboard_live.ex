@@ -35,9 +35,6 @@ defmodule AzarAppWeb.Admin.DashboardLive do
   @impl true
   def handle_info(_, socket), do: {:noreply, socket}
 
-  # ==========================================
-  # HELPERS PARA LA PLANTILLA
-  # ==========================================
 
   defp fmt(nil), do: "0"
   defp fmt(%Decimal{} = d), do: d |> Decimal.round(0) |> Decimal.to_string() |> fmt_miles()
@@ -66,9 +63,6 @@ defmodule AzarAppWeb.Admin.DashboardLive do
   defp color_tipo(_), do: "bg-info/10 text-info border-info/20"
 
 
-  # ==========================================
-  # RENDER
-  # ==========================================
 
   @impl true
   def render(assigns) do
@@ -273,7 +267,6 @@ defmodule AzarAppWeb.Admin.DashboardLive do
                   <%= for actividad <- @datos.actividad_reciente do %>
                     <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-base-200/40 transition-colors">
                       <div class="size-8 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary font-black text-xs shrink-0">
-                        #<%= actividad.numero_ticket %>
                       </div>
                       <div class="flex-1 min-w-0">
                         <p class="text-xs font-black text-base-content truncate"><%= actividad.usuario_nombre %></p>

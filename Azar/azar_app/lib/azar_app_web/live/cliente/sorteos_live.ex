@@ -87,7 +87,6 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
      |> assign(premios: calcular_premios(sorteos))}
   end
 
-  # ---- HELPERS ----
 
   defp fetch_sorteos("actuales"), do: Sorteos.list_sorteos_futuros()
   defp fetch_sorteos("pasados"), do: Sorteos.list_sorteos_pasados()
@@ -289,7 +288,6 @@ defmodule AzarAppWeb.Cliente.SorteosLive do
                       <div>
                         <p class="text-[9px] font-black uppercase tracking-widest text-warning/70">Número Ganador</p>
                         <p class="text-2xl font-black italic text-warning leading-none mt-0.5">
-                          #<%= Enum.join(sorteo.numeros_ganadores, ", #") %>
                         </p>
                       </div>
                     </div>

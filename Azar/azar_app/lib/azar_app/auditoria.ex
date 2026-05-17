@@ -1,13 +1,8 @@
-# lib/azar_app/auditoria.ex
 defmodule AzarApp.Auditoria do
-  @moduledoc """
-  Módulo centralizado de auditoría. Escribe todos los eventos relevantes
-  del sistema en un archivo log.txt con timestamp, tipo y detalle.
-  """
+  @moduledoc false
 
   @log_path "log/auditoria.log"
 
-  # ── Tipos de entrada ──────────────────────────────────────
 
   def log(:sesion_iniciada, %{usuario_id: id, email: email, rol: rol}) do
     escribir("SESION_INICIADA", "usuario_id=#{id} email=#{email} rol=#{rol}")
@@ -81,17 +76,14 @@ defmodule AzarApp.Auditoria do
   escribir("SISTEMA_LIMPIADO", "tickets_eliminados=#{t} sorteos_eliminados=#{s} usuarios_eliminados=#{u}")
 end
 
-  # ── Motor interno ─────────────────────────────────────────
 
   defp escribir(tipo, detalle) do
     timestamp = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second) |> NaiveDateTime.to_string()
     linea = "[#{timestamp}] [#{tipo}] #{detalle}\n"
 
-    # Garantiza que el directorio exista antes de escribir
     File.mkdir_p!(Path.dirname(@log_path))
     File.write!(@log_path, linea, [:append])
 
-    # También lo emite al logger estándar de Elixir para visibilidad en consola
     require Logger
     Logger.info("[AUDITORIA] #{tipo} | #{detalle}")
 

@@ -1,9 +1,5 @@
 defmodule AzarAppWeb.Cliente.PerfilLive do
-  @moduledoc """
-  LiveView para el panel de control del perfil del cliente.
-  Maneja la visualización y edición de datos personales, ajustes de seguridad,
-  historial de fondos (balance general) y recargas de saldo virtual.
-  """
+  @moduledoc false
 
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
@@ -41,18 +37,12 @@ def mount(_params, session, socket) do
   end
 end
 
-  # ==========================================
-  # MANEJO DE MENSAJES (PubSub)
-  # ==========================================
 
   @impl true
   def handle_info(:forzar_logout, socket) do
     {:noreply, push_navigate(socket, to: "/forzar_logout")}
   end
 
-  # ==========================================
-  # EVENTOS DE NAVEGACIÓN Y UI
-  # ==========================================
 
   @impl true
   def handle_event("set_seccion", %{"sec" => sec}, socket) do
@@ -67,9 +57,6 @@ end
     {:noreply, assign(socket, editando_campo: nil)}
   end
 
-  # ==========================================
-  # EVENTOS DE HISTORIAL
-  # ==========================================
 
   def handle_event("abrir_historial", _, socket) do
     {:noreply, assign(socket, show_historial_modal: true)}
@@ -79,9 +66,6 @@ end
     {:noreply, assign(socket, show_historial_modal: false)}
   end
 
-  # ==========================================
-  # EVENTOS DE ACTUALIZACIÓN DE PERFIL
-  # ==========================================
 
   def handle_event("guardar_cambios", %{"campo" => campo, "valor" => valor}, socket) do
     case Cuentas.actualizar_campo_usuario(socket.assigns.usuario, campo, valor) do
@@ -96,9 +80,6 @@ end
     end
   end
 
-  # ==========================================
-  # EVENTOS DEL MODAL DE RECARGA
-  # ==========================================
 
   def handle_event("abrir_modal", _, socket) do
     {:noreply,
@@ -169,7 +150,6 @@ end
         {:ok, usuario_actualizado} ->
           metodo_bonito = String.upcase(metodo)
 
-          # Recalculamos el balance inmediatamente después de recargar
           nuevo_balance = Cuentas.obtener_balance_personal(usuario_actualizado)
 
           {:noreply,
@@ -185,9 +165,6 @@ end
     end
   end
 
-  # ==========================================
-  # RENDER (HEEx Template)
-  # ==========================================
 
   @impl true
   def render(assigns) do
@@ -391,7 +368,6 @@ end
                 ticket.estado == "vendido" && "bg-primary/10 text-primary",
                 ticket.estado == "disponible" && "bg-base-300/50 text-base-content/40"
               ]}>
-                #<%= ticket.numero %>
               </div>
               <div>
                 <p class="font-black text-base-content"><%= ticket.sorteo.titulo %></p>
@@ -454,7 +430,6 @@ end
 
     <div class="p-6 md:p-10 space-y-6">
       <%
-        # Agrupa los tickets por sorteo para mostrar un resumen por sorteo
         sorteos_agrupados =
           @tickets_usuario
           |> Enum.group_by(& &1.sorteo_id)

@@ -33,7 +33,6 @@ defmodule AzarAppWeb.Router do
     get "/forzar_logout", SesionForzadaController, :cerrar
   end
 
-  # PANEL DE ADMINISTRACIÓN
   scope "/admin", AzarAppWeb do
     pipe_through [:browser, :require_admin]
 
@@ -47,7 +46,6 @@ defmodule AzarAppWeb.Router do
     live "/perfil", Admin.PerfilLive, :index
   end
 
-  # PANEL DE CLIENTE
   scope "/cliente", AzarAppWeb.Cliente do
     pipe_through [:browser, :require_auth]
 

@@ -34,7 +34,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
     |> assign(:sorteo, nil)
   end
 
-  # ---- EVENTOS ----
 
   @impl true
   def handle_event("toggle_filtros", _, socket) do
@@ -86,7 +85,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
      |> stream(:sorteos, sorteos, reset: true)}
   end
 
-  # ---- PUBSUB ----
 
   @impl true
   def handle_info({:saved, sorteo}, socket) do
@@ -114,7 +112,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
      |> stream(:sorteos, sorteos, reset: true)}
   end
 
-  # ---- HELPERS DE FILTRO ----
 
   defp filtros_default do
     %{mes: "", orden: "fecha_desc", tipo: "todos", estado: "todos", con_ventas: "todos"}
@@ -334,7 +331,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
                     <div>
                       <p class="text-[9px] font-black uppercase tracking-widest text-warning/70">Número Ganador</p>
                       <p class="text-2xl font-black italic text-warning leading-none mt-0.5">
-                        #<%= Enum.join(sorteo.numeros_ganadores, ", #") %>
                       </p>
                     </div>
                   </div>

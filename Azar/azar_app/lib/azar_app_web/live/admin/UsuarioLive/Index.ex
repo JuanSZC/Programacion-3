@@ -88,7 +88,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
     end
   end
 
-  # ---- HELPERS ----
 
   defp filtros_default, do: %{estado: "todos", orden: "reciente"}
   defp filtros_activos?(f), do: f != filtros_default()

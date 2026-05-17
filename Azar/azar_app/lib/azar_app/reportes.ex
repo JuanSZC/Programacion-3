@@ -1,8 +1,5 @@
 defmodule AzarApp.Reportes do
-  @moduledoc """
-  Contexto de reportes y analíticas para el dashboard de administración.
-  Centraliza todas las consultas de métricas, KPIs y estadísticas del sistema.
-  """
+  @moduledoc false
 
   import Ecto.Query, warn: false
 
@@ -10,9 +7,6 @@ defmodule AzarApp.Reportes do
   alias AzarApp.Cuentas.Usuario
   alias AzarApp.Sorteos.{Sorteo, Ticket}
 
-  # ==========================================
-  # MÉTRICAS DE USUARIOS
-  # ==========================================
 
   def stats_usuarios do
     total = Repo.aggregate(Usuario, :count, :id) || 0
@@ -81,9 +75,6 @@ defmodule AzarApp.Reportes do
     }
   end
 
-  # ==========================================
-  # TOP USUARIOS
-  # ==========================================
 
   def top_compradores(limit \\ 5) do
     Repo.all(
@@ -119,9 +110,6 @@ defmodule AzarApp.Reportes do
     )
   end
 
-  # ==========================================
-  # MÉTRICAS FINANCIERAS
-  # ==========================================
 
   def stats_financieras do
     total_gastado_usuarios =
@@ -172,9 +160,6 @@ defmodule AzarApp.Reportes do
     }
   end
 
-  # ==========================================
-  # MÉTRICAS DE SORTEOS
-  # ==========================================
 
   def stats_sorteos do
     total = Repo.aggregate(Sorteo, :count, :id) || 0
@@ -232,9 +217,6 @@ defmodule AzarApp.Reportes do
     }
   end
 
-  # ==========================================
-  # PRÓXIMOS SORTEOS
-  # ==========================================
 
   def proximos_sorteos(limit \\ 10) do
     ahora = NaiveDateTime.utc_now()
@@ -258,9 +240,6 @@ defmodule AzarApp.Reportes do
     )
   end
 
-  # ==========================================
-  # MÉTRICAS DE TICKETS
-  # ==========================================
 
   def stats_tickets do
     total = Repo.aggregate(Ticket, :count, :id) || 0
@@ -306,9 +285,6 @@ defmodule AzarApp.Reportes do
     }
   end
 
-  # ==========================================
-  # ACTIVIDAD RECIENTE
-  # ==========================================
 
   def actividad_reciente(limit \\ 10) do
     Repo.all(
@@ -330,9 +306,6 @@ defmodule AzarApp.Reportes do
     )
   end
 
-  # ==========================================
-  # RECAUDO POR MES
-  # ==========================================
 
   def recaudo_por_mes do
     inicio_anio =
@@ -366,9 +339,6 @@ defmodule AzarApp.Reportes do
     end)
   end
 
-  # ==========================================
-  # RESUMEN COMPLETO
-  # ==========================================
 
   def resumen_completo do
     %{
@@ -385,9 +355,6 @@ defmodule AzarApp.Reportes do
     }
   end
 
-  # ==========================================
-  # HELPERS
-  # ==========================================
 
   defp decimal_seguro(nil), do: Decimal.new(0)
   defp decimal_seguro(%Decimal{} = v), do: v

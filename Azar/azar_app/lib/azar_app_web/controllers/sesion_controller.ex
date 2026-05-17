@@ -3,7 +3,6 @@ defmodule AzarAppWeb.SesionController do
 
   alias AzarApp.Cuentas
 
-  # Procesa el inicio de sesión para Clientes y Admins
   def crear(conn, %{"email" => email, "password" => password, "tipo" => tipo}) do
     case Cuentas.autenticar_usuario(email, password) do
       {:ok, usuario} ->
@@ -18,14 +17,12 @@ defmodule AzarAppWeb.SesionController do
         es_admin = usuario.rol == "admin"
 
         cond do
-          # SEGURIDAD: Si intenta entrar por /admin/login pero es un cliente
           intentando_admin and not es_admin ->
             conn
             |> put_flash(:error, "Acceso denegado. Se requieren permisos de administrador.")
             |> redirect(to: ~p"/admin/login")
             |> halt()
 
-          # ÉXITO: Redirige según el rol real del usuario
           true ->
             ruta =
               if es_admin,
@@ -36,7 +33,6 @@ defmodule AzarAppWeb.SesionController do
         end
 
       {:error, _razon} ->
-        # MANEJO DE EXCEPCIÓN: Si fallan las credenciales
         ruta_origen =
           if tipo == "admin",
             do: ~p"/admin/login",
@@ -49,7 +45,6 @@ defmodule AzarAppWeb.SesionController do
     end
   end
 
-  # Función privada para gestionar la cookie de sesión de forma segura
   defp iniciar_sesion(conn, usuario, ruta_destino) do
     conn
     |> put_session(:usuario_id, usuario.id)
@@ -58,7 +53,6 @@ defmodule AzarAppWeb.SesionController do
     |> redirect(to: ruta_destino)
   end
 
-  # Cierre de sesión (Logout)
   def borrar(conn, _params) do
     usuario_id = get_session(conn, :usuario_id)
 

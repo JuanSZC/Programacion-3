@@ -1,9 +1,5 @@
-# lib/azar_app/backup.ex
 defmodule AzarApp.Backup do
-  @moduledoc """
-  Exporta e importa toda la BD en archivos JSON.
-  Se ejecuta automáticamente en cada cambio relevante.
-  """
+  @moduledoc false
 
   alias AzarApp.Repo
   alias AzarApp.Cuentas.{Usuario, Transaccion}
@@ -12,7 +8,6 @@ defmodule AzarApp.Backup do
 
   @carpeta "priv/backup"
 
-  # ── Exportar todo ─────────────────────────────────────────
 
   def exportar_todo() do
     File.mkdir_p!(@carpeta)
@@ -53,7 +48,6 @@ defmodule AzarApp.Backup do
     escribir_json("transacciones.json", datos)
   end
 
-  # ── Leer JSONs ────────────────────────────────────────────
 
   def leer(archivo) do
     path = Path.join(@carpeta, archivo)
@@ -72,7 +66,6 @@ defmodule AzarApp.Backup do
   def leer_tickets(),        do: leer("tickets.json")
   def leer_transacciones(),  do: leer("transacciones.json")
 
-  # ── Limpiar JSONs ─────────────────────────────────────────
 
   def limpiar_todo() do
     escribir_json("usuarios.json", [])
@@ -82,7 +75,6 @@ defmodule AzarApp.Backup do
     :ok
   end
 
-  # ── Serialización ─────────────────────────────────────────
 
   defp usuario_a_map(u) do
     %{
@@ -147,7 +139,6 @@ defmodule AzarApp.Backup do
   defp naive_to_str(nil), do: nil
   defp naive_to_str(dt),  do: NaiveDateTime.to_string(dt)
 
-  # ── Escritura ─────────────────────────────────────────────
 
   defp escribir_json(nombre, datos) do
     path = Path.join(@carpeta, nombre)

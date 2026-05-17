@@ -1,11 +1,9 @@
-# lib/azar_app/cuentas/transaccion.ex
 defmodule AzarApp.Cuentas.Transaccion do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "transacciones" do
     field :tipo, :string
-    # tipos: "recarga" | "compra_ticket" | "devolucion_ticket" | "premio"
     field :monto, :decimal
     field :descripcion, :string
     field :ticket_numero, :string

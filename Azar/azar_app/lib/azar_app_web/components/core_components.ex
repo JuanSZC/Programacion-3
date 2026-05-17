@@ -1,15 +1,10 @@
 defmodule AzarAppWeb.CoreComponents do
-  @moduledoc """
-  Provides core UI components upgraded to a Premium SaaS look.
-  """
+  @moduledoc false
   use Phoenix.Component
   use Gettext, backend: AzarAppWeb.Gettext
 
   alias Phoenix.LiveView.JS
 
-  @doc """
-  Renders flash notices.
-  """
   attr :id, :string, doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
@@ -51,9 +46,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Renders a button with navigation support.
-  """
   attr :rest, :global, include: ~w(href navigate patch method download name value disabled)
   attr :class, :any, default: nil
   attr :variant, :string, default: "primary", values: ~w(primary secondary danger ghost outline default)
@@ -94,9 +86,6 @@ defmodule AzarAppWeb.CoreComponents do
     end
   end
 
-  @doc """
-  Renders an input with label and error messages.
-  """
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
@@ -226,9 +215,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Renders a header with title.
-  """
   slot :inner_block, required: true
   slot :subtitle
   slot :actions
@@ -249,9 +235,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Renders a table with generic styling.
-  """
   attr :id, :string, required: true
   attr :rows, :list, required: true
   attr :row_id, :any, default: nil
@@ -302,9 +285,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Renders a data list.
-  """
   slot :item, required: true do
     attr :title, :string, required: true
   end
@@ -322,9 +302,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Renders a Heroicon.
-  """
   attr :name, :string, required: true
   attr :class, :any, default: "size-5"
 
@@ -334,7 +311,6 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
-  ## JS Commands
   def show(js \\ %JS{}, selector) do
     JS.show(js,
       to: selector,
