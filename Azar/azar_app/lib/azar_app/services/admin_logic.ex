@@ -1,4 +1,11 @@
 defmodule Administrador do
+  @moduledoc """
+  Módulo Administrador: lógica relacionada con administrador.
+  """
+
+  @doc """
+  Breve: crear_sorteo.
+  """
   def crear_sorteo(nombre, fecha, valor_billete, fracciones, cantidad_billetes) do
 
     cond do
@@ -31,6 +38,9 @@ defmodule Administrador do
 
   end
 
+  @doc """
+  Breve: ordenar_por_fecha.
+  """
   def ordenar_por_fecha(lista_sorteos) do
 
    Enum.sort_by(lista_sorteos, fn sorteo ->
@@ -39,14 +49,23 @@ defmodule Administrador do
 
   end
 
+  @doc """
+  Breve: obtener_premios.
+  """
   def obtener_premios(sorteo) do
   sorteo.premios
   end
 
+  @doc """
+  Breve: realizado.
+  """
   def realizado?(sorteo) do
   sorteo.estado == :realizado
   end
 
+  @doc """
+  Breve: obtener_ganadores_por_premio.
+  """
   def obtener_ganadores_por_premio(sorteo) do
 
   Enum.map(sorteo.premios, fn premio ->
@@ -61,6 +80,9 @@ defmodule Administrador do
 
   end
 
+  @doc """
+  Breve: mostrar_info.
+  """
   def mostrar_info(sorteo) do
 
   %{
@@ -90,6 +112,9 @@ defmodule Administrador do
 
 
 
+  @doc """
+  Breve: eliminar_sorteo.
+  """
   def eliminar_sorteo(lista_sorteos, id_sorteo) do
 
   sorteo =
@@ -118,6 +143,9 @@ defmodule Administrador do
 
 end
 
+@doc """
+Breve: ordenar_alfabeticamente.
+"""
 def ordenar_alfabeticamente(lista_clientes) do
 
   Enum.sort_by(lista_clientes, fn cliente ->
@@ -126,6 +154,9 @@ def ordenar_alfabeticamente(lista_clientes) do
 
 end
 
+@doc """
+Breve: compradores_billete_completo.
+"""
 def compradores_billete_completo(compras, clientes) do
 
   compras
@@ -142,6 +173,9 @@ def compradores_billete_completo(compras, clientes) do
 
 end
 
+@doc """
+Breve: compradores_por_fraccion.
+"""
 def compradores_por_fraccion(compras, clientes) do
 
   compras
@@ -158,6 +192,9 @@ def compradores_por_fraccion(compras, clientes) do
 
 end
 
+@doc """
+Breve: buscar_por_id.
+"""
 def buscar_por_id(lista_sorteos, id) do
 
   Enum.find(lista_sorteos, fn sorteo ->
@@ -166,6 +203,9 @@ def buscar_por_id(lista_sorteos, id) do
 
 end
 
+@doc """
+Breve: premios_entregados.
+"""
 def premios_entregados(sorteo) do
 
   Enum.filter(sorteo.premios, fn premio ->
@@ -173,6 +213,9 @@ def premios_entregados(sorteo) do
   end)
 
 end
+@doc """
+Breve: nombres_ganadores.
+"""
 def nombres_ganadores(sorteo, clientes) do
 
   premios_entregados(sorteo)
@@ -192,10 +235,16 @@ def nombres_ganadores(sorteo, clientes) do
 
 end
 
+@doc """
+Breve: dinero_recolectado.
+"""
 def dinero_recolectado(sorteo) do
   sorteo.pozo_acumulado
 end
 
+@doc """
+Breve: total_premios_entregados.
+"""
 def total_premios_entregados(sorteo) do
 
   premios_entregados(sorteo)
@@ -208,6 +257,9 @@ def total_premios_entregados(sorteo) do
 end
 
 
+@doc """
+Breve: ganancias_o_perdidas.
+"""
 def ganancias_o_perdidas(sorteo) do
 
   dinero_recolectado(sorteo) -
@@ -215,6 +267,9 @@ def ganancias_o_perdidas(sorteo) do
 
 end
 
+@doc """
+Breve: sorteos_pasados.
+"""
 def sorteos_pasados(lista_sorteos) do
 
   Enum.filter(lista_sorteos, fn sorteo ->
@@ -223,6 +278,9 @@ def sorteos_pasados(lista_sorteos) do
 
 end
 
+@doc """
+Breve: resumen_sorteo.
+"""
 def resumen_sorteo(sorteo) do
 
   %{
@@ -233,6 +291,9 @@ def resumen_sorteo(sorteo) do
 
 end
 
+@doc """
+Breve: balance_total.
+"""
 def balance_total(lista_sorteos) do
 
   lista_sorteos
@@ -245,6 +306,9 @@ def balance_total(lista_sorteos) do
 
 end
 
+@doc """
+Breve: consultar_balance_sorteos.
+"""
 def consultar_balance_sorteos(lista_sorteos) do
 
   sorteos_realizados =
@@ -263,6 +327,9 @@ def consultar_balance_sorteos(lista_sorteos) do
 
 end
 
+@doc """
+Breve: crear_premio.
+"""
 def crear_premio(sorteo, id, monto_bruto, categoria) do
 
   case AzarApp.Premio.nuevo(id, monto_bruto, categoria) do
@@ -282,6 +349,9 @@ def crear_premio(sorteo, id, monto_bruto, categoria) do
 
 end
 
+@doc """
+Breve: eliminar_premio.
+"""
 def eliminar_premio(sorteo, id_premio) do
 
   cond do
@@ -305,6 +375,9 @@ def eliminar_premio(sorteo, id_premio) do
 
 end
 
+@doc """
+Breve: sorteos_pendientes.
+"""
 def sorteos_pendientes(lista_sorteos, fecha_actual) do
 
   Enum.filter(lista_sorteos, fn sorteo ->
@@ -316,6 +389,9 @@ def sorteos_pendientes(lista_sorteos, fecha_actual) do
 
 end
 
+@doc """
+Breve: generar_numero_ganador.
+"""
 def generar_numero_ganador(sorteo) do
 
   billete =
@@ -325,6 +401,9 @@ def generar_numero_ganador(sorteo) do
 
 end
 
+@doc """
+Breve: ejecutar_sorteo.
+"""
 def ejecutar_sorteo(sorteo) do
 
   numero =
@@ -338,6 +417,9 @@ def ejecutar_sorteo(sorteo) do
 
 end
 
+@doc """
+Breve: obtener_ganadores.
+"""
 def obtener_ganadores(sorteo, clientes) do
 
   Enum.filter(clientes, fn cliente ->
@@ -352,6 +434,9 @@ def obtener_ganadores(sorteo, clientes) do
 
 end
 
+@doc """
+Breve: notificar_ganadores.
+"""
 def notificar_ganadores(sorteo, clientes) do
 
   ganadores =
@@ -368,6 +453,9 @@ def notificar_ganadores(sorteo, clientes) do
 
 end
 
+@doc """
+Breve: agregar_premio.
+"""
 def agregar_premio(sorteo, premio) do
   premios_actualizados = [premio | sorteo.premios]
 

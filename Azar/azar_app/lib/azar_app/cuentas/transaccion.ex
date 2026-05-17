@@ -1,4 +1,8 @@
 defmodule AzarApp.Cuentas.Transaccion do
+  @moduledoc """
+  Módulo AzarApp.Cuentas.Transaccion: lógica relacionada con transaccion.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -14,6 +18,9 @@ defmodule AzarApp.Cuentas.Transaccion do
     timestamps(type: :utc_datetime)
   end
 
+  @doc """
+  Breve: changeset.
+  """
   def changeset(transaccion, attrs) do
     transaccion
     |> cast(attrs, [:tipo, :monto, :descripcion, :usuario_id, :sorteo_id, :ticket_numero])

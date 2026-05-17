@@ -1,7 +1,14 @@
 defmodule AzarApp.Core.AdminCore do
+  @moduledoc """
+  Módulo AzarApp.Core.AdminCore: lógica relacionada con admincore.
+  """
+
   alias AzarApp.Core.SorteoSupervisor
   alias AzarApp.Core.GestorDatos
 
+  @doc """
+  Breve: crear_sorteo.
+  """
   def crear_sorteo(nombre, fecha, valor_billete, cantidad_fracciones, cantidad_billetes) do
     datos_sorteo = %{
       nombre: nombre,
@@ -27,6 +34,9 @@ defmodule AzarApp.Core.AdminCore do
     end
   end
 
+  @doc """
+  Breve: listar_sorteos.
+  """
   def listar_sorteos do
     GestorDatos.inicializar()
 

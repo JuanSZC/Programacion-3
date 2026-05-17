@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Endpoint do
+  @moduledoc """
+  Módulo AzarAppWeb.Endpoint: lógica relacionada con endpoint.
+  """
+
   use Phoenix.Endpoint, otp_app: :azar_app
 
   @session_options [

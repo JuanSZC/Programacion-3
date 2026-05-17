@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.SorteoLive.Index do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.SorteoLive.Index: lógica relacionada con index.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Sorteos
 
@@ -99,7 +103,13 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
 
   @impl true
   def handle_info({:sorteo_creado, _}, socket), do: reload(socket)
+  @doc """
+  Breve: handle_info.
+  """
   def handle_info({:sorteo_eliminado, _}, socket), do: reload(socket)
+  @doc """
+  Breve: handle_info.
+  """
   def handle_info(:lista_actualizada, socket), do: reload(socket)
 
   defp reload(socket) do

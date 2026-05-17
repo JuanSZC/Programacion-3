@@ -1,6 +1,13 @@
 defmodule AzarAppWeb.SesionForzadaController do
+  @moduledoc """
+  Módulo AzarAppWeb.SesionForzadaController: lógica relacionada con sesionforzadacontroller.
+  """
+
   use AzarAppWeb, :controller
 
+  @doc """
+  Breve: cerrar.
+  """
   def cerrar(conn, _params) do
     conn
     |> clear_session()

@@ -1,9 +1,16 @@
 defmodule AzarAppWeb.AuthLive.RegistroLive do
+  @moduledoc """
+  Módulo AzarAppWeb.AuthLive.RegistroLive: lógica relacionada con registrolive.
+  """
+
   use AzarAppWeb, :live_view
 
   alias AzarApp.Cuentas
   alias AzarApp.Cuentas.Usuario
 
+  @doc """
+  Breve: mount.
+  """
   def mount(_params, _session, socket) do
     changeset = Cuentas.change_usuario(%Usuario{})
 
@@ -16,6 +23,9 @@ defmodule AzarAppWeb.AuthLive.RegistroLive do
      )}
   end
 
+  @doc """
+  Breve: render.
+  """
   def render(assigns) do
     ~H"""
     <div class="py-12 flex flex-col items-center justify-center min-h-[85vh] animate-in fade-in zoom-in-95 duration-700">
@@ -234,6 +244,9 @@ defmodule AzarAppWeb.AuthLive.RegistroLive do
     """
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("registrar", params, socket) do
     socket =
       socket

@@ -6,8 +6,14 @@ defmodule AzarAppWeb.Plugs.CargarUsuario do
   import Plug.Conn
   alias AzarApp.Cuentas
 
+  @doc """
+  Breve: init.
+  """
   def init(opts), do: opts
 
+  @doc """
+  Breve: call.
+  """
   def call(conn, _opts) do
     usuario_id = get_session(conn, :usuario_id)
 
@@ -30,8 +36,14 @@ defmodule AzarAppWeb.Plugs.RequireAuth do
   import Phoenix.Controller, only: [redirect: 2, put_flash: 3]
   alias AzarApp.Cuentas
 
+  @doc """
+  Breve: init.
+  """
   def init(opts), do: opts
 
+  @doc """
+  Breve: call.
+  """
   def call(conn, _opts) do
     usuario_id = get_session(conn, :usuario_id)
 
@@ -61,8 +73,14 @@ defmodule AzarAppWeb.Plugs.RequireAdmin do
   import Phoenix.Controller, only: [redirect: 2, put_flash: 3]
   alias AzarApp.Cuentas
 
+  @doc """
+  Breve: init.
+  """
   def init(opts), do: opts
 
+  @doc """
+  Breve: call.
+  """
   def call(conn, _opts) do
     usuario_id = get_session(conn, :usuario_id)
 

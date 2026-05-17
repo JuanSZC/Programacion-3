@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.PerfilLive do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.PerfilLive: lógica relacionada con perfillive.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
 
@@ -23,6 +27,9 @@ defmodule AzarAppWeb.Admin.PerfilLive do
   def handle_event("editar", %{"campo" => campo}, socket),
     do: {:noreply, assign(socket, :editando, campo)}
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("cancelar", _, socket),
     do: {:noreply, assign(socket, :editando, nil)}
 

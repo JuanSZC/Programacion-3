@@ -1,8 +1,15 @@
 defmodule AzarAppWeb.SesionController do
+  @moduledoc """
+  Módulo AzarAppWeb.SesionController: lógica relacionada con sesioncontroller.
+  """
+
   use AzarAppWeb, :controller
 
   alias AzarApp.Cuentas
 
+  @doc """
+  Breve: crear.
+  """
   def crear(conn, %{"email" => email, "password" => password, "tipo" => tipo}) do
     case Cuentas.autenticar_usuario(email, password) do
       {:ok, usuario} ->
@@ -53,6 +60,9 @@ defmodule AzarAppWeb.SesionController do
     |> redirect(to: ruta_destino)
   end
 
+  @doc """
+  Breve: borrar.
+  """
   def borrar(conn, _params) do
     usuario_id = get_session(conn, :usuario_id)
 

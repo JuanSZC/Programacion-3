@@ -1,24 +1,43 @@
 defmodule AzarApp.Core.SorteoServer do
+  @moduledoc """
+  Módulo AzarApp.Core.SorteoServer: lógica relacionada con sorteoserver.
+  """
+
   use GenServer
   alias AzarApp.Core.GestorDatos
 
+  @doc """
+  Breve: start_link.
+  """
   def start_link(datos_sorteo) do
     nombre_proceso = String.to_atom(datos_sorteo.nombre)
     GenServer.start_link(__MODULE__, datos_sorteo, name: nombre_proceso)
   end
 
+  @doc """
+  Breve: comprar_billete.
+  """
   def comprar_billete(nombre_sorteo, info_compra) do
     GenServer.call(String.to_atom(nombre_sorteo), {:comprar_billete, info_compra})
   end
 
+  @doc """
+  Breve: devolver_compra.
+  """
   def devolver_compra(nombre_sorteo, documento, numero) do
     GenServer.call(String.to_atom(nombre_sorteo), {:devolver_compra, documento, numero})
   end
 
+  @doc """
+  Breve: agregar_premio.
+  """
   def agregar_premio(nombre_sorteo, premio) do
     GenServer.call(String.to_atom(nombre_sorteo), {:agregar_premio, premio})
   end
 
+  @doc """
+  Breve: ver_estado.
+  """
   def ver_estado(nombre_sorteo) do
     GenServer.call(String.to_atom(nombre_sorteo), :ver_estado)
   end

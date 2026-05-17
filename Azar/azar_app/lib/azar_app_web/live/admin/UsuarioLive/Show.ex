@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.UsuarioLive.Show do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.UsuarioLive.Show: lógica relacionada con show.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
   alias AzarApp.Sorteos
@@ -63,6 +67,9 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
 
   @impl true
   def handle_event("editar", _, socket), do: {:noreply, assign(socket, :editando, true)}
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("cancelar", _, socket), do: {:noreply, assign(socket, :editando, false)}
 
   @impl true

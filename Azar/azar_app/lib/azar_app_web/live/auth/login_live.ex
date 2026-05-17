@@ -1,10 +1,20 @@
 defmodule AzarAppWeb.AuthLive.LoginLive do
+  @moduledoc """
+  Módulo AzarAppWeb.AuthLive.LoginLive: lógica relacionada con loginlive.
+  """
+
   use AzarAppWeb, :live_view
 
+  @doc """
+  Breve: mount.
+  """
   def mount(_params, _session, socket) do
     {:ok, assign(socket, error: nil)}
   end
 
+  @doc """
+  Breve: render.
+  """
   def render(assigns) do
     ~H"""
     <div class="py-12 flex flex-col items-center justify-center min-h-[85vh] animate-in fade-in zoom-in-95 duration-700">

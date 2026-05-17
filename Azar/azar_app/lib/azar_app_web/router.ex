@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Router do
+  @moduledoc """
+  Módulo AzarAppWeb.Router: lógica relacionada con router.
+  """
+
   use AzarAppWeb, :router
 
   pipeline :browser do

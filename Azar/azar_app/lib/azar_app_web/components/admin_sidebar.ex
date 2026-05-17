@@ -1,9 +1,16 @@
 defmodule AzarAppWeb.AdminSidebar do
+  @moduledoc """
+  Módulo AzarAppWeb.AdminSidebar: lógica relacionada con adminsidebar.
+  """
+
   use AzarAppWeb, :html
 
   attr(:current_page, :string, default: "sorteos")
   slot(:inner_block, required: true)
 
+  @doc """
+  Breve: sidebar.
+  """
   def sidebar(assigns) do
     ~H"""
     <div class="drawer lg:drawer-open min-h-screen bg-base-200/40 overflow-hidden">

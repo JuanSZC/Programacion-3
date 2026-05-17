@@ -1,8 +1,14 @@
 defmodule AzarAppWeb do
   @moduledoc false
 
+  @doc """
+  Breve: static_paths.
+  """
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
+  @doc """
+  Breve: router.
+  """
   def router do
     quote do
       use Phoenix.Router, helpers: false
@@ -13,12 +19,18 @@ defmodule AzarAppWeb do
     end
   end
 
+  @doc """
+  Breve: channel.
+  """
   def channel do
     quote do
       use Phoenix.Channel
     end
   end
 
+  @doc """
+  Breve: controller.
+  """
   def controller do
     quote do
       use Phoenix.Controller, formats: [:html, :json]
@@ -31,6 +43,9 @@ defmodule AzarAppWeb do
     end
   end
 
+  @doc """
+  Breve: live_view.
+  """
   def live_view do
     quote do
       use Phoenix.LiveView
@@ -39,6 +54,9 @@ defmodule AzarAppWeb do
     end
   end
 
+  @doc """
+  Breve: live_component.
+  """
   def live_component do
     quote do
       use Phoenix.LiveComponent
@@ -47,6 +65,9 @@ defmodule AzarAppWeb do
     end
   end
 
+  @doc """
+  Breve: html.
+  """
   def html do
     quote do
       use Phoenix.Component
@@ -72,6 +93,9 @@ defmodule AzarAppWeb do
     end
   end
 
+  @doc """
+  Breve: verified_routes.
+  """
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,

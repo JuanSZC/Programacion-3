@@ -8,6 +8,9 @@ defmodule AzarApp.Reportes do
   alias AzarApp.Sorteos.{Sorteo, Ticket}
 
 
+  @doc """
+  Breve: stats_usuarios.
+  """
   def stats_usuarios do
     total = Repo.aggregate(Usuario, :count, :id) || 0
 
@@ -76,6 +79,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: top_compradores.
+  """
   def top_compradores(limit \\ 5) do
     Repo.all(
       from u in Usuario,
@@ -93,6 +99,9 @@ defmodule AzarApp.Reportes do
     )
   end
 
+  @doc """
+  Breve: top_ganadores.
+  """
   def top_ganadores(limit \\ 5) do
     Repo.all(
       from u in Usuario,
@@ -111,6 +120,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: stats_financieras.
+  """
   def stats_financieras do
     total_gastado_usuarios =
       Repo.one(
@@ -161,6 +173,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: stats_sorteos.
+  """
   def stats_sorteos do
     total = Repo.aggregate(Sorteo, :count, :id) || 0
 
@@ -218,6 +233,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: proximos_sorteos.
+  """
   def proximos_sorteos(limit \\ 10) do
     ahora = NaiveDateTime.utc_now()
 
@@ -241,6 +259,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: stats_tickets.
+  """
   def stats_tickets do
     total = Repo.aggregate(Ticket, :count, :id) || 0
 
@@ -286,6 +307,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: actividad_reciente.
+  """
   def actividad_reciente(limit \\ 10) do
     Repo.all(
       from t in Ticket,
@@ -307,6 +331,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: recaudo_por_mes.
+  """
   def recaudo_por_mes do
     inicio_anio =
       Date.new!(Date.utc_today().year, 1, 1)
@@ -340,6 +367,9 @@ defmodule AzarApp.Reportes do
   end
 
 
+  @doc """
+  Breve: resumen_completo.
+  """
   def resumen_completo do
     %{
       usuarios: stats_usuarios(),

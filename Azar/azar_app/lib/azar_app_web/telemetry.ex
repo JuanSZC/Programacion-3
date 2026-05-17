@@ -1,7 +1,14 @@
 defmodule AzarAppWeb.Telemetry do
+  @moduledoc """
+  Módulo AzarAppWeb.Telemetry: lógica relacionada con telemetry.
+  """
+
   use Supervisor
   import Telemetry.Metrics
 
+  @doc """
+  Breve: start_link.
+  """
   def start_link(arg) do
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end
@@ -15,6 +22,9 @@ defmodule AzarAppWeb.Telemetry do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
+  @doc """
+  Breve: metrics.
+  """
   def metrics do
     [
       summary("phoenix.endpoint.start.system_time",

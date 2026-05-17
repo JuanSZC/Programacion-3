@@ -1,4 +1,8 @@
 defmodule AzarApp.Sorteos.Ticket do
+  @moduledoc """
+  Módulo AzarApp.Sorteos.Ticket: lógica relacionada con ticket.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,6 +15,9 @@ defmodule AzarApp.Sorteos.Ticket do
     timestamps()
   end
 
+  @doc """
+  Breve: changeset.
+  """
   def changeset(ticket, attrs) do
     ticket
     |> cast(attrs, [:numero, :estado, :sorteo_id, :usuario_id])

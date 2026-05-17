@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.DashboardLive do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.DashboardLive: lógica relacionada con dashboardlive.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Reportes
 

@@ -1,4 +1,8 @@
 defmodule AzarApp.Compra do
+  @moduledoc """
+  Módulo AzarApp.Compra: lógica relacionada con compra.
+  """
+
   @enforce_keys [:id, :cedula_cliente, :codigo_billete, :monto_pagado]
   defstruct [
     :id,
@@ -11,6 +15,9 @@ defmodule AzarApp.Compra do
   ]
 
 
+  @doc """
+  Breve: crear.
+  """
   def crear(id, cliente, billete, _tipo \\ :compra) do
     cond do
       cliente.saldo < billete.precio ->
@@ -31,5 +38,8 @@ defmodule AzarApp.Compra do
   end
 
 
+  @doc """
+  Breve: calcular_iva.
+  """
   def calcular_iva(%__MODULE__{monto_pagado: monto}), do: monto * 0.19
 end

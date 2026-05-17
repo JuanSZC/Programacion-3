@@ -1,4 +1,8 @@
 defmodule AzarApp.Sorteos.Sorteo do
+  @moduledoc """
+  Módulo AzarApp.Sorteos.Sorteo: lógica relacionada con sorteo.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

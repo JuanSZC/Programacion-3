@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.SorteoLive.FormComponent do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.SorteoLive.FormComponent: lógica relacionada con formcomponent.
+  """
+
   use AzarAppWeb, :live_component
   alias AzarApp.Sorteos
 

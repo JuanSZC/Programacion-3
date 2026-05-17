@@ -9,6 +9,9 @@ defmodule AzarApp.Backup do
   @carpeta "priv/backup"
 
 
+  @doc """
+  Breve: exportar_todo.
+  """
   def exportar_todo() do
     File.mkdir_p!(@carpeta)
 
@@ -20,6 +23,9 @@ defmodule AzarApp.Backup do
     :ok
   end
 
+  @doc """
+  Breve: exportar_usuarios.
+  """
   def exportar_usuarios() do
     datos = Repo.all(from u in Usuario, order_by: u.id)
     |> Enum.map(&usuario_a_map/1)
@@ -27,6 +33,9 @@ defmodule AzarApp.Backup do
     escribir_json("usuarios.json", datos)
   end
 
+  @doc """
+  Breve: exportar_sorteos.
+  """
   def exportar_sorteos() do
     datos = Repo.all(from s in Sorteo, order_by: s.id)
     |> Enum.map(&sorteo_a_map/1)
@@ -34,6 +43,9 @@ defmodule AzarApp.Backup do
     escribir_json("sorteos.json", datos)
   end
 
+  @doc """
+  Breve: exportar_tickets.
+  """
   def exportar_tickets() do
     datos = Repo.all(from t in Ticket, order_by: t.id)
     |> Enum.map(&ticket_a_map/1)
@@ -41,6 +53,9 @@ defmodule AzarApp.Backup do
     escribir_json("tickets.json", datos)
   end
 
+  @doc """
+  Breve: exportar_transacciones.
+  """
   def exportar_transacciones() do
     datos = Repo.all(from t in Transaccion, order_by: t.id)
     |> Enum.map(&transaccion_a_map/1)
@@ -49,6 +64,9 @@ defmodule AzarApp.Backup do
   end
 
 
+  @doc """
+  Breve: leer.
+  """
   def leer(archivo) do
     path = Path.join(@carpeta, archivo)
     case File.read(path) do
@@ -61,12 +79,27 @@ defmodule AzarApp.Backup do
     end
   end
 
+  @doc """
+  Breve: leer_usuarios.
+  """
   def leer_usuarios(),       do: leer("usuarios.json")
+  @doc """
+  Breve: leer_sorteos.
+  """
   def leer_sorteos(),        do: leer("sorteos.json")
+  @doc """
+  Breve: leer_tickets.
+  """
   def leer_tickets(),        do: leer("tickets.json")
+  @doc """
+  Breve: leer_transacciones.
+  """
   def leer_transacciones(),  do: leer("transacciones.json")
 
 
+  @doc """
+  Breve: limpiar_todo.
+  """
   def limpiar_todo() do
     escribir_json("usuarios.json", [])
     escribir_json("sorteos.json", [])

@@ -1,10 +1,20 @@
 defmodule AzarAppWeb.AuthLive.AdminLoginLive do
+  @moduledoc """
+  Módulo AzarAppWeb.AuthLive.AdminLoginLive: lógica relacionada con adminloginlive.
+  """
+
   use AzarAppWeb, :live_view
 
+  @doc """
+  Breve: mount.
+  """
   def mount(_params, _session, socket) do
     {:ok, assign(socket, error: nil)}
   end
 
+  @doc """
+  Breve: render.
+  """
   def render(assigns) do
     ~H"""
     <div class="relative flex flex-col items-center justify-center min-h-screen bg-base-100 overflow-hidden">

@@ -12,6 +12,9 @@ defmodule AzarAppWeb.Layouts do
 
   slot :inner_block, required: true
 
+  @doc """
+  Breve: app.
+  """
   def app(assigns) do
     ~H"""
     <div class="min-h-screen flex flex-col bg-base-100 selection:bg-primary selection:text-primary-content relative overflow-hidden">
@@ -152,6 +155,9 @@ defmodule AzarAppWeb.Layouts do
   attr :flash, :map, required: true, doc: "the map of flash messages"
   attr :id, :string, default: "flash-group", doc: "the optional id of flash container"
 
+  @doc """
+  Breve: flash_group.
+  """
   def flash_group(assigns) do
     ~H"""
     <div id={@id} aria-live="polite" class="flex flex-col gap-3">
@@ -185,6 +191,9 @@ defmodule AzarAppWeb.Layouts do
     """
   end
 
+  @doc """
+  Breve: theme_toggle.
+  """
   def theme_toggle(assigns) do
     ~H"""
     <div class="card relative flex flex-row items-center bg-base-200/50 backdrop-blur-sm rounded-[1.5rem] border border-base-300/50 overflow-hidden shadow-inner p-1">

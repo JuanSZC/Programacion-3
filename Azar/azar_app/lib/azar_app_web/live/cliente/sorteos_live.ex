@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Cliente.SorteosLive do
+  @moduledoc """
+  Módulo AzarAppWeb.Cliente.SorteosLive: lógica relacionada con sorteoslive.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Sorteos
   alias AzarApp.Cuentas

@@ -1,4 +1,8 @@
 defmodule AzarApp.Admin do
+  @moduledoc """
+  Módulo AzarApp.Admin: lógica relacionada con admin.
+  """
+
   defstruct [
     nombre_app: "Azar UQ Pro",
     total_recaudado: 0,
@@ -8,6 +12,9 @@ defmodule AzarApp.Admin do
   ]
 
 
+  @doc """
+  Breve: registrar_venta_global.
+  """
   def registrar_venta_global(%__MODULE__{} = admin, monto) do
     %{admin |
       total_recaudado: admin.total_recaudado + monto,
@@ -16,6 +23,9 @@ defmodule AzarApp.Admin do
   end
 
 
+  @doc """
+  Breve: reporte_estado.
+  """
   def reporte_estado(%__MODULE__{total_recaudado: total, ventas_realizadas: ventas}) do
     """
     --- REPORTE DE ADMIN ---
@@ -27,6 +37,9 @@ defmodule AzarApp.Admin do
   end
 
 
+  @doc """
+  Breve: cambiar_estado.
+  """
   def cambiar_estado(%__MODULE__{} = admin, nuevo_estado) do
     %{admin | estado_plataforma: nuevo_estado}
   end

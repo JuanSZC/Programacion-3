@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.SorteoLive.Show do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.SorteoLive.Show: lógica relacionada con show.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Sorteos
   alias AzarApp.ErrorHandler

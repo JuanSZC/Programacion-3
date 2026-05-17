@@ -1,4 +1,8 @@
 defmodule AzarApp.Notificaciones.Notificacion do
+  @moduledoc """
+  Módulo AzarApp.Notificaciones.Notificacion: lógica relacionada con notificacion.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -14,6 +18,9 @@ defmodule AzarApp.Notificaciones.Notificacion do
     timestamps()
   end
 
+  @doc """
+  Breve: changeset.
+  """
   def changeset(notificacion, attrs) do
     notificacion
     |> cast(attrs, [:usuario_id, :sorteo_id, :ticket_numero, :monto_premio, :tipo_premio, :leida])

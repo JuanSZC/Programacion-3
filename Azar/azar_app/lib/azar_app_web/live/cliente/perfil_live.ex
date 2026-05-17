@@ -49,24 +49,39 @@ end
     {:noreply, assign(socket, seccion_activa: sec, editando_campo: nil)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("editar", %{"campo" => campo}, socket) do
     {:noreply, assign(socket, editando_campo: campo)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("cancelar_edicion", _, socket) do
     {:noreply, assign(socket, editando_campo: nil)}
   end
 
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("abrir_historial", _, socket) do
     {:noreply, assign(socket, show_historial_modal: true)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("cerrar_historial", _, socket) do
     {:noreply, assign(socket, show_historial_modal: false)}
   end
 
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("guardar_cambios", %{"campo" => campo, "valor" => valor}, socket) do
     case Cuentas.actualizar_campo_usuario(socket.assigns.usuario, campo, valor) do
       {:ok, usuario_actualizado} ->
@@ -81,6 +96,9 @@ end
   end
 
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("abrir_modal", _, socket) do
     {:noreply,
      assign(socket,
@@ -91,22 +109,37 @@ end
      )}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("cerrar_modal", _, socket) do
     {:noreply, assign(socket, show_modal: false)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("seleccionar_monto", %{"monto" => monto}, socket) do
     {:noreply, assign(socket, modo_monto: "rapido", monto_seleccionado: String.to_integer(monto))}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("activar_manual", _, socket) do
     {:noreply, assign(socket, modo_monto: "manual", monto_seleccionado: 0)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("seleccionar_metodo", %{"metodo" => metodo}, socket) do
     {:noreply, assign(socket, metodo_pago: metodo)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("devolver_ticket", %{"ticket_id" => ticket_id}, socket) do
     usuario = socket.assigns.usuario
 
@@ -130,6 +163,9 @@ end
     end
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("confirmar_recarga", params, socket) do
     monto =
       if socket.assigns.modo_monto == "manual" do

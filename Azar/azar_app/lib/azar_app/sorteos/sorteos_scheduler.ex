@@ -5,6 +5,9 @@ defmodule AzarApp.Sorteos.Scheduler do
 
   @intervalo_ms 60_000
 
+  @doc """
+  Breve: start_link.
+  """
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end

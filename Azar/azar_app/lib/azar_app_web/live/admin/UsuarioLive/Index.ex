@@ -1,4 +1,8 @@
 defmodule AzarAppWeb.Admin.UsuarioLive.Index do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.UsuarioLive.Index: lógica relacionada con index.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
 

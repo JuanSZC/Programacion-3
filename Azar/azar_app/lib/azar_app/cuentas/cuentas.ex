@@ -8,6 +8,9 @@ defmodule AzarApp.Cuentas do
   @limite_max_ajuste Decimal.new(10_000_000)
 
 
+  @doc """
+  Breve: autenticar_usuario.
+  """
   def autenticar_usuario(email, password) do
     usuario = obtener_usuario_por_email(email)
 
@@ -29,6 +32,9 @@ defmodule AzarApp.Cuentas do
   end
 
 
+  @doc """
+  Breve: obtener_usuario.
+  """
   def obtener_usuario(id) do
     case Repo.get(Usuario, id) do
       nil -> {:error, :not_found}
@@ -36,19 +42,34 @@ defmodule AzarApp.Cuentas do
     end
   end
 
+  @doc """
+  Breve: obtener_usuario.
+  """
   def obtener_usuario!(id), do: Repo.get!(Usuario, id)
 
+  @doc """
+  Breve: obtener_usuario_por_email.
+  """
   def obtener_usuario_por_email(email) do
     Repo.get_by(Usuario, email: String.downcase(email || ""))
   end
 
+  @doc """
+  Breve: listar_usuarios.
+  """
   def listar_usuarios, do: Repo.all(Usuario)
 
+  @doc """
+  Breve: list_usuarios.
+  """
   def list_usuarios do
     from(u in Usuario, where: u.rol == "cliente", order_by: [desc: u.inserted_at])
     |> Repo.all()
   end
 
+  @doc """
+  Breve: buscar_usuarios.
+  """
   def buscar_usuarios(query) do
     q = "%#{String.downcase(query)}%"
 
@@ -61,6 +82,9 @@ defmodule AzarApp.Cuentas do
   end
 
 
+ @doc """
+ Breve: crear_usuario.
+ """
  def crear_usuario(attrs \\ %{}) do
   case %Usuario{}
        |> Usuario.registration_changeset(attrs)
@@ -80,22 +104,34 @@ defmodule AzarApp.Cuentas do
   end
 end
 
+  @doc """
+  Breve: actualizar_usuario.
+  """
   def actualizar_usuario(%Usuario{} = usuario, attrs) do
     usuario
     |> Usuario.update_changeset(attrs)
     |> Repo.update()
   end
 
+  @doc """
+  Breve: actualizar_usuario_admin.
+  """
   def actualizar_usuario_admin(%Usuario{} = usuario, params) do
     usuario
     |> Usuario.changeset_admin(params)
     |> Repo.update()
   end
 
+  @doc """
+  Breve: change_usuario.
+  """
   def change_usuario(%Usuario{} = usuario, attrs \\ %{}) do
     Usuario.update_changeset(usuario, attrs)
   end
 
+  @doc """
+  Breve: actualizar_campo_usuario.
+  """
   def actualizar_campo_usuario(usuario, campo, valor) do
     changeset = case campo do
       "nombre" -> Ecto.Changeset.change(usuario, %{nombre: valor})
@@ -109,6 +145,9 @@ end
     Repo.update(changeset)
   end
 
+  @doc """
+  Breve: toggle_activo.
+  """
   def toggle_activo(%Usuario{} = usuario) do
     if usuario.rol == "admin" && usuario.activo do
       admins_activos = Repo.one(from u in Usuario, where: u.rol == "admin" and u.activo == true, select: count(u.id))
@@ -147,6 +186,9 @@ defp do_toggle(usuario) do
   end
 end
 
+  @doc """
+  Breve: tiene_tickets_activos.
+  """
   def tiene_tickets_activos?(usuario_id) do
     query = from(t in AzarApp.Sorteos.Ticket,
       join: s in AzarApp.Sorteos.Sorteo, on: t.sorteo_id == s.id,
@@ -155,6 +197,9 @@ end
     Repo.exists?(query)
   end
 
+  @doc """
+  Breve: eliminar_usuario.
+  """
   def eliminar_usuario(%Usuario{} = usuario) do
     cond do
       usuario.rol == "admin" ->
@@ -173,6 +218,9 @@ end
   end
 
 
+@doc """
+Breve: recargar_saldo.
+"""
 def recargar_saldo(usuario, monto) do
   monto_d = decimal_seguro(monto)
   nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
@@ -206,6 +254,9 @@ def recargar_saldo(usuario, monto) do
   end
 end
 
+@doc """
+Breve: registrar_premio.
+"""
 def registrar_premio(usuario, monto, sorteo_id \\ nil) do
   monto_d = decimal_seguro(monto)
   nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
@@ -232,6 +283,9 @@ def registrar_premio(usuario, monto, sorteo_id \\ nil) do
   end
 end
 
+  @doc """
+  Breve: ajustar_saldo_admin.
+  """
   def ajustar_saldo_admin(%Usuario{} = usuario, monto) do
     try do
       monto_limpio =
@@ -289,6 +343,9 @@ end
     end
   end
 
+  @doc """
+  Breve: vaciar_cuenta_admin.
+  """
   def vaciar_cuenta_admin(%Usuario{} = usuario) do
     saldo_actual = usuario.saldo_virtual || Decimal.new(0)
 
@@ -317,6 +374,9 @@ end
     end
   end
 
+  @doc """
+  Breve: obtener_balance_personal.
+  """
   def obtener_balance_personal(%Usuario{} = usuario) do
     gastado = Repo.one(
       from t in AzarApp.Sorteos.Ticket,
@@ -356,6 +416,9 @@ end
     }
   end
 
+  @doc """
+  Breve: registrar_compra_ticket.
+  """
   def registrar_compra_ticket(usuario_id, sorteo_id, numero, monto) do
   %AzarApp.Cuentas.Transaccion{}
   |> AzarApp.Cuentas.Transaccion.changeset(%{
@@ -369,6 +432,9 @@ end
   |> Repo.insert()
 end
 
+@doc """
+Breve: registrar_devolucion_ticket.
+"""
 def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
   %AzarApp.Cuentas.Transaccion{}
   |> AzarApp.Cuentas.Transaccion.changeset(%{
@@ -382,6 +448,9 @@ def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
   |> Repo.insert()
 end
 
+@doc """
+Breve: listar_transacciones.
+"""
 def listar_transacciones(usuario_id) do
   Repo.all(
     from t in AzarApp.Cuentas.Transaccion,
@@ -396,6 +465,9 @@ defp decimal_seguro(%Decimal{} = v), do: v
 defp decimal_seguro(v), do: Decimal.new(to_string(v))
 
 
+@doc """
+Breve: limpiar_sistema_completo.
+"""
 def limpiar_sistema_completo() do
   emails_protegidos = ["admin@azar.com", "cliente@azar.com"]
 

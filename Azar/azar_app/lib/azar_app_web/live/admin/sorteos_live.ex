@@ -1,7 +1,14 @@
 defmodule AzarAppWeb.Admin.SorteosLive do
+  @moduledoc """
+  Módulo AzarAppWeb.Admin.SorteosLive: lógica relacionada con sorteoslive.
+  """
+
   use AzarAppWeb, :live_view
   alias AzarApp.Core.AdminCore
 
+  @doc """
+  Breve: mount.
+  """
   def mount(_params, _session, socket) do
     sorteos =
       case AdminCore.listar_sorteos() do
@@ -12,6 +19,9 @@ defmodule AzarAppWeb.Admin.SorteosLive do
     {:ok, assign(socket, sorteos: sorteos)}
   end
 
+  @doc """
+  Breve: handle_event.
+  """
   def handle_event("crear_sorteo", params, socket) do
     %{"nombre" => n, "fecha" => f, "valor" => v, "fracciones" => fr, "billetes" => b} = params
 
@@ -26,6 +36,9 @@ defmodule AzarAppWeb.Admin.SorteosLive do
     end
   end
 
+  @doc """
+  Breve: render.
+  """
   def render(assigns) do
     ~H"""
     <AzarAppWeb.AdminSidebar.sidebar current_page="sorteos">

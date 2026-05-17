@@ -3,6 +3,9 @@ defmodule AzarApp.BackupSync do
   use GenServer
   require Logger
 
+  @doc """
+  Breve: start_link.
+  """
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: __MODULE__)
 
   @impl true

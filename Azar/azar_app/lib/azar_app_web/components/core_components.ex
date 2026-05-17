@@ -13,6 +13,9 @@ defmodule AzarAppWeb.CoreComponents do
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
+  @doc """
+  Breve: flash.
+  """
   def flash(assigns) do
     assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
 
@@ -51,6 +54,9 @@ defmodule AzarAppWeb.CoreComponents do
   attr :variant, :string, default: "primary", values: ~w(primary secondary danger ghost outline default)
   slot :inner_block, required: true
 
+  @doc """
+  Breve: button.
+  """
   def button(%{rest: rest} = assigns) do
     variants = %{
       "primary" => "btn-primary text-primary-content shadow-lg shadow-primary/30",
@@ -101,6 +107,9 @@ defmodule AzarAppWeb.CoreComponents do
   attr :error_class, :any, default: nil
   attr :rest, :global, include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength multiple pattern placeholder readonly required rows size step)
 
+  @doc """
+  Breve: input.
+  """
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
@@ -112,12 +121,18 @@ defmodule AzarAppWeb.CoreComponents do
     |> input()
   end
 
+  @doc """
+  Breve: input.
+  """
   def input(%{type: "hidden"} = assigns) do
     ~H"""
     <input type="hidden" id={@id} name={@name} value={@value} {@rest} />
     """
   end
 
+  @doc """
+  Breve: input.
+  """
   def input(%{type: "checkbox"} = assigns) do
     assigns = assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value]) end)
     ~H"""
@@ -140,6 +155,9 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Breve: input.
+  """
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div class="fieldset mb-2 w-full">
@@ -164,6 +182,9 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Breve: input.
+  """
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div class="fieldset mb-2 w-full">
@@ -184,6 +205,9 @@ defmodule AzarAppWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Breve: input.
+  """
   def input(assigns) do
     ~H"""
     <div class="fieldset mb-2 w-full">
@@ -219,6 +243,9 @@ defmodule AzarAppWeb.CoreComponents do
   slot :subtitle
   slot :actions
 
+  @doc """
+  Breve: header.
+  """
   def header(assigns) do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", "pb-6"]}>
@@ -245,6 +272,9 @@ defmodule AzarAppWeb.CoreComponents do
   end
   slot :action
 
+  @doc """
+  Breve: table.
+  """
   def table(assigns) do
     assigns =
       with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
@@ -289,6 +319,9 @@ defmodule AzarAppWeb.CoreComponents do
     attr :title, :string, required: true
   end
 
+  @doc """
+  Breve: list.
+  """
   def list(assigns) do
     ~H"""
     <div class="bg-base-100 rounded-2xl border border-base-200 overflow-hidden shadow-sm">
@@ -305,12 +338,18 @@ defmodule AzarAppWeb.CoreComponents do
   attr :name, :string, required: true
   attr :class, :any, default: "size-5"
 
+  @doc """
+  Breve: icon.
+  """
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class, "inline-block align-middle"]} />
     """
   end
 
+  @doc """
+  Breve: show.
+  """
   def show(js \\ %JS{}, selector) do
     JS.show(js,
       to: selector,
@@ -322,6 +361,9 @@ defmodule AzarAppWeb.CoreComponents do
     )
   end
 
+  @doc """
+  Breve: hide.
+  """
   def hide(js \\ %JS{}, selector) do
     JS.hide(js,
       to: selector,
@@ -332,6 +374,9 @@ defmodule AzarAppWeb.CoreComponents do
     )
   end
 
+  @doc """
+  Breve: translate_error.
+  """
   def translate_error({msg, opts}) do
     if count = opts[:count] do
       Gettext.dngettext(AzarAppWeb.Gettext, "errors", msg, msg, count, opts)
@@ -340,6 +385,9 @@ defmodule AzarAppWeb.CoreComponents do
     end
   end
 
+  @doc """
+  Breve: translate_errors.
+  """
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end

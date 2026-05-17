@@ -4,6 +4,9 @@ defmodule AzarApp.Notificaciones do
   alias AzarApp.Repo
   alias AzarApp.Notificaciones.Notificacion
 
+  @doc """
+  Breve: crear_notificacion_premio.
+  """
   def crear_notificacion_premio(usuario_id, sorteo, ticket_numero, monto) do
     %Notificacion{}
     |> Notificacion.changeset(%{
@@ -17,6 +20,9 @@ defmodule AzarApp.Notificaciones do
     |> Repo.insert()
   end
 
+  @doc """
+  Breve: pendientes.
+  """
   def pendientes(usuario_id) do
     Notificacion
     |> where([n], n.usuario_id == ^usuario_id and n.leida == false)
@@ -25,6 +31,9 @@ defmodule AzarApp.Notificaciones do
     |> Repo.all()
   end
 
+  @doc """
+  Breve: marcar_como_leida.
+  """
   def marcar_como_leida(notificacion_id) do
     case Repo.get(Notificacion, notificacion_id) do
       nil -> {:error, :not_found}

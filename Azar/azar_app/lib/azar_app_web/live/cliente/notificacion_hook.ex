@@ -5,6 +5,9 @@ defmodule AzarAppWeb.Cliente.NotificacionHook do
   alias AzarApp.Notificaciones
   alias Phoenix.PubSub
 
+  @doc """
+  Breve: on_mount.
+  """
   def on_mount(:default, _params, session, socket) do
     usuario_id = session["usuario_id"]
 

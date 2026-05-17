@@ -1,4 +1,8 @@
 defmodule AzarApp.Premio do
+  @moduledoc """
+  Módulo AzarApp.Premio: lógica relacionada con premio.
+  """
+
   @enforce_keys [:id, :monto_bruto, :categoria]
   defstruct [
     :id,
@@ -13,6 +17,9 @@ defmodule AzarApp.Premio do
 
 
 
+  @doc """
+  Breve: nuevo.
+  """
   def nuevo(id, monto, categoria) when monto > 0 do
 
     impuesto = monto * 0.20
@@ -26,5 +33,8 @@ defmodule AzarApp.Premio do
     }}
   end
 
+  @doc """
+  Breve: nuevo.
+  """
   def nuevo(_, _, _), do: {:error, :datos_invalidos}
 end

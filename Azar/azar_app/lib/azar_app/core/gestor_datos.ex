@@ -1,11 +1,21 @@
 defmodule AzarApp.Core.GestorDatos do
+  @moduledoc """
+  Módulo AzarApp.Core.GestorDatos: lógica relacionada con gestordatos.
+  """
+
   @carpeta_datos "priv/data"
   @archivo_bitacora "#{@carpeta_datos}/bitacora.txt"
 
+  @doc """
+  Breve: inicializar.
+  """
   def inicializar do
     File.mkdir_p!(@carpeta_datos)
   end
 
+  @doc """
+  Breve: guardar_sorteo_json.
+  """
   def guardar_sorteo_json(nombre_sorteo, estado_sorteo) do
     inicializar()
     ruta = "#{@carpeta_datos}/#{nombre_sorteo}.json"
@@ -13,6 +23,9 @@ defmodule AzarApp.Core.GestorDatos do
     File.write(ruta, contenido_json)
   end
 
+  @doc """
+  Breve: cargar_sorteo_json.
+  """
   def cargar_sorteo_json(nombre_sorteo) do
     ruta = "#{@carpeta_datos}/#{nombre_sorteo}.json"
 
@@ -24,6 +37,9 @@ defmodule AzarApp.Core.GestorDatos do
     end
   end
 
+  @doc """
+  Breve: registrar_bitacora.
+  """
   def registrar_bitacora(solicitud, resultado) do
     inicializar()
     fecha_hora = NaiveDateTime.local_now() |> NaiveDateTime.to_string()

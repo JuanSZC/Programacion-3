@@ -7,31 +7,52 @@ defmodule AzarApp.Sorteos do
   alias AzarApp.Cuentas
 
 
+  @doc """
+  Breve: get_sorteo.
+  """
   def get_sorteo!(id), do: Repo.get!(Sorteo, id) |> Repo.preload([:tickets])
 
+  @doc """
+  Breve: get_sorteo_con_tickets.
+  """
   def get_sorteo_con_tickets!(id) do
     Sorteo
     |> Repo.get!(id)
     |> Repo.preload(tickets: [:usuario])
   end
 
+  @doc """
+  Breve: list_sorteos.
+  """
   def list_sorteos do
     Sorteo |> order_by(desc: :inserted_at) |> Repo.all()
   end
 
+  @doc """
+  Breve: list_sorteos_futuros.
+  """
   def list_sorteos_futuros do
     Repo.all(from s in Sorteo, where: s.estado == "activo", order_by: [asc: :inserted_at])
   end
 
+  @doc """
+  Breve: list_sorteos_pasados.
+  """
   def list_sorteos_pasados do
     Repo.all(from s in Sorteo, where: s.estado in ["finalizado", "cancelado"], order_by: [desc: :inserted_at])
   end
 
+  @doc """
+  Breve: list_sorteos_disponibles.
+  """
   def list_sorteos_disponibles do
     Repo.all(from s in Sorteo, where: s.estado == "activo")
   end
 
 
+  @doc """
+  Breve: comprar_ticket.
+  """
   def comprar_ticket(usuario, sorteo, numero_ticket) do
   if sorteo.estado != "activo" do
     {:error, "Este sorteo ya no acepta compras"}
@@ -124,21 +145,33 @@ defmodule AzarApp.Sorteos do
   end
 end
 
+  @doc """
+  Breve: list_tickets_por_usuario.
+  """
   def list_tickets_por_usuario(usuario_id) do
     Repo.all(from t in Ticket, where: t.usuario_id == ^usuario_id, preload: [:sorteo], order_by: [desc: t.inserted_at])
   end
 
 
+  @doc """
+  Breve: recaudo_actual.
+  """
   def recaudo_actual(sorteo) do
     vendidos = tickets_vendidos_count(sorteo)
     precio = decimal_seguro(sorteo.precio_ticket)
     Decimal.mult(Decimal.new(vendidos), precio)
   end
 
+  @doc """
+  Breve: tickets_vendidos_count.
+  """
   def tickets_vendidos_count(sorteo) do
     Repo.aggregate(from(t in Ticket, where: t.sorteo_id == ^sorteo.id and t.estado == "vendido"), :count, :id) || 0
   end
 
+  @doc """
+  Breve: premio_actual.
+  """
   def premio_actual(sorteo) do
     if sorteo.tipo_premio == "fijo" do
       decimal_seguro(sorteo.premio_fijo)
@@ -149,6 +182,9 @@ end
     end
   end
 
+  @doc """
+  Breve: puede_jugar_ahora.
+  """
   def puede_jugar_ahora?(sorteo) do
     if sorteo.estado != "activo" do
       false
@@ -163,6 +199,9 @@ end
     end
   end
 
+  @doc """
+  Breve: razon_no_puede_jugar.
+  """
   def razon_no_puede_jugar(sorteo) do
     cond do
       sorteo.estado != "activo" ->
@@ -177,6 +216,9 @@ end
   end
 
 
+  @doc """
+  Breve: realizar_sorteo.
+  """
   def realizar_sorteo!(sorteo) do
     cond do
       sorteo.estado != "activo" -> {:error, "El sorteo no está activo"}
@@ -210,6 +252,9 @@ end
     end
   end
 
+  @doc """
+  Breve: cancelar_sorteo.
+  """
   def cancelar_sorteo(sorteo, motivo \\ "Condiciones mínimas no alcanzadas") do
     if sorteo.estado != "activo" do
       {:error, "Solo se pueden cancelar sorteos activos"}
@@ -233,6 +278,9 @@ end
     end
   end
 
+  @doc """
+  Breve: verificar_y_cancelar_expirados.
+  """
   def verificar_y_cancelar_expirados do
     ahora = NaiveDateTime.utc_now()
     sorteos_vencidos = Repo.all(from s in Sorteo, where: s.estado == "activo" and not is_nil(s.fecha_ejecucion) and s.fecha_ejecucion <= ^ahora)
@@ -248,6 +296,9 @@ end
   end
 
 
+  @doc """
+  Breve: create_sorteo.
+  """
   def create_sorteo(attrs \\ %{}) do
     case Repo.transaction(fn ->
       case %Sorteo{} |> Sorteo.changeset(attrs) |> Repo.insert() do
@@ -274,7 +325,13 @@ end
     end
   end
 
+  @doc """
+  Breve: update_sorteo.
+  """
   def update_sorteo(s, attrs), do: s |> Sorteo.changeset(attrs) |> Repo.update()
+  @doc """
+  Breve: delete_sorteo.
+  """
   def delete_sorteo(s) do
     case Repo.delete(s) do
       {:ok, sorteo} ->
@@ -287,6 +344,9 @@ end
       error -> error
     end
   end
+  @doc """
+  Breve: change_sorteo.
+  """
   def change_sorteo(s, attrs \\ %{}), do: Sorteo.changeset(s, attrs)
 
 
@@ -323,6 +383,9 @@ defp notificar_ganadores(ganadores, sorteo, premio_por_ganador) do
   end)
 end
 
+  @doc """
+  Breve: devolver_ticket.
+  """
   def devolver_ticket(usuario, ticket_id) do
   ticket = Repo.get!(Ticket, ticket_id) |> Repo.preload(:sorteo)
 

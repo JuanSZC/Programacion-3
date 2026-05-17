@@ -1,4 +1,8 @@
 defmodule AzarApp.Cuentas.Usuario do
+  @moduledoc """
+  Módulo AzarApp.Cuentas.Usuario: lógica relacionada con usuario.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -21,6 +25,9 @@ defmodule AzarApp.Cuentas.Usuario do
     timestamps(type: :utc_datetime)
   end
 
+  @doc """
+  Breve: registration_changeset.
+  """
   def registration_changeset(usuario, attrs) do
     usuario
     |> cast(attrs, [:email, :password, :nombre, :cedula, :edad, :rol, :saldo_virtual, :total_recargado, :total_gastado, :total_ganado])
@@ -31,6 +38,9 @@ defmodule AzarApp.Cuentas.Usuario do
     |> hash_password()
   end
 
+  @doc """
+  Breve: update_changeset.
+  """
   def update_changeset(usuario, attrs) do
     usuario
     |> cast(attrs, [:nombre, :edad, :cedula, :activo, :ultimo_login, :saldo_virtual, :total_recargado, :total_gastado, :total_ganado])
@@ -48,6 +58,9 @@ defmodule AzarApp.Cuentas.Usuario do
   end
   defp hash_password(changeset), do: changeset
 
+  @doc """
+  Breve: changeset_admin.
+  """
   def changeset_admin(usuario, params) do
   usuario
   |> cast(params, [:nombre, :cedula, :email])
