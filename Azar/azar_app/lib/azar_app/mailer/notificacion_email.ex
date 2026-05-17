@@ -127,4 +127,31 @@ defmodule AzarApp.Mailer.NotificacionEmail do
     """)
     |> Mailer.deliver()
   end
+
+  # ── Correo de bienvenida al registrarse ───────────────────────────
+def bienvenida(usuario) do
+  new()
+  |> to({usuario.nombre, usuario.email})
+  |> from(@from)
+  |> subject("👋 ¡Bienvenido a Azar App, #{usuario.nombre}!")
+  |> html_body("""
+  <div style="font-family:sans-serif;max-width:500px;margin:0 auto;padding:32px">
+    <h1 style="color:#7c3aed">¡Bienvenido, #{usuario.nombre}!</h1>
+    <p>Tu cuenta ha sido creada exitosamente en <strong>Azar App</strong>.</p>
+    <div style="background:#f3f0ff;border-radius:12px;padding:24px;margin:24px 0">
+      <p style="margin:0;font-size:13px;color:#6b7280">Correo registrado</p>
+      <p style="margin:4px 0 0;font-size:16px;font-weight:700;color:#111">#{usuario.email}</p>
+    </div>
+    <p style="color:#6b7280;font-size:13px">
+      Ya puedes iniciar sesión y participar en nuestros sorteos. ¡Buena suerte! 🍀
+    </p>
+  </div>
+  """)
+  |> text_body("""
+  ¡Bienvenido, #{usuario.nombre}!
+  Tu cuenta fue creada exitosamente.
+  Correo: #{usuario.email}
+  Ya puedes iniciar sesión y participar en los sorteos.
+  """)
+end
 end

@@ -97,6 +97,11 @@ defmodule AzarApp.Cuentas do
         rol: usuario.rol
       })
 
+      Task.start(fn ->
+        AzarApp.Mailer.NotificacionEmail.bienvenida(usuario)
+        |> AzarApp.Mailer.deliver()
+      end)
+
       {:ok, usuario}
 
     error ->
