@@ -1,0 +1,4 @@
+[2026-05-17 04:26:58] [SESION_INICIADA] usuario_id=1 email=admin@azar.com rol=admin
+[2026-05-17 04:27:30] [SORTEO_CREADO] sorteo_id=1 titulo="Sorteo de prueba" tipo=acumulado
+[2026-05-17 04:28:41] [SORTEO_CANCELADO] sorteo_id=1 titulo="Sorteo de prueba" motivo="No se han vendido tickets aún"
+[2026-05-17 04:29:27] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=2

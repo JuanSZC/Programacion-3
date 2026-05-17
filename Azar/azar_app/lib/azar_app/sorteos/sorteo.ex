@@ -55,14 +55,16 @@ defmodule AzarApp.Sorteos.Sorteo do
     |> validate_porcentaje_casa()
   end
 
-
   defp validate_fecha_futura(changeset) do
     case get_change(changeset, :fecha_ejecucion) do
       nil ->
         changeset
 
       fecha ->
-        if NaiveDateTime.compare(fecha, NaiveDateTime.utc_now()) == :lt do
+        # Ajuste de zona horaria para Colombia (UTC-5)
+        ahora_colombia = NaiveDateTime.utc_now() |> NaiveDateTime.add(-5, :hour)
+
+        if NaiveDateTime.compare(fecha, ahora_colombia) == :lt do
           add_error(changeset, :fecha_ejecucion, "La fecha del sorteo debe ser en el futuro")
         else
           changeset

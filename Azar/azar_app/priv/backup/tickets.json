@@ -1,1 +1,802 @@
-[]
+[
+  {
+    "id": 1,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "1",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 2,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "2",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 3,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "3",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 4,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "4",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 5,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "5",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 6,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "6",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 7,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "7",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 8,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "8",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 9,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "9",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 10,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "10",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 11,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "11",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 12,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "12",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 13,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "13",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 14,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "14",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 15,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "15",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 16,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "16",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 17,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "17",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 18,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "18",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 19,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "19",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 20,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "20",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 21,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "21",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 22,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "22",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 23,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "23",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 24,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "24",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 25,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "25",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 26,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "26",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 27,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "27",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 28,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "28",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 29,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "29",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 30,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "30",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 31,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "31",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 32,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "32",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 33,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "33",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 34,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "34",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 35,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "35",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 36,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "36",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 37,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "37",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 38,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "38",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 39,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "39",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 40,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "40",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 41,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "41",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 42,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "42",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 43,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "43",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 44,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "44",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 45,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "45",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 46,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "46",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 47,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "47",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 48,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "48",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 49,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "49",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 50,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "50",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 51,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "51",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 52,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "52",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 53,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "53",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 54,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "54",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 55,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "55",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 56,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "56",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 57,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "57",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 58,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "58",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 59,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "59",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 60,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "60",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 61,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "61",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 62,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "62",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 63,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "63",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 64,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "64",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 65,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "65",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 66,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "66",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 67,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "67",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 68,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "68",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 69,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "69",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 70,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "70",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 71,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "71",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 72,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "72",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 73,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "73",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 74,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "74",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 75,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "75",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 76,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "76",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 77,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "77",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 78,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "78",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 79,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "79",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 80,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "80",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 81,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "81",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 82,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "82",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 83,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "83",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 84,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "84",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 85,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "85",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 86,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "86",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 87,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "87",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 88,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "88",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 89,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "89",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 90,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "90",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 91,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "91",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 92,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "92",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 93,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "93",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 94,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "94",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 95,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "95",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 96,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "96",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 97,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "97",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 98,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "98",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 99,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "99",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  },
+  {
+    "id": 100,
+    "estado": "disponible",
+    "sorteo_id": 1,
+    "numero": "100",
+    "usuario_id": null,
+    "insertado": "2026-05-17 04:27:30"
+  }
+]

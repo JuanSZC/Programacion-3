@@ -6,7 +6,6 @@ defmodule AzarApp.Sorteos do
   alias AzarApp.Sorteos.{Sorteo, Ticket}
   alias AzarApp.Cuentas
 
-
   @doc """
   Breve: get_sorteo.
   """
@@ -49,101 +48,88 @@ defmodule AzarApp.Sorteos do
     Repo.all(from s in Sorteo, where: s.estado == "activo")
   end
 
-
   @doc """
   Breve: comprar_ticket.
   """
   def comprar_ticket(usuario, sorteo, numero_ticket) do
-  if sorteo.estado != "activo" do
-    {:error, "Este sorteo ya no acepta compras"}
-  else
-    Ecto.Multi.new()
-    |> Ecto.Multi.run(:usuario, fn repo, _ ->
-      case repo.one(
-             from u in Cuentas.Usuario,
-             where: u.id == ^usuario.id,
-             lock: "FOR UPDATE"
-           ) do
-        nil -> {:error, "Usuario no encontrado"}
-        u -> {:ok, u}
-      end
-    end)
-    |> Ecto.Multi.run(:ticket, fn repo, _ ->
-      query =
-        from t in Ticket,
-          where:
-            t.sorteo_id == ^sorteo.id and
-              t.numero == ^to_string(numero_ticket) and
-              t.estado == "disponible",
-          lock: "FOR UPDATE"
+    if sorteo.estado != "activo" do
+      {:error, "Este sorteo ya no acepta compras"}
+    else
+      Ecto.Multi.new()
+      |> Ecto.Multi.run(:usuario, fn repo, _ ->
+        case repo.one(
+               from u in Cuentas.Usuario,
+               where: u.id == ^usuario.id,
+               lock: "FOR UPDATE"
+             ) do
+          nil -> {:error, "Usuario no encontrado"}
+          u -> {:ok, u}
+        end
+      end)
+      |> Ecto.Multi.run(:ticket, fn repo, _ ->
+        query =
+          from t in Ticket,
+            where:
+              t.sorteo_id == ^sorteo.id and
+                t.numero == ^to_string(numero_ticket) and
+                t.estado == "disponible",
+            lock: "FOR UPDATE"
 
-      case repo.one(query) do
-        nil -> {:error, "El ticket #{numero_ticket} ya fue vendido o no existe"}
-        t -> {:ok, t}
-      end
-    end)
-    |> Ecto.Multi.run(:cobro, fn _repo, %{usuario: u} ->
-      precio = decimal_seguro(sorteo.precio_ticket)
-      saldo_actual = decimal_seguro(u.saldo_virtual)
+        case repo.one(query) do
+          nil -> {:error, "El ticket #{numero_ticket} ya fue vendido o no existe"}
+          t -> {:ok, t}
+        end
+      end)
+      |> Ecto.Multi.run(:cobro, fn _repo, %{usuario: u} ->
+        precio = decimal_seguro(sorteo.precio_ticket)
+        saldo_actual = decimal_seguro(u.saldo_virtual)
 
-      if Decimal.compare(saldo_actual, precio) in [:gt, :eq] do
-        nuevo_saldo = Decimal.sub(saldo_actual, precio)
+        if Decimal.compare(saldo_actual, precio) in [:gt, :eq] do
+          nuevo_saldo = Decimal.sub(saldo_actual, precio)
+          nuevo_gastado = Decimal.add(decimal_seguro(u.total_gastado), precio)
 
-        nuevo_gastado =
-          Decimal.add(decimal_seguro(u.total_gastado), precio)
-
-        Cuentas.actualizar_usuario(u, %{
-          saldo_virtual: nuevo_saldo,
-          total_gastado: nuevo_gastado
-        })
-      else
-        {:error, "Saldo insuficiente. Necesitas $#{precio}"}
-      end
-    end)
-    |> Ecto.Multi.run(:asignar_ticket, fn repo, %{ticket: t, usuario: u} ->
-      repo.update(
-        Ticket.changeset(t, %{
-          usuario_id: u.id,
-          estado: "vendido"
-        })
-      )
-    end)
-    |> Ecto.Multi.run(:registrar_transaccion, fn _repo, %{usuario: u, ticket: t} ->
-      AzarApp.Cuentas.registrar_compra_ticket(
-        u.id,
-        sorteo.id,
-        t.numero,
-        sorteo.precio_ticket
-      )
-    end)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{asignar_ticket: ticket}} ->
-        AzarApp.Auditoria.log(:ticket_comprado, %{
-  usuario_id: usuario.id,
-  sorteo_id: sorteo.id,
-  numero: ticket.numero,
-  monto: sorteo.precio_ticket
-})
-        Phoenix.PubSub.broadcast(
-          AzarApp.PubSub,
-          "sorteo:#{sorteo.id}",
-          :ticket_comprado
+          Cuentas.actualizar_usuario(u, %{
+            saldo_virtual: nuevo_saldo,
+            total_gastado: nuevo_gastado
+          })
+        else
+          {:error, "Saldo insuficiente. Necesitas $#{precio}"}
+        end
+      end)
+      |> Ecto.Multi.run(:asignar_ticket, fn repo, %{ticket: t, usuario: u} ->
+        repo.update(
+          Ticket.changeset(t, %{
+            usuario_id: u.id,
+            estado: "vendido"
+          })
         )
-
-        Phoenix.PubSub.broadcast(
-          AzarApp.PubSub,
-          "sorteos",
-          :lista_actualizada
+      end)
+      |> Ecto.Multi.run(:registrar_transaccion, fn _repo, %{usuario: u, ticket: t} ->
+        AzarApp.Cuentas.registrar_compra_ticket(
+          u.id,
+          sorteo.id,
+          t.numero,
+          sorteo.precio_ticket
         )
+      end)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{asignar_ticket: ticket}} ->
+          AzarApp.Auditoria.log(:ticket_comprado, %{
+            usuario_id: usuario.id,
+            sorteo_id: sorteo.id,
+            numero: ticket.numero,
+            monto: sorteo.precio_ticket
+          })
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo.id}", :ticket_comprado)
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
+          {:ok, ticket}
 
-        {:ok, ticket}
-
-      {:error, _op, razon, _} ->
-        {:error, razon}
+        {:error, _op, razon, _} ->
+          {:error, razon}
+      end
     end
   end
-end
 
   @doc """
   Breve: list_tickets_por_usuario.
@@ -151,7 +137,6 @@ end
   def list_tickets_por_usuario(usuario_id) do
     Repo.all(from t in Ticket, where: t.usuario_id == ^usuario_id, preload: [:sorteo], order_by: [desc: t.inserted_at])
   end
-
 
   @doc """
   Breve: recaudo_actual.
@@ -215,7 +200,6 @@ end
     end
   end
 
-
   @doc """
   Breve: realizar_sorteo.
   """
@@ -238,11 +222,11 @@ end
         case resultado do
           {:ok, %{sorteo: sorteo_actualizado}} ->
             AzarApp.Auditoria.log(:sorteo_ejecutado, %{
-  sorteo_id: sorteo_actualizado.id,
-  titulo: sorteo_actualizado.titulo,
-  ganadores: sorteo_actualizado.numeros_ganadores,
-  premio: premio_por_ganador
-})
+              sorteo_id: sorteo_actualizado.id,
+              titulo: sorteo_actualizado.titulo,
+              ganadores: sorteo_actualizado.numeros_ganadores,
+              premio: premio_por_ganador
+            })
             notificar_ganadores(ganadores, sorteo_actualizado, premio_por_ganador)
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo_actualizado.id}", :sorteo_ejecutado)
             Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
@@ -268,10 +252,10 @@ end
       |> case do
         {:ok, %{sorteo: sorteo_cancelado}} ->
           AzarApp.Auditoria.log(:sorteo_cancelado, %{
-  sorteo_id: sorteo_cancelado.id,
-  titulo: sorteo_cancelado.titulo,
-  motivo: motivo
-})
+            sorteo_id: sorteo_cancelado.id,
+            titulo: sorteo_cancelado.titulo,
+            motivo: motivo
+          })
           {:ok, sorteo_cancelado}
         {:error, _op, razon, _} -> {:error, razon}
       end
@@ -282,8 +266,9 @@ end
   Breve: verificar_y_cancelar_expirados.
   """
   def verificar_y_cancelar_expirados do
-    ahora = NaiveDateTime.utc_now()
-    sorteos_vencidos = Repo.all(from s in Sorteo, where: s.estado == "activo" and not is_nil(s.fecha_ejecucion) and s.fecha_ejecucion <= ^ahora)
+    # Ajuste de zona horaria para Colombia (UTC-5)
+    ahora_colombia = NaiveDateTime.utc_now() |> NaiveDateTime.add(-5, :hour)
+    sorteos_vencidos = Repo.all(from s in Sorteo, where: s.estado == "activo" and not is_nil(s.fecha_ejecucion) and s.fecha_ejecucion <= ^ahora_colombia)
 
     Enum.each(sorteos_vencidos, fn sorteo ->
       if puede_jugar_ahora?(sorteo) do
@@ -295,7 +280,6 @@ end
     {:ok, length(sorteos_vencidos)}
   end
 
-
   @doc """
   Breve: create_sorteo.
   """
@@ -304,10 +288,10 @@ end
       case %Sorteo{} |> Sorteo.changeset(attrs) |> Repo.insert() do
         {:ok, sorteo} ->
           AzarApp.Auditoria.log(:sorteo_creado, %{
-  sorteo_id: sorteo.id,
-  titulo: sorteo.titulo,
-  tipo: sorteo.tipo_premio
-})
+            sorteo_id: sorteo.id,
+            titulo: sorteo.titulo,
+            tipo: sorteo.tipo_premio
+          })
 
           ahora = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
           tickets = Enum.map(1..sorteo.total_tickets, fn num ->
@@ -336,9 +320,9 @@ end
     case Repo.delete(s) do
       {:ok, sorteo} ->
         AzarApp.Auditoria.log(:sorteo_eliminado, %{
-  sorteo_id: s.id,
-  titulo: s.titulo
-})
+          sorteo_id: s.id,
+          titulo: s.titulo
+        })
         Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_eliminado, sorteo})
         {:ok, sorteo}
       error -> error
@@ -349,7 +333,6 @@ end
   """
   def change_sorteo(s, attrs \\ %{}), do: Sorteo.changeset(s, attrs)
 
-
   defp pagar_ganadores_multi(multi, ganadores, premio_por_ganador) do
     Enum.reduce(ganadores, multi, fn ticket, acc ->
       Ecto.Multi.run(acc, {:pagar, ticket.id}, fn _repo, _ -> Cuentas.registrar_premio(ticket.usuario, premio_por_ganador) end)
@@ -358,80 +341,81 @@ end
 
   defp reembolsar_compradores_multi(multi, tickets, precio_ticket) do
     Enum.reduce(tickets, multi, fn ticket, acc ->
-      Ecto.Multi.run(acc, {:reembolso, ticket.id}, fn _repo, _ -> Cuentas.recargar_saldo(ticket.usuario, precio_ticket)
-    AzarApp.Auditoria.log(:devolucion_cancelacion, %{
-  usuario_id: ticket.usuario_id,
-  sorteo_id: ticket.sorteo_id,
-  monto: precio_ticket
-})
-    end)
+      Ecto.Multi.run(acc, {:reembolso, ticket.id}, fn _repo, _ ->
+        Cuentas.recargar_saldo(ticket.usuario, precio_ticket)
+        AzarApp.Auditoria.log(:devolucion_cancelacion, %{
+          usuario_id: ticket.usuario_id,
+          sorteo_id: ticket.sorteo_id,
+          monto: precio_ticket
+        })
+      end)
     end)
   end
 
-defp notificar_ganadores(ganadores, sorteo, premio_por_ganador) do
-  Enum.each(ganadores, fn ticket ->
-    AzarApp.Auditoria.log(:premio_pagado, %{
-      usuario_id: ticket.usuario_id,
-      sorteo_id: sorteo.id,
-      monto: premio_por_ganador
-    })
+  defp notificar_ganadores(ganadores, sorteo, premio_por_ganador) do
+    Enum.each(ganadores, fn ticket ->
+      AzarApp.Auditoria.log(:premio_pagado, %{
+        usuario_id: ticket.usuario_id,
+        sorteo_id: sorteo.id,
+        monto: premio_por_ganador
+      })
 
-    case AzarApp.Notificaciones.crear_notificacion_premio(ticket.usuario_id, sorteo, ticket.numero, premio_por_ganador) do
-      {:ok, notif} -> Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{ticket.usuario_id}", {:premio_ganado, Repo.preload(notif, :sorteo)})
-      {:error, _} -> :ok
-    end
-  end)
-end
+      case AzarApp.Notificaciones.crear_notificacion_premio(ticket.usuario_id, sorteo, ticket.numero, premio_por_ganador) do
+        {:ok, notif} -> Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{ticket.usuario_id}", {:premio_ganado, Repo.preload(notif, :sorteo)})
+        {:error, _} -> :ok
+      end
+    end)
+  end
 
   @doc """
   Breve: devolver_ticket.
   """
   def devolver_ticket(usuario, ticket_id) do
-  ticket = Repo.get!(Ticket, ticket_id) |> Repo.preload(:sorteo)
+    ticket = Repo.get!(Ticket, ticket_id) |> Repo.preload(:sorteo)
 
-  cond do
-    ticket.usuario_id != usuario.id ->
-      {:error, "Este ticket no te pertenece"}
+    cond do
+      ticket.usuario_id != usuario.id ->
+        {:error, "Este ticket no te pertenece"}
 
-    ticket.estado != "vendido" ->
-      {:error, "Este ticket no está vendido"}
+      ticket.estado != "vendido" ->
+        {:error, "Este ticket no está vendido"}
 
-    ticket.sorteo.estado != "activo" ->
-      {:error, "No se puede devolver: el sorteo ya fue #{ticket.sorteo.estado}"}
+      ticket.sorteo.estado != "activo" ->
+        {:error, "No se puede devolver: el sorteo ya fue #{ticket.sorteo.estado}"}
 
-    true ->
-      precio = decimal_seguro(ticket.sorteo.precio_ticket)
+      true ->
+        precio = decimal_seguro(ticket.sorteo.precio_ticket)
 
-      Ecto.Multi.new()
-      |> Ecto.Multi.update(:ticket, Ticket.changeset(ticket, %{estado: "disponible", usuario_id: nil}))
-      |> Ecto.Multi.run(:reembolso, fn _repo, _ ->
-          usuario_fresco = Cuentas.obtener_usuario!(usuario.id)
-          nuevo_saldo   = Decimal.add(decimal_seguro(usuario_fresco.saldo_virtual), precio)
-          nuevo_gastado = Decimal.sub(decimal_seguro(usuario_fresco.total_gastado), precio)
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(:ticket, Ticket.changeset(ticket, %{estado: "disponible", usuario_id: nil}))
+        |> Ecto.Multi.run(:reembolso, fn _repo, _ ->
+            usuario_fresco = Cuentas.obtener_usuario!(usuario.id)
+            nuevo_saldo   = Decimal.add(decimal_seguro(usuario_fresco.saldo_virtual), precio)
+            nuevo_gastado = Decimal.sub(decimal_seguro(usuario_fresco.total_gastado), precio)
 
-          Cuentas.actualizar_usuario(usuario_fresco, %{
-            saldo_virtual: nuevo_saldo,
-            total_gastado: nuevo_gastado
-          })
-        end)
-      |> Ecto.Multi.run(:transaccion, fn _repo, _ ->
-          Cuentas.registrar_devolucion_ticket(usuario.id, ticket.sorteo_id, ticket.numero, precio)
-        end)
-      |> Repo.transaction()
-      |> case do
-          {:ok, _} ->
-            AzarApp.Auditoria.log(:ticket_devuelto, %{
-  usuario_id: usuario.id,
-  sorteo_id: ticket.sorteo_id,
-  numero: ticket.numero,
-  monto: precio
-})
-            Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{ticket.sorteo_id}", :ticket_comprado)
-            {:ok, ticket}
-          {:error, _, razon, _} -> {:error, razon}
-        end
+            Cuentas.actualizar_usuario(usuario_fresco, %{
+              saldo_virtual: nuevo_saldo,
+              total_gastado: nuevo_gastado
+            })
+          end)
+        |> Ecto.Multi.run(:transaccion, fn _repo, _ ->
+            Cuentas.registrar_devolucion_ticket(usuario.id, ticket.sorteo_id, ticket.numero, precio)
+          end)
+        |> Repo.transaction()
+        |> case do
+            {:ok, _} ->
+              AzarApp.Auditoria.log(:ticket_devuelto, %{
+                usuario_id: usuario.id,
+                sorteo_id: ticket.sorteo_id,
+                numero: ticket.numero,
+                monto: precio
+              })
+              Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{ticket.sorteo_id}", :ticket_comprado)
+              {:ok, ticket}
+            {:error, _, razon, _} -> {:error, razon}
+          end
+    end
   end
-end
 
   defp decimal_seguro(nil), do: Decimal.new(0)
   defp decimal_seguro(%Decimal{} = val), do: val
@@ -439,6 +423,4 @@ end
 
   defp calcular_premio_dividido(total, cantidad) when cantidad > 1, do: Decimal.div(total, Decimal.new(cantidad)) |> Decimal.round(0)
   defp calcular_premio_dividido(total, _), do: total
-
-
 end

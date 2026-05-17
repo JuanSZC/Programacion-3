@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": 1,
+    "titulo": "Sorteo de prueba",
+    "tipo_premio": "acumulado",
+    "estado": "activo",
+    "descripcion": "Pruebita!!!!",
+    "precio_ticket": "5000",
+    "total_tickets": 100,
+    "cantidad_ganadores": 1,
+    "premio_fijo": "",
+    "porcentaje_casa": 30,
+    "numeros_ganadores": [],
+    "fecha_ejecucion": "2026-05-16 23:28:00",
+    "insertado": "2026-05-17 04:27:30"
+  }
+]
