@@ -14,7 +14,7 @@
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
     "insertado": "2026-05-17 17:12:58Z",
-    "sorteo_id": 2,
+    "sorteo_id": null,
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "10"
@@ -24,7 +24,7 @@
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
     "insertado": "2026-05-17 17:12:58Z",
-    "sorteo_id": 2,
+    "sorteo_id": null,
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "10"
@@ -34,7 +34,7 @@
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
     "insertado": "2026-05-17 17:12:58Z",
-    "sorteo_id": 2,
+    "sorteo_id": null,
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "10"
@@ -44,7 +44,7 @@
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
     "insertado": "2026-05-17 17:12:58Z",
-    "sorteo_id": 2,
+    "sorteo_id": null,
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "10"
@@ -54,7 +54,7 @@
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
     "insertado": "2026-05-17 17:12:58Z",
-    "sorteo_id": 2,
+    "sorteo_id": null,
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "10"
@@ -64,7 +64,7 @@
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
     "insertado": "2026-05-17 17:12:58Z",
-    "sorteo_id": 2,
+    "sorteo_id": null,
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "10"

@@ -88,7 +88,8 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
 
     case Cuentas.eliminar_usuario(usuario) do
       {:error, msg} ->
-        {:noreply, put_flash(socket, :error, "❌ #{msg}")}
+        # Asignamos el error a la variable para disparar el modal
+        {:noreply, assign(socket, :error_usuario, msg)}
       {:ok, _} ->
         Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{id}", :forzar_logout)
         base = refrescar_base(socket.assigns.query)
@@ -126,9 +127,78 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
   defp ordenar(us, _), do: us
 
   @impl true
+  def handle_event("cerrar_error_usuario", _, socket) do
+    {:noreply, assign(socket, :error_usuario, nil)}
+  end
+
+
+@impl true
   def render(assigns) do
     ~H"""
     <AzarAppWeb.AdminSidebar.sidebar current_page="usuarios">
+
+      <%!-- MODAL DE ERROR (Aparece si @error_usuario tiene contenido) --%>
+      <%= if @error_usuario do %>
+        <div
+          id="modal-error-usuario"
+          class="fixed inset-0 z-[200] flex items-center justify-center px-4"
+          phx-mounted={JS.transition("animate-in fade-in zoom-in-95 duration-300")}
+        >
+          <%!-- Fondo oscuro difuminado --%>
+          <div class="absolute inset-0 bg-base-300/80 backdrop-blur-md"></div>
+
+          <%!-- Tarjeta del modal --%>
+          <div class="relative bg-base-100/95 backdrop-blur-3xl border border-error/30 rounded-[3rem] p-8 md:p-12 w-full max-w-md shadow-2xl shadow-error/20 text-center overflow-hidden">
+
+            <%!-- Brillo decorativo rojo --%>
+            <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-error/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+            <%!-- Ícono animado --%>
+            <div class="relative inline-flex mb-6">
+              <div class="absolute inset-0 bg-error/30 rounded-full blur-xl animate-pulse"></div>
+              <div class="relative bg-error/10 border-2 border-error/30 rounded-full p-6">
+                <.icon name="hero-exclamation-triangle-solid" class="size-14 text-error" />
+              </div>
+            </div>
+
+            <%!-- Etiqueta superior --%>
+            <div class="mb-2 inline-flex items-center gap-2 bg-error/10 px-4 py-1.5 rounded-full border border-error/20">
+              <div class="size-2 bg-error rounded-full animate-pulse"></div>
+              <span class="text-[10px] font-black uppercase tracking-[0.3em] text-error">Acción Denegada</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-base-content mt-3 mb-2">
+              Usuario Activo
+            </h2>
+
+            <%!-- Mensaje de la excepción --%>
+            <p class="text-base-content/80 text-sm font-bold mb-6">
+              <%= @error_usuario %>
+            </p>
+
+            <%!-- Detalle informativo extra --%>
+            <div class="bg-error/5 rounded-2xl p-4 border border-error/10 text-left mb-6 space-y-2">
+              <span class="text-[11px] font-black uppercase tracking-widest text-error/70 flex items-center gap-2">
+                <.icon name="hero-information-circle" class="size-4" />
+                Razón del bloqueo
+              </span>
+              <p class="text-xs text-base-content/70 leading-relaxed">
+                Este usuario posee participaciones activas en sorteos vigentes. Para proceder, debes esperar a que los sorteos finalicen.
+              </p>
+            </div>
+
+            <%!-- Botón de cerrar --%>
+            <button
+              phx-click="cerrar_error_usuario"
+              class="btn btn-error w-full h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-error/30 hover:-translate-y-1 hover:shadow-error/40 transition-all"
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      <% end %>
+
+      <%!-- CONTENIDO PRINCIPAL DE LA VISTA --%>
       <div class="w-full animate-in fade-in duration-700 relative z-10">
 
         <%!-- HEADER --%>

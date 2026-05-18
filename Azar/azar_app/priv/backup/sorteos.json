@@ -1,20 +1,5 @@
 [
   {
-    "id": 2,
-    "titulo": "Sorteo de prueba",
-    "tipo_premio": "fijo",
-    "descripcion": "Es una prueba",
-    "precio_ticket": "10",
-    "total_tickets": 5000,
-    "cantidad_ganadores": 1,
-    "premio_fijo": "10000.00",
-    "porcentaje_casa": 30,
-    "estado": "cancelado",
-    "numeros_ganadores": [],
-    "fecha_ejecucion": "2026-05-17 12:59:00",
-    "insertado": "2026-05-17 16:59:44"
-  },
-  {
     "id": 3,
     "titulo": "Sorteo de prueba 2",
     "tipo_premio": "acumulado",

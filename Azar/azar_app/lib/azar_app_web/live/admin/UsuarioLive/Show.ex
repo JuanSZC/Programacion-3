@@ -19,6 +19,7 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
          |> assign(:usuario, usuario)
          |> assign(:tickets, tickets)
          |> assign(:editando, false)
+         |> assign(:error_usuario, nil) # Inicializamos el estado del modal de error
          |> assign(:page_title, "Gestión: #{usuario.nombre}")}
 
       {:error, :not_found} ->
@@ -29,97 +30,103 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
     end
   end
 
-@impl true
-def handle_event("toggle_activo", _, socket) do
-  case Cuentas.toggle_activo(socket.assigns.usuario) do
-    {:ok, usuario} ->
-      if not usuario.activo do
+  @impl true
+  def handle_event("toggle_activo", _, socket) do
+    case Cuentas.toggle_activo(socket.assigns.usuario) do
+      {:ok, usuario} ->
+        if not usuario.activo do
+          Phoenix.PubSub.broadcast(
+            AzarApp.PubSub,
+            "usuario:#{usuario.id}",
+            :forzar_logout
+          )
+        end
+
+        {:noreply,
+         socket
+         |> assign(:usuario, usuario)
+         |> put_flash(
+           :info,
+           "Usuario #{if usuario.activo, do: "activado", else: "desactivado"}"
+         )}
+
+      {:error, "El usuario tiene tickets en sorteos activos"} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "No se puede desactivar el usuario porque tiene tickets activos en sorteos vigentes."
+         )}
+
+      {:error, "No puedes desactivar al único administrador activo"} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "Debe existir al menos un administrador activo en el sistema para evitar bloqueos globales."
+         )}
+
+      {:error, razon} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "Ocurrió un error inesperado al intentar cambiar el estado del usuario: #{razon}"
+         )}
+    end
+  end
+
+  @impl true
+  def handle_event("eliminar_usuario", _, socket) do
+    usuario = socket.assigns.usuario
+
+    case Cuentas.eliminar_usuario(usuario) do
+      {:ok, _} ->
         Phoenix.PubSub.broadcast(
           AzarApp.PubSub,
           "usuario:#{usuario.id}",
           :forzar_logout
         )
-      end
 
-      {:noreply,
-       socket
-       |> assign(:usuario, usuario)
-       |> put_flash(
-         :info,
-         "Usuario #{if usuario.activo, do: "activado", else: "desactivado"}"
-       )}
+        {:noreply,
+         socket
+         |> put_flash(:info, "Usuario eliminado exitosamente.")
+         |> push_navigate(to: ~p"/admin/usuarios")}
 
-    {:error, "El usuario tiene tickets en sorteos activos"} ->
-      {:noreply,
-       put_flash(
-         socket,
-         :error,
-         "No se puede desactivar el usuario porque tiene tickets activos en sorteos."
-       )}
+      {:error, "El usuario tiene tickets en sorteos activos"} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "No puedes eliminar este usuario de la base de datos porque participa activamente en sorteos vigentes."
+         )}
 
-    {:error, "No puedes desactivar al único administrador activo"} ->
-      {:noreply,
-       put_flash(
-         socket,
-         :warning,
-         "Debe existir al menos un administrador activo en el sistema."
-       )}
+      {:error, "No se puede eliminar una cuenta de administrador"} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "Las cuentas de nivel administrador están protegidas contra eliminación por motivos de auditoría."
+         )}
 
-    {:error, razon} ->
-      {:noreply,
-       put_flash(
-         socket,
-         :error,
-         "Ocurrió un error al cambiar el estado del usuario: #{razon}"
-       )}
+      {:error, razon} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "No fue posible procesar la eliminación del usuario debido al siguiente motivo: #{razon}"
+         )}
+    end
   end
-end
 
-@impl true
-def handle_event("eliminar_usuario", _, socket) do
-  usuario = socket.assigns.usuario
-
-  case Cuentas.eliminar_usuario(usuario) do
-    {:ok, _} ->
-      Phoenix.PubSub.broadcast(
-        AzarApp.PubSub,
-        "usuario:#{usuario.id}",
-        :forzar_logout
-      )
-
-      {:noreply,
-       socket
-       |> put_flash(:info, "Usuario eliminado exitosamente.")
-       |> push_navigate(to: ~p"/admin/usuarios")}
-
-    {:error, "El usuario tiene tickets en sorteos activos"} ->
-      {:noreply,
-       put_flash(
-         socket,
-         :error,
-         "No puedes eliminar este usuario porque participa en sorteos activos."
-       )}
-
-    {:error, "No se puede eliminar una cuenta de administrador"} ->
-      {:noreply,
-       put_flash(
-         socket,
-         :warning,
-         "Las cuentas administradoras no pueden eliminarse."
-       )}
-
-    {:error, razon} ->
-      {:noreply,
-       put_flash(
-         socket,
-         :error,
-         "No fue posible eliminar el usuario: #{razon}"
-       )}
+  @impl true
+  def handle_event("cerrar_error_usuario", _, socket) do
+    {:noreply, assign(socket, :error_usuario, nil)}
   end
-end
 
   @impl true
   def handle_event("editar", _, socket), do: {:noreply, assign(socket, :editando, true)}
+
   @doc """
   Breve: handle_event.
   """
@@ -147,8 +154,6 @@ end
     monto_formateado =
       if op == "restar" do
         "-" <> String.trim(monto_str)
-      else
-        String.trim(monto_str)
       end
 
     case Cuentas.ajustar_saldo_admin(usuario, monto_formateado) do
@@ -191,6 +196,69 @@ end
   def render(assigns) do
     ~H"""
     <AzarAppWeb.AdminSidebar.sidebar current_page="usuarios">
+
+      <%!-- MODAL DE ERROR CRÍTICO --%>
+      <%= if @error_usuario do %>
+        <div
+          id="modal-error-show"
+          class="fixed inset-0 z-[200] flex items-center justify-center px-4"
+          phx-mounted={JS.transition("animate-in fade-in zoom-in-95 duration-300")}
+        >
+          <%!-- Backdrop Blur --%>
+          <div class="absolute inset-0 bg-base-300/80 backdrop-blur-md"></div>
+
+          <%!-- Tarjeta Premium --%>
+          <div class="relative bg-base-100/95 backdrop-blur-3xl border border-error/30 rounded-[3rem] p-8 md:p-12 w-full max-w-md shadow-2xl shadow-error/20 text-center overflow-hidden">
+
+            <%!-- Glow Efecto Superior --%>
+            <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-error/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+            <%!-- Icono Alerta Animado --%>
+            <div class="relative inline-flex mb-6">
+              <div class="absolute inset-0 bg-error/30 rounded-full blur-xl animate-pulse"></div>
+              <div class="relative bg-error/10 border-2 border-error/30 rounded-full p-6">
+                <.icon name="hero-exclamation-triangle-solid" class="size-14 text-error" />
+              </div>
+            </div>
+
+            <%!-- Badge de Estado --%>
+            <div class="mb-2 inline-flex items-center gap-2 bg-error/10 px-4 py-1.5 rounded-full border border-error/20">
+              <div class="size-2 bg-error rounded-full animate-pulse"></div>
+              <span class="text-[10px] font-black uppercase tracking-[0.3em] text-error">Acción Restringida</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-base-content mt-3 mb-2">
+              Operación Denegada
+            </h2>
+
+            <%!-- Descripción Dinámica del error del Backend --%>
+            <p class="text-base-content/80 text-sm font-bold mb-6 leading-relaxed">
+              <%= @error_usuario %>
+            </p>
+
+            <%!-- Caja Informativa de Seguridad --%>
+            <div class="bg-error/5 rounded-2xl p-4 border border-error/10 text-left mb-6 space-y-2">
+              <span class="text-[11px] font-black uppercase tracking-widest text-error/70 flex items-center gap-2">
+                <.icon name="hero-shield-check-solid" class="size-4" />
+                Regla de integridad
+              </span>
+              <p class="text-xs text-base-content/60 leading-relaxed">
+                El sistema bloqueó esta acción automáticamente para proteger las finanzas, registros de auditoría y evitar inconsistencias en sorteos vigentes.
+              </p>
+            </div>
+
+            <%!-- Botón de Cierre --%>
+            <button
+              phx-click="cerrar_error_usuario"
+              class="btn btn-error w-full h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-error/30 hover:-translate-y-1 hover:shadow-error/40 transition-all"
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      <% end %>
+
+      <%!-- CONTENIDO PRINCIPAL --%>
       <div class="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-700 relative z-10">
 
         <%!-- HEADER --%>
@@ -327,7 +395,6 @@ end
             <h3 class="font-black text-xl italic uppercase tracking-tight">Ajuste de Saldo</h3>
           </div>
 
-          <%!-- Límite informativo visible al admin --%>
           <p class="text-[10px] font-bold text-base-content/40 uppercase tracking-widest mb-4 ml-1">
             Límite por transacción: $10,000,000 · El saldo no puede quedar negativo
           </p>
@@ -365,7 +432,6 @@ end
             </div>
           </form>
 
-          <%!-- Separador + botón vaciar cuenta --%>
           <div class="mt-6 pt-6 border-t border-base-200/60 flex items-center justify-between gap-4">
             <div>
               <p class="text-xs font-black uppercase tracking-widest text-base-content/40">Vaciar cuenta</p>

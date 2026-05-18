@@ -88,3 +88,4 @@
 [2026-05-18 17:04:13] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
 [2026-05-18 17:04:20] [USUARIO_DESACTIVADO] usuario_id=3
 [2026-05-18 17:04:22] [USUARIO_ACTIVADO] usuario_id=3
+[2026-05-18 17:19:29] [SORTEO_ELIMINADO] sorteo_id=2 titulo="Sorteo de prueba"
