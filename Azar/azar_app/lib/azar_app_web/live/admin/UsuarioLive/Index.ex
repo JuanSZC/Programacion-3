@@ -25,6 +25,12 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
     {:noreply, assign(socket, :page_title, "Gestión de Clientes")}
   end
 
+    @impl true
+  def handle_event("cerrar_error_usuario", _, socket) do
+    {:noreply, assign(socket, :error_usuario, nil)}
+  end
+
+
   @impl true
   def handle_event("buscar", %{"q" => q}, socket) do
     base = if String.trim(q) == "",
@@ -126,10 +132,6 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
   defp ordenar(us, "saldo_asc"), do: Enum.sort_by(us, & &1.saldo_virtual, Decimal)
   defp ordenar(us, _), do: us
 
-  @impl true
-  def handle_event("cerrar_error_usuario", _, socket) do
-    {:noreply, assign(socket, :error_usuario, nil)}
-  end
 
 
 @impl true

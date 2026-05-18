@@ -472,17 +472,15 @@ end
   defp calcular_premio_dividido(total, cantidad) when cantidad > 1, do: Decimal.div(total, Decimal.new(cantidad)) |> Decimal.round(0)
   defp calcular_premio_dividido(total, _), do: total
 
-  defp filtrar_ventas(sorteos, "todos"), do: sorteos
+  @doc """
+  Breve: get_ticket_con_usuario.
+  Busca un ticket específico precargando su propietario para la inspección on-demand.
+  """
+  def get_ticket_con_usuario!(id) do
+    Ticket
+    |> Repo.get!(id)
+    |> Repo.preload(:usuario)
+  end
 
-defp filtrar_ventas(sorteos, "con") do
-  Enum.filter(sorteos, fn sorteo ->
-    Sorteos.tickets_vendidos_count(sorteo) > 0
-  end)
-end
 
-defp filtrar_ventas(sorteos, "sin") do
-  Enum.filter(sorteos, fn sorteo ->
-    Sorteos.tickets_vendidos_count(sorteo) == 0
-  end)
-end
 end

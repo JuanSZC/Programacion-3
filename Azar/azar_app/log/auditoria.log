@@ -112,3 +112,10 @@
 [2026-05-18 17:42:46] [RECARGA_SALDO] usuario_id=2 monto=500 metodo=plataforma
 [2026-05-18 17:42:46] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=4 monto_reembolsado=500
 [2026-05-18 17:42:46] [SORTEO_CANCELADO] sorteo_id=4 titulo="Sorteo de prueba3" motivo="Condiciones mínimas no alcanzadas"
+[2026-05-18 17:51:09] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:51:18] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 17:51:30] [USUARIO_DESACTIVADO] usuario_id=2
+[2026-05-18 17:51:32] [USUARIO_ACTIVADO] usuario_id=2
+[2026-05-18 17:51:41] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 17:51:48] [SORTEO_ELIMINADO] sorteo_id=4 titulo="Sorteo de prueba3"
+[2026-05-18 17:51:49] [SORTEO_ELIMINADO] sorteo_id=3 titulo="Sorteo de prueba 2"
