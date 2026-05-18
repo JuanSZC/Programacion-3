@@ -12,7 +12,7 @@
     "total_recargado": "0.0",
     "total_gastado": "0.0",
     "total_ganado": "0.0",
-    "ultimo_login": "2026-05-18 17:51:09"
+    "ultimo_login": "2026-05-18 19:41:40"
   },
   {
     "id": 2,
@@ -23,11 +23,11 @@
     "edad": 28,
     "rol": "cliente",
     "activo": true,
-    "saldo_virtual": "10048450.00",
-    "total_recargado": "10051510.0",
-    "total_gastado": "3060.0",
-    "total_ganado": "0.0",
-    "ultimo_login": "2026-05-18 17:51:41"
+    "saldo_virtual": "10026050.00",
+    "total_recargado": "10056510.0",
+    "total_gastado": "36060.0",
+    "total_ganado": "5600.0",
+    "ultimo_login": "2026-05-18 19:47:38"
   },
   {
     "id": 3,

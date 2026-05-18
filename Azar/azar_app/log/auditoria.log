@@ -119,3 +119,41 @@
 [2026-05-18 17:51:41] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
 [2026-05-18 17:51:48] [SORTEO_ELIMINADO] sorteo_id=4 titulo="Sorteo de prueba3"
 [2026-05-18 17:51:49] [SORTEO_ELIMINADO] sorteo_id=3 titulo="Sorteo de prueba 2"
+[2026-05-18 19:36:59] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 19:37:25] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-18 19:41:40] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 19:43:56] [SORTEO_CREADO] sorteo_id=5 titulo="Gran rifa navideña." tipo=fijo
+[2026-05-18 19:45:25] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 19:45:44] [TICKET_COMPRADO] usuario_id=2 sorteo_id=5 ticket=#8 monto=5000
+[2026-05-18 19:45:44] [TICKET_COMPRADO] usuario_id=2 sorteo_id=5 ticket=#7 monto=5000
+[2026-05-18 19:45:44] [TICKET_COMPRADO] usuario_id=2 sorteo_id=5 ticket=#6 monto=5000
+[2026-05-18 19:45:44] [TICKET_COMPRADO] usuario_id=2 sorteo_id=5 ticket=#200 monto=5000
+[2026-05-18 19:45:44] [TICKET_COMPRADO] usuario_id=2 sorteo_id=5 ticket=#53 monto=5000
+[2026-05-18 19:45:44] [TICKET_COMPRADO] usuario_id=2 sorteo_id=5 ticket=#136 monto=5000
+[2026-05-18 19:46:02] [TICKET_DEVUELTO] usuario_id=2 sorteo_id=5 ticket=#53 monto_reembolsado=5000
+[2026-05-18 19:46:54] [RECARGA_SALDO] usuario_id=2 monto=5000 metodo=plataforma
+[2026-05-18 19:46:54] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=5 monto_reembolsado=5000
+[2026-05-18 19:46:54] [RECARGA_SALDO] usuario_id=2 monto=5000 metodo=plataforma
+[2026-05-18 19:46:54] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=5 monto_reembolsado=5000
+[2026-05-18 19:46:54] [RECARGA_SALDO] usuario_id=2 monto=5000 metodo=plataforma
+[2026-05-18 19:46:54] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=5 monto_reembolsado=5000
+[2026-05-18 19:46:54] [RECARGA_SALDO] usuario_id=2 monto=5000 metodo=plataforma
+[2026-05-18 19:46:54] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=5 monto_reembolsado=5000
+[2026-05-18 19:46:54] [RECARGA_SALDO] usuario_id=2 monto=5000 metodo=plataforma
+[2026-05-18 19:46:54] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=5 monto_reembolsado=5000
+[2026-05-18 19:46:54] [SORTEO_CANCELADO] sorteo_id=5 titulo="Gran rifa navideña." motivo="Condiciones mínimas no alcanzadas"
+[2026-05-18 19:47:19] [USUARIO_DESACTIVADO] usuario_id=2
+[2026-05-18 19:47:28] [USUARIO_ACTIVADO] usuario_id=2
+[2026-05-18 19:47:38] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 19:48:03] [SORTEO_CREADO] sorteo_id=6 titulo="Rifa rapida" tipo=acumulado
+[2026-05-18 19:48:15] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#67 monto=1000
+[2026-05-18 19:48:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#69 monto=1000
+[2026-05-18 19:48:20] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#5 monto=1000
+[2026-05-18 19:48:22] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#74 monto=1000
+[2026-05-18 19:48:28] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#57 monto=1000
+[2026-05-18 19:48:28] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#56 monto=1000
+[2026-05-18 19:48:29] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#55 monto=1000
+[2026-05-18 19:48:29] [TICKET_COMPRADO] usuario_id=2 sorteo_id=6 ticket=#54 monto=1000
+[2026-05-18 19:49:33] [SORTEO_EJECUTADO] sorteo_id=6 titulo="Rifa rapida" ganadores=["67"] premio=5600
+[2026-05-18 19:49:33] [PREMIO_PAGADO] usuario_id=2 sorteo_id=6 monto=5600
+[2026-05-18 19:50:42] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=2

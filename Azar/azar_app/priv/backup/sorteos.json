@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": 5,
+    "titulo": "Gran rifa navideña.",
+    "tipo_premio": "fijo",
+    "descripcion": "Santa.",
+    "precio_ticket": "5000",
+    "total_tickets": 200,
+    "cantidad_ganadores": 1,
+    "premio_fijo": "500000.00",
+    "porcentaje_casa": 30,
+    "estado": "cancelado",
+    "numeros_ganadores": [],
+    "fecha_ejecucion": "2026-12-25 14:43:00",
+    "insertado": "2026-05-18 19:43:56"
+  },
+  {
+    "id": 6,
+    "titulo": "Rifa rapida",
+    "tipo_premio": "acumulado",
+    "descripcion": "...",
+    "precio_ticket": "1000",
+    "total_tickets": 100,
+    "cantidad_ganadores": 1,
+    "premio_fijo": "",
+    "porcentaje_casa": 30,
+    "estado": "finalizado",
+    "numeros_ganadores": [
+      "67"
+    ],
+    "fecha_ejecucion": "2026-05-18 14:50:00",
+    "insertado": "2026-05-18 19:48:03"
+  }
+]
