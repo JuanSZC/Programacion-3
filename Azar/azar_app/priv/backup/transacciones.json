@@ -178,5 +178,25 @@
     "usuario_id": 2,
     "tipo": "compra_ticket",
     "monto": "1000"
+  },
+  {
+    "id": 26,
+    "ticket_numero": null,
+    "descripcion": "Recarga de saldo",
+    "insertado": "2026-05-18 17:30:53Z",
+    "sorteo_id": null,
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "1000"
+  },
+  {
+    "id": 27,
+    "ticket_numero": null,
+    "descripcion": "Recarga de saldo",
+    "insertado": "2026-05-18 17:30:53Z",
+    "sorteo_id": null,
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "1000"
   }
 ]

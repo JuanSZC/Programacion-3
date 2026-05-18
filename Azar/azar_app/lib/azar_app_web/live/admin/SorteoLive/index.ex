@@ -1,6 +1,6 @@
 defmodule AzarAppWeb.Admin.SorteoLive.Index do
   @moduledoc """
-  Panel administrativo de sorteos.
+  Panel administrativo de sorteos con interceptor de seguridad para eliminaciones.
   """
 
   use AzarAppWeb, :live_view
@@ -22,6 +22,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
      |> assign(:filtros, filtros_default())
      |> assign(:show_filtros, false)
      |> assign(:esta_vacio, Enum.empty?(sorteos))
+     |> assign(:error_sorteo, nil) # <- Estado inicial para controlar el modal crítico
      |> stream(:sorteos, sorteos)}
   end
 
@@ -103,10 +104,19 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
          |> assign(:esta_vacio, Enum.empty?(sorteos))
          |> stream(:sorteos, sorteos, reset: true)}
 
+      {:error, razon} when is_binary(razon) ->
+        # Capturamos la restricción financiera del contexto y disparamos el modal premium
+        {:noreply, assign(socket, :error_sorteo, razon)}
+
       {:error, _} ->
         {:noreply,
-         put_flash(socket, :error, "No se pudo eliminar el sorteo.")}
+         put_flash(socket, :error, "No se pudo eliminar el sorteo debido a un error interno.")}
     end
+  end
+
+  @impl true
+  def handle_event("cerrar_error_sorteo", _, socket) do
+    {:noreply, assign(socket, :error_sorteo, nil)}
   end
 
   # =========================
@@ -275,6 +285,67 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
     ~H"""
     <AzarAppWeb.AdminSidebar.sidebar current_page="sorteos">
       <div class="w-full animate-in fade-in duration-700 relative z-10">
+
+        <%!-- MODAL PREMIUM DE PROTECCIÓN CONTRA ELIMINACIÓN FINANCIERA --%>
+        <%= if @error_sorteo do %>
+          <div
+            id="modal-seguridad-sorteos"
+            class="fixed inset-0 z-[200] flex items-center justify-center px-4"
+            phx-mounted={JS.transition("animate-in fade-in zoom-in-95 duration-300")}
+          >
+            <%!-- Backdrop con desenfoque cinematográfico --%>
+            <div class="absolute inset-0 bg-base-300/80 backdrop-blur-md" phx-click="cerrar_error_sorteo"></div>
+
+            <%!-- Card del Modal --%>
+            <div class="relative bg-base-100/95 backdrop-blur-3xl border border-error/30 rounded-[3rem] p-8 md:p-12 w-full max-w-md shadow-2xl shadow-error/20 text-center overflow-hidden">
+
+              <%!-- Brillo de alerta superior --%>
+              <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-error/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+              <%!-- Icono Dinámico Translucido --%>
+              <div class="relative inline-flex mb-6">
+                <div class="absolute inset-0 bg-error/30 rounded-full blur-xl animate-pulse"></div>
+                <div class="relative bg-error/10 border-2 border-error/30 rounded-full p-6">
+                  <.icon name="hero-ticket-solid" class="size-14 text-error" />
+                </div>
+              </div>
+
+              <%!-- Distintivo Comercial --%>
+              <div class="mb-2 inline-flex items-center gap-2 bg-error/10 px-4 py-1.5 rounded-full border border-error/20">
+                <div class="size-2 bg-error rounded-full animate-pulse"></div>
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-error">Patrimonio Asegurado</span>
+              </div>
+
+              <h2 class="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-base-content mt-3 mb-2">
+                Acción Bloqueada
+              </h2>
+
+              <%!-- Texto de error inyectado directamente desde el contexto --%>
+              <p class="text-base-content/80 text-sm font-bold mb-6 leading-relaxed">
+                <%= @error_sorteo %>
+              </p>
+
+              <%!-- Caja de sugerencia operativa para el Administrador --%>
+              <div class="bg-warning/5 rounded-2xl p-4 border border-warning/20 text-left mb-6 space-y-2">
+                <span class="text-[11px] font-black uppercase tracking-widest text-warning flex items-center gap-2">
+                  <.icon name="hero-information-circle-solid" class="size-4" />
+                  Alternativa Segura
+                </span>
+                <p class="text-xs text-base-content/70 leading-relaxed">
+                  Para dar de baja este sorteo sin romper la base de datos, entra a <strong>Gestionar</strong> y ejecuta la <strong>Cancelación del Sorteo</strong>. Esto reembolsará automáticamente el dinero a cada usuario afectado.
+                </p>
+              </div>
+
+              <%!-- Botón de Cierre --%>
+              <button
+                phx-click="cerrar_error_sorteo"
+                class="btn btn-error w-full h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-error/30 hover:-translate-y-1 hover:shadow-error/40 transition-all"
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
+        <% end %>
 
         <%!-- HEADER --%>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">

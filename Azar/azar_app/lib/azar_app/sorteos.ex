@@ -330,19 +330,24 @@ defmodule AzarApp.Sorteos do
   """
   def update_sorteo(s, attrs), do: s |> Sorteo.changeset(attrs) |> Repo.update()
 
-  @doc """
-  Breve: delete_sorteo.
+@doc """
+  Breve: delete_sorteo seguro.
+  Evita la eliminación física si existen usuarios con tickets comprados.
   """
   def delete_sorteo(s) do
-    case Repo.delete(s) do
-      {:ok, sorteo} ->
-        AzarApp.Auditoria.log(:sorteo_eliminado, %{
-          sorteo_id: s.id,
-          titulo: s.titulo
-        })
-        Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_eliminado, sorteo})
-        {:ok, sorteo}
-      error -> error
+    if tickets_vendidos_count(s) > 0 do
+      {:error, "El sorteo '#{s.titulo}' ya cuenta con tickets vendidos. No puede ser eliminado del sistema."}
+    else
+      case Repo.delete(s) do
+        {:ok, sorteo} ->
+          AzarApp.Auditoria.log(:sorteo_eliminado, %{
+            sorteo_id: s.id,
+            titulo: s.titulo
+          })
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", {:sorteo_eliminado, sorteo})
+          {:ok, sorteo}
+        error -> error
+      end
     end
   end
 
@@ -453,13 +458,13 @@ end
 
 defp filtrar_ventas(sorteos, "con") do
   Enum.filter(sorteos, fn sorteo ->
-    tickets_vendidos_count(sorteo) > 0
+    Sorteos.tickets_vendidos_count(sorteo) > 0
   end)
 end
 
 defp filtrar_ventas(sorteos, "sin") do
   Enum.filter(sorteos, fn sorteo ->
-    tickets_vendidos_count(sorteo) == 0
+    Sorteos.tickets_vendidos_count(sorteo) == 0
   end)
 end
 end
