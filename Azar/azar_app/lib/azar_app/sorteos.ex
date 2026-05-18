@@ -252,16 +252,27 @@ defmodule AzarApp.Sorteos do
 
   @doc """
   Breve: cancelar_sorteo.
+  Cancela el sorteo, reembolsa el dinero a los usuarios y libera los tickets.
   """
   def cancelar_sorteo(sorteo, motivo \\ "Condiciones mínimas no alcanzadas") do
     if sorteo.estado != "activo" do
       {:error, "Solo se pueden cancelar sorteos activos"}
     else
+      # 1. Traemos los tickets vendidos con sus usuarios para el reembolso
       tickets_con_dueno = Repo.all(from t in Ticket, where: t.sorteo_id == ^sorteo.id and t.estado == "vendido", preload: [:usuario])
 
       Ecto.Multi.new()
+      # 2. Cambiamos el estado del sorteo a cancelado
       |> Ecto.Multi.update(:sorteo, Sorteo.changeset(sorteo, %{estado: "cancelado"}))
+
+      # 3. Reembolsamos el dinero a cada comprador
       |> reembolsar_compradores_multi(tickets_con_dueno, decimal_seguro(sorteo.precio_ticket))
+
+
+      |> Ecto.Multi.update_all(:liberar_tickets,
+           from(t in Ticket, where: t.sorteo_id == ^sorteo.id),
+           set: [usuario_id: nil, estado: "disponible"]
+         )
       |> Repo.transaction()
       |> case do
         {:ok, %{sorteo: sorteo_cancelado}} ->
@@ -270,8 +281,15 @@ defmodule AzarApp.Sorteos do
             titulo: sorteo_cancelado.titulo,
             motivo: motivo
           })
+
+          # 📢 Notificamos en tiempo real a las pantallas involucradas
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteo:#{sorteo_cancelado.id}", :sorteo_cancelado)
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "sorteos", :lista_actualizada)
+
           {:ok, sorteo_cancelado}
-        {:error, _op, razon, _} -> {:error, razon}
+
+        {:error, _op, razon, _} ->
+          {:error, razon}
       end
     end
   end

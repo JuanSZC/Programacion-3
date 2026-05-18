@@ -528,30 +528,6 @@
     "usuario_id": null
   },
   {
-    "id": 5167,
-    "estado": "vendido",
-    "insertado": "2026-05-17 17:04:09",
-    "numero": "67",
-    "sorteo_id": 3,
-    "usuario_id": 2
-  },
-  {
-    "id": 5168,
-    "estado": "disponible",
-    "insertado": "2026-05-17 17:04:09",
-    "numero": "68",
-    "sorteo_id": 3,
-    "usuario_id": null
-  },
-  {
-    "id": 5169,
-    "estado": "vendido",
-    "insertado": "2026-05-17 17:04:09",
-    "numero": "69",
-    "sorteo_id": 3,
-    "usuario_id": 2
-  },
-  {
     "id": 5170,
     "estado": "disponible",
     "insertado": "2026-05-17 17:04:09",
@@ -2140,14 +2116,6 @@
     "estado": "disponible",
     "insertado": "2026-05-17 17:11:50",
     "numero": "68",
-    "sorteo_id": 4,
-    "usuario_id": null
-  },
-  {
-    "id": 5369,
-    "estado": "disponible",
-    "insertado": "2026-05-17 17:11:50",
-    "numero": "69",
     "sorteo_id": 4,
     "usuario_id": null
   },

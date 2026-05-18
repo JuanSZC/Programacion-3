@@ -97,3 +97,18 @@
 [2026-05-18 17:30:53] [SORTEO_CANCELADO] sorteo_id=3 titulo="Sorteo de prueba 2" motivo="Condiciones mínimas no alcanzadas"
 [2026-05-18 17:31:36] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
 [2026-05-18 17:31:48] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 17:36:35] [TICKET_COMPRADO] usuario_id=2 sorteo_id=4 ticket=#6 monto=500
+[2026-05-18 17:36:35] [TICKET_COMPRADO] usuario_id=2 sorteo_id=4 ticket=#5 monto=500
+[2026-05-18 17:36:35] [TICKET_COMPRADO] usuario_id=2 sorteo_id=4 ticket=#4 monto=500
+[2026-05-18 17:36:41] [SESION_CERRADA] usuario_id=2 email=jusezaca2024@gmail.com
+[2026-05-18 17:36:51] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:38:52] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-18 17:39:08] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:39:55] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 17:40:07] [TICKET_DEVUELTO] usuario_id=2 sorteo_id=4 ticket=#4 monto_reembolsado=500
+[2026-05-18 17:40:22] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:42:46] [RECARGA_SALDO] usuario_id=2 monto=500 metodo=plataforma
+[2026-05-18 17:42:46] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=4 monto_reembolsado=500
+[2026-05-18 17:42:46] [RECARGA_SALDO] usuario_id=2 monto=500 metodo=plataforma
+[2026-05-18 17:42:46] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=4 monto_reembolsado=500
+[2026-05-18 17:42:46] [SORTEO_CANCELADO] sorteo_id=4 titulo="Sorteo de prueba3" motivo="Condiciones mínimas no alcanzadas"

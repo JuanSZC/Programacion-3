@@ -24,7 +24,7 @@
     "cantidad_ganadores": 1,
     "premio_fijo": "",
     "porcentaje_casa": 30,
-    "estado": "activo",
+    "estado": "cancelado",
     "numeros_ganadores": [],
     "fecha_ejecucion": "2026-05-26 12:11:00",
     "insertado": "2026-05-17 17:11:50"
