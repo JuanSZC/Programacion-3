@@ -29,41 +29,94 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
     end
   end
 
-  @impl true
-  def handle_event("toggle_activo", _, socket) do
-    case Cuentas.toggle_activo(socket.assigns.usuario) do
-      {:ok, usuario} ->
-        if not usuario.activo do
-          Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
-        end
+@impl true
+def handle_event("toggle_activo", _, socket) do
+  case Cuentas.toggle_activo(socket.assigns.usuario) do
+    {:ok, usuario} ->
+      if not usuario.activo do
+        Phoenix.PubSub.broadcast(
+          AzarApp.PubSub,
+          "usuario:#{usuario.id}",
+          :forzar_logout
+        )
+      end
 
-        {:noreply,
-         socket
-         |> assign(:usuario, usuario)
-         |> put_flash(:info, "Usuario #{if usuario.activo, do: "activado", else: "desactivado"}")}
+      {:noreply,
+       socket
+       |> assign(:usuario, usuario)
+       |> put_flash(
+         :info,
+         "Usuario #{if usuario.activo, do: "activado", else: "desactivado"}"
+       )}
 
-      {:error, razon} ->
-        {:noreply, put_flash(socket, :error, razon)}
-    end
+    {:error, "El usuario tiene tickets en sorteos activos"} ->
+      {:noreply,
+       put_flash(
+         socket,
+         :error,
+         "No se puede desactivar el usuario porque tiene tickets activos en sorteos."
+       )}
+
+    {:error, "No puedes desactivar al único administrador activo"} ->
+      {:noreply,
+       put_flash(
+         socket,
+         :warning,
+         "Debe existir al menos un administrador activo en el sistema."
+       )}
+
+    {:error, razon} ->
+      {:noreply,
+       put_flash(
+         socket,
+         :error,
+         "Ocurrió un error al cambiar el estado del usuario: #{razon}"
+       )}
   end
+end
 
-  @impl true
-  def handle_event("eliminar_usuario", _, socket) do
-    usuario = socket.assigns.usuario
+@impl true
+def handle_event("eliminar_usuario", _, socket) do
+  usuario = socket.assigns.usuario
 
-    case Cuentas.eliminar_usuario(usuario) do
-      {:ok, _} ->
-        Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario.id}", :forzar_logout)
+  case Cuentas.eliminar_usuario(usuario) do
+    {:ok, _} ->
+      Phoenix.PubSub.broadcast(
+        AzarApp.PubSub,
+        "usuario:#{usuario.id}",
+        :forzar_logout
+      )
 
-        {:noreply,
-         socket
-         |> put_flash(:info, "Usuario eliminado exitosamente.")
-         |> push_navigate(to: ~p"/admin/usuarios")}
+      {:noreply,
+       socket
+       |> put_flash(:info, "Usuario eliminado exitosamente.")
+       |> push_navigate(to: ~p"/admin/usuarios")}
 
-      {:error, razon} ->
-        {:noreply, put_flash(socket, :error, "❌ Error: #{razon}")}
-    end
+    {:error, "El usuario tiene tickets en sorteos activos"} ->
+      {:noreply,
+       put_flash(
+         socket,
+         :error,
+         "No puedes eliminar este usuario porque participa en sorteos activos."
+       )}
+
+    {:error, "No se puede eliminar una cuenta de administrador"} ->
+      {:noreply,
+       put_flash(
+         socket,
+         :warning,
+         "Las cuentas administradoras no pueden eliminarse."
+       )}
+
+    {:error, razon} ->
+      {:noreply,
+       put_flash(
+         socket,
+         :error,
+         "No fue posible eliminar el usuario: #{razon}"
+       )}
   end
+end
 
   @impl true
   def handle_event("editar", _, socket), do: {:noreply, assign(socket, :editando, true)}

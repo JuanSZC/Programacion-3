@@ -5,12 +5,16 @@ defmodule AzarAppWeb.CoreComponents do
 
   alias Phoenix.LiveView.JS
 
-  attr :id, :string, doc: "the optional id of flash container"
-  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-  attr :title, :string, default: nil
-  attr :kind, :atom, values: [:info, :error, :success], doc: "used for styling and flash lookup"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
+attr :id, :string, doc: "the optional id of flash container"
+attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
+attr :title, :string, default: nil
 
+attr :kind, :atom,
+  values: [:info, :error, :success, :warning],
+  doc: "used for styling and flash lookup"
+
+attr :rest, :global,
+  doc: "the arbitrary HTML attributes to add to the flash container"
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
   @doc """
@@ -30,13 +34,15 @@ defmodule AzarAppWeb.CoreComponents do
     >
       <div class={[
         "alert w-80 sm:w-96 max-w-80 sm:max-w-96 text-wrap shadow-2xl rounded-2xl border-0 backdrop-blur-md cursor-pointer transition-all duration-300",
-        @kind == :info && "bg-base-100/95 text-base-content border-l-4 border-l-primary",
+          @kind == :info && "bg-base-100/95 text-base-content border-l-4 border-l-primary",
         @kind == :success && "bg-success/90 text-success-content",
-        @kind == :error && "bg-error/95 text-error-content"
+        @kind == :error && "bg-error/95 text-error-content",
+        @kind == :warning && "bg-warning/95 text-warning-content"
       ]}>
         <.icon :if={@kind == :info} name="hero-information-circle" class="size-6 shrink-0 text-primary" />
-        <.icon :if={@kind == :success} name="hero-check-circle" class="size-6 shrink-0" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle" class="size-6 shrink-0" />
+            <.icon :if={@kind == :success} name="hero-check-circle" class="size-6 shrink-0" />
+                <.icon :if={@kind == :error} name="hero-exclamation-circle" class="size-6 shrink-0" />
+            <.icon :if={@kind == :warning} name="hero-exclamation-triangle" class="size-6 shrink-0" />
         <div class="flex-1">
           <p :if={@title} class="font-bold tracking-wide text-sm">{@title}</p>
           <p class="text-sm font-medium opacity-90">{msg}</p>

@@ -16,7 +16,8 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
      |> assign(:query, "")
      |> assign(:filtros, filtros_default())
      |> assign(:show_filtros, false)
-     |> assign(:total, length(usuarios))}
+     |> assign(:total, length(usuarios))
+     |> assign(:error_usuario, nil)}
   end
 
   @impl true
@@ -56,22 +57,29 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Index do
     {:noreply, assign(socket, filtros: filtros, usuarios: usuarios)}
   end
 
-  @impl true
+@impl true
   def handle_event("toggle_activo", %{"id" => id}, socket) do
     usuario = Cuentas.obtener_usuario!(id)
-    {:ok, usuario_actualizado} = Cuentas.toggle_activo(usuario)
 
-    if not usuario_actualizado.activo do
-      Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{id}", :forzar_logout)
+    case Cuentas.toggle_activo(usuario) do
+      {:ok, usuario_actualizado} ->
+        # SI TIENE ÉXITO: Hacemos todo lo que ya tenías
+        if not usuario_actualizado.activo do
+          Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{id}", :forzar_logout)
+        end
+
+        base = refrescar_base(socket.assigns.query)
+        usuarios = aplicar_filtros(base, socket.assigns.filtros)
+
+        {:noreply,
+         socket
+         |> assign(usuarios_base: base, usuarios: usuarios)
+         |> put_flash(:info, "Usuario #{if usuario_actualizado.activo, do: "activado", else: "desactivado"}")}
+
+      {:error, mensaje_error} ->
+        # Asignamos el error a la variable para disparar el modal
+        {:noreply, assign(socket, :error_usuario, mensaje_error)}
     end
-
-    base = refrescar_base(socket.assigns.query)
-    usuarios = aplicar_filtros(base, socket.assigns.filtros)
-
-    {:noreply,
-     socket
-     |> assign(usuarios_base: base, usuarios: usuarios)
-     |> put_flash(:info, "Usuario #{if usuario_actualizado.activo, do: "activado", else: "desactivado"}")}
   end
 
   @impl true

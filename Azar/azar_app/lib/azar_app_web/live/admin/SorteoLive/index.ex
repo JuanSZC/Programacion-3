@@ -1,14 +1,18 @@
 defmodule AzarAppWeb.Admin.SorteoLive.Index do
   @moduledoc """
-  Módulo AzarAppWeb.Admin.SorteoLive.Index: lógica relacionada con index.
+  Panel administrativo de sorteos.
   """
 
   use AzarAppWeb, :live_view
+
   alias AzarApp.Sorteos
+  alias AzarApp.Sorteos.Sorteo
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteos")
+    if connected?(socket) do
+      Phoenix.PubSub.subscribe(AzarApp.PubSub, "sorteos")
+    end
 
     sorteos = Sorteos.list_sorteos()
 
@@ -29,7 +33,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "Crear Nuevo Sorteo")
-    |> assign(:sorteo, %AzarApp.Sorteos.Sorteo{})
+    |> assign(:sorteo, %Sorteo{})
   end
 
   defp apply_action(socket, :index, _params) do
@@ -38,23 +42,25 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
     |> assign(:sorteo, nil)
   end
 
-
   @impl true
   def handle_event("toggle_filtros", _, socket) do
-    {:noreply, assign(socket, :show_filtros, !socket.assigns.show_filtros)}
+    {:noreply,
+     assign(socket, :show_filtros, !socket.assigns.show_filtros)}
   end
 
   @impl true
   def handle_event("filtrar", params, socket) do
     filtros = %{
-      mes:       Map.get(params, "mes", ""),
-      orden:     Map.get(params, "orden", "fecha_desc"),
-      tipo:      Map.get(params, "tipo", "todos"),
-      estado:    Map.get(params, "estado", "todos"),
+      mes: Map.get(params, "mes", ""),
+      orden: Map.get(params, "orden", "fecha_desc"),
+      tipo: Map.get(params, "tipo", "todos"),
+      estado: Map.get(params, "estado", "todos"),
       con_ventas: Map.get(params, "con_ventas", "todos")
     }
 
-    sorteos = socket.assigns.sorteos_base |> aplicar_filtros(filtros)
+    sorteos =
+      socket.assigns.sorteos_base
+      |> aplicar_filtros(filtros)
 
     {:noreply,
      socket
@@ -66,7 +72,10 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
   @impl true
   def handle_event("limpiar_filtros", _, socket) do
     filtros = filtros_default()
-    sorteos = socket.assigns.sorteos_base |> aplicar_filtros(filtros)
+
+    sorteos =
+      socket.assigns.sorteos_base
+      |> aplicar_filtros(filtros)
 
     {:noreply,
      socket
@@ -78,22 +87,45 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     sorteo = Sorteos.get_sorteo!(id)
-    {:ok, _} = Sorteos.delete_sorteo(sorteo)
-    base = Sorteos.list_sorteos()
-    sorteos = base |> aplicar_filtros(socket.assigns.filtros)
 
-    {:noreply,
-     socket
-     |> assign(:sorteos_base, base)
-     |> assign(:esta_vacio, Enum.empty?(sorteos))
-     |> stream(:sorteos, sorteos, reset: true)}
+    case Sorteos.delete_sorteo(sorteo) do
+      {:ok, _} ->
+        base = Sorteos.list_sorteos()
+
+        sorteos =
+          base
+          |> aplicar_filtros(socket.assigns.filtros)
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "Sorteo eliminado correctamente.")
+         |> assign(:sorteos_base, base)
+         |> assign(:esta_vacio, Enum.empty?(sorteos))
+         |> stream(:sorteos, sorteos, reset: true)}
+
+      {:error, _} ->
+        {:noreply,
+         put_flash(socket, :error, "No se pudo eliminar el sorteo.")}
+    end
   end
 
+  # =========================
+  # HANDLE INFO
+  # =========================
+
+  @impl true
+  def handle_info(:ticket_comprado, socket) do
+    reload(socket)
+  end
 
   @impl true
   def handle_info({:saved, sorteo}, socket) do
     base = [sorteo | socket.assigns.sorteos_base]
-    sorteos = base |> aplicar_filtros(socket.assigns.filtros)
+
+    sorteos =
+      base
+      |> aplicar_filtros(socket.assigns.filtros)
+
     {:noreply,
      socket
      |> assign(:sorteos_base, base)
@@ -102,13 +134,31 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
   end
 
   @impl true
-  def handle_info({:sorteo_creado, _}, socket), do: reload(socket)
-  def handle_info({:sorteo_eliminado, _}, socket), do: reload(socket)
-  def handle_info(:lista_actualizada, socket), do: reload(socket)
+  def handle_info({:sorteo_creado, _}, socket) do
+    reload(socket)
+  end
+
+  @impl true
+  def handle_info({:sorteo_eliminado, _}, socket) do
+    reload(socket)
+  end
+
+  @impl true
+  def handle_info(:lista_actualizada, socket) do
+    reload(socket)
+  end
+
+  # =========================
+  # HELPERS
+  # =========================
 
   defp reload(socket) do
     base = Sorteos.list_sorteos()
-    sorteos = base |> aplicar_filtros(socket.assigns.filtros)
+
+    sorteos =
+      base
+      |> aplicar_filtros(socket.assigns.filtros)
+
     {:noreply,
      socket
      |> assign(:sorteos_base, base)
@@ -116,12 +166,19 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
      |> stream(:sorteos, sorteos, reset: true)}
   end
 
-
   defp filtros_default do
-    %{mes: "", orden: "fecha_desc", tipo: "todos", estado: "todos", con_ventas: "todos"}
+    %{
+      mes: "",
+      orden: "fecha_desc",
+      tipo: "todos",
+      estado: "todos",
+      con_ventas: "todos"
+    }
   end
 
-  defp filtros_activos?(filtros), do: filtros != filtros_default()
+  defp filtros_activos?(filtros) do
+    filtros != filtros_default()
+  end
 
   defp aplicar_filtros(sorteos, filtros) do
     sorteos
@@ -132,33 +189,86 @@ defmodule AzarAppWeb.Admin.SorteoLive.Index do
     |> ordenar(filtros.orden)
   end
 
+  # =========================
+  # FILTROS
+  # =========================
+
   defp filtrar_mes(sorteos, ""), do: sorteos
+
   defp filtrar_mes(sorteos, mes) do
     {m, _} = Integer.parse(mes)
-    Enum.filter(sorteos, fn s ->
-      s.fecha_ejecucion && s.fecha_ejecucion.month == m
+
+    Enum.filter(sorteos, fn sorteo ->
+      sorteo.fecha_ejecucion &&
+        sorteo.fecha_ejecucion.month == m
     end)
   end
 
   defp filtrar_tipo(sorteos, "todos"), do: sorteos
-  defp filtrar_tipo(sorteos, tipo), do: Enum.filter(sorteos, &(&1.tipo_premio == tipo))
+
+  defp filtrar_tipo(sorteos, tipo) do
+    Enum.filter(sorteos, &(&1.tipo_premio == tipo))
+  end
 
   defp filtrar_estado(sorteos, "todos"), do: sorteos
-  defp filtrar_estado(sorteos, estado), do: Enum.filter(sorteos, &(&1.estado == estado))
+
+  defp filtrar_estado(sorteos, estado) do
+    Enum.filter(sorteos, &(&1.estado == estado))
+  end
 
   defp filtrar_ventas(sorteos, "todos"), do: sorteos
-  defp filtrar_ventas(sorteos, "con"), do: Enum.filter(sorteos, &((&1.total_vendidos || 0) > 0))
-  defp filtrar_ventas(sorteos, "sin"), do: Enum.filter(sorteos, &((&1.total_vendidos || 0) == 0))
 
-  defp ordenar(sorteos, "nombre_az"), do: Enum.sort_by(sorteos, &String.downcase(&1.titulo))
-  defp ordenar(sorteos, "nombre_za"), do: Enum.sort_by(sorteos, &String.downcase(&1.titulo), :desc)
-  defp ordenar(sorteos, "fecha_asc"), do: Enum.sort_by(sorteos, & &1.fecha_ejecucion, Date)
-  defp ordenar(sorteos, "fecha_desc"), do: Enum.sort_by(sorteos, & &1.inserted_at, {:desc, NaiveDateTime})
-  defp ordenar(sorteos, "tickets_asc"), do: Enum.sort_by(sorteos, & &1.total_tickets)
-  defp ordenar(sorteos, "tickets_desc"), do: Enum.sort_by(sorteos, & &1.total_tickets, :desc)
-  defp ordenar(sorteos, "precio_asc"), do: Enum.sort_by(sorteos, & &1.precio_ticket, Decimal)
-  defp ordenar(sorteos, "precio_desc"), do: Enum.sort_by(sorteos, & &1.precio_ticket, {:desc, Decimal})
-  defp ordenar(sorteos, _), do: sorteos
+  defp filtrar_ventas(sorteos, "con") do
+    Enum.filter(sorteos, fn sorteo ->
+      Sorteos.tickets_vendidos_count(sorteo) > 0
+    end)
+  end
+
+  defp filtrar_ventas(sorteos, "sin") do
+    Enum.filter(sorteos, fn sorteo ->
+      Sorteos.tickets_vendidos_count(sorteo) == 0
+    end)
+  end
+
+  # =========================
+  # ORDENAMIENTO
+  # =========================
+
+  defp ordenar(sorteos, "nombre_az") do
+    Enum.sort_by(sorteos, &String.downcase(&1.titulo))
+  end
+
+  defp ordenar(sorteos, "nombre_za") do
+    Enum.sort_by(sorteos, &String.downcase(&1.titulo), :desc)
+  end
+
+  defp ordenar(sorteos, "fecha_asc") do
+    Enum.sort_by(sorteos, & &1.fecha_ejecucion, Date)
+  end
+
+  defp ordenar(sorteos, "fecha_desc") do
+    Enum.sort_by(sorteos, & &1.inserted_at, {:desc, NaiveDateTime})
+  end
+
+  defp ordenar(sorteos, "tickets_asc") do
+    Enum.sort_by(sorteos, & &1.total_tickets)
+  end
+
+  defp ordenar(sorteos, "tickets_desc") do
+    Enum.sort_by(sorteos, & &1.total_tickets, :desc)
+  end
+
+  defp ordenar(sorteos, "precio_asc") do
+    Enum.sort_by(sorteos, & &1.precio_ticket, Decimal)
+  end
+
+  defp ordenar(sorteos, "precio_desc") do
+    Enum.sort_by(sorteos, & &1.precio_ticket, {:desc, Decimal})
+  end
+
+  defp ordenar(sorteos, _) do
+    sorteos
+  end
 
   @impl true
   def render(assigns) do

@@ -163,6 +163,7 @@ defmodule AzarAppWeb.Layouts do
     <div id={@id} aria-live="polite" class="flex flex-col gap-3">
       <.flash kind={:info} flash={@flash} />
       <.flash kind={:error} flash={@flash} />
+      <.flash kind={:warning} flash={@flash} />
 
       <.flash
         id="client-error"

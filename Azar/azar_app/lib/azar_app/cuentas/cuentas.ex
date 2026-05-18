@@ -153,19 +153,36 @@ end
   @doc """
   Breve: toggle_activo.
   """
-  def toggle_activo(%Usuario{} = usuario) do
-    if usuario.rol == "admin" && usuario.activo do
-      admins_activos = Repo.one(from u in Usuario, where: u.rol == "admin" and u.activo == true, select: count(u.id))
+ def toggle_activo(%Usuario{} = usuario) do
+  cond do
+    # Si está inactivo → permitir activarlo
+    not usuario.activo ->
+      do_toggle(usuario)
+
+    # Si tiene tickets activos → bloquear desactivación
+    tiene_tickets_activos?(usuario.id) ->
+      {:error, "El usuario tiene tickets en sorteos activos"}
+
+    # Si es el último admin activo → bloquear
+    usuario.rol == "admin" && usuario.activo ->
+      admins_activos =
+        Repo.one(
+          from u in Usuario,
+            where: u.rol == "admin" and u.activo == true,
+            select: count(u.id)
+        )
 
       if admins_activos <= 1 do
         {:error, "No puedes desactivar al único administrador activo"}
       else
         do_toggle(usuario)
       end
-    else
+
+    # Cualquier otro usuario activo normal
+    true ->
       do_toggle(usuario)
-    end
   end
+end
 
 defp do_toggle(usuario) do
   case usuario

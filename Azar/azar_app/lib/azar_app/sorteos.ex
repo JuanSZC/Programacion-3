@@ -448,4 +448,18 @@ end
 
   defp calcular_premio_dividido(total, cantidad) when cantidad > 1, do: Decimal.div(total, Decimal.new(cantidad)) |> Decimal.round(0)
   defp calcular_premio_dividido(total, _), do: total
+
+  defp filtrar_ventas(sorteos, "todos"), do: sorteos
+
+defp filtrar_ventas(sorteos, "con") do
+  Enum.filter(sorteos, fn sorteo ->
+    tickets_vendidos_count(sorteo) > 0
+  end)
+end
+
+defp filtrar_ventas(sorteos, "sin") do
+  Enum.filter(sorteos, fn sorteo ->
+    tickets_vendidos_count(sorteo) == 0
+  end)
+end
 end

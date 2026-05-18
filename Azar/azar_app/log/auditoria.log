@@ -54,3 +54,37 @@
 [2026-05-18 16:10:38] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=2 monto_reembolsado=10
 [2026-05-18 16:10:38] [SORTEO_CANCELADO] sorteo_id=2 titulo="Sorteo de prueba" motivo="Faltan $9940.00 en ventas para cubrir el premio fijo"
 [2026-05-18 16:14:04] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:20:48] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:26:10] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:26:32] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-18 16:26:45] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-18 16:27:10] [RECARGA_SALDO] usuario_id=2 monto=50000 metodo=plataforma
+[2026-05-18 16:27:21] [TICKET_COMPRADO] usuario_id=2 sorteo_id=3 ticket=#67 monto=1000
+[2026-05-18 16:29:17] [TICKET_COMPRADO] usuario_id=2 sorteo_id=3 ticket=#69 monto=1000
+[2026-05-18 16:29:31] [TICKET_DEVUELTO] usuario_id=2 sorteo_id=3 ticket=#69 monto_reembolsado=1000
+[2026-05-18 16:29:39] [TICKET_COMPRADO] usuario_id=2 sorteo_id=3 ticket=#69 monto=1000
+[2026-05-18 16:29:43] [SESION_CERRADA] usuario_id=2 email=jusezaca2024@gmail.com
+[2026-05-18 16:29:53] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:30:03] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=3 operacion=sumar monto=1
+[2026-05-18 16:30:05] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=3 operacion=restar monto=-1
+[2026-05-18 16:30:24] [USUARIO_DESACTIVADO] usuario_id=3
+[2026-05-18 16:30:29] [USUARIO_ACTIVADO] usuario_id=3
+[2026-05-18 16:30:39] [USUARIO_DESACTIVADO] usuario_id=2
+[2026-05-18 16:30:43] [USUARIO_ACTIVADO] usuario_id=2
+[2026-05-18 16:36:16] [USUARIO_DESACTIVADO] usuario_id=2
+[2026-05-18 16:36:19] [USUARIO_ACTIVADO] usuario_id=2
+[2026-05-18 16:38:39] [USUARIO_DESACTIVADO] usuario_id=2
+[2026-05-18 16:38:42] [USUARIO_ACTIVADO] usuario_id=2
+[2026-05-18 16:39:05] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:49:46] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:49:54] [USUARIO_DESACTIVADO] usuario_id=3
+[2026-05-18 16:49:56] [USUARIO_ACTIVADO] usuario_id=3
+[2026-05-18 16:52:45] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:55:50] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 16:57:36] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:01:10] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:01:17] [USUARIO_DESACTIVADO] usuario_id=3
+[2026-05-18 17:01:19] [USUARIO_ACTIVADO] usuario_id=3
+[2026-05-18 17:04:13] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-18 17:04:20] [USUARIO_DESACTIVADO] usuario_id=3
+[2026-05-18 17:04:22] [USUARIO_ACTIVADO] usuario_id=3
