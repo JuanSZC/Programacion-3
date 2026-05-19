@@ -151,10 +151,12 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
   def handle_event("ajustar_saldo", %{"monto" => monto_str, "operacion" => op}, socket) do
     usuario = socket.assigns.usuario
 
-    monto_formateado =
-      if op == "restar" do
-        "-" <> String.trim(monto_str)
-      end
+   monto_formateado =
+  case op do
+    "restar" -> "-" <> String.trim(monto_str)
+    "sumar"  -> String.trim(monto_str)
+  end
+
 
     case Cuentas.ajustar_saldo_admin(usuario, monto_formateado) do
       {:ok, usuario_actualizado} ->

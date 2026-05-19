@@ -297,3 +297,34 @@
 [2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
 [2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
 [2026-05-19 16:26:32] [SORTEO_CANCELADO] sorteo_id=7 titulo="Una noche con un travesaño" motivo="Condiciones mínimas no alcanzadas"
+[2026-05-19 16:37:50] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-19 16:38:08] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:38:16] [USUARIO_DESACTIVADO] usuario_id=2
+[2026-05-19 16:38:20] [USUARIO_ACTIVADO] usuario_id=2
+[2026-05-19 16:38:29] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-19 16:38:37] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=2 operacion=sumar monto=50000
+[2026-05-19 16:38:45] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=2
+[2026-05-19 16:39:19] [SORTEO_CREADO] sorteo_id=8 titulo="Sorteo quickly" tipo=acumulado
+[2026-05-19 16:39:46] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=2 operacion=sumar monto=40000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#8 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#7 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#6 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#5 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#4 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#3 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#2 monto=5000
+[2026-05-19 16:39:52] [TICKET_COMPRADO] usuario_id=2 sorteo_id=8 ticket=#1 monto=5000
+[2026-05-19 16:40:05] [RECARGA_SALDO] usuario_id=2 monto=40000 metodo=plataforma
+[2026-05-19 16:40:05] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=8 monto_reembolsado=40000
+[2026-05-19 16:40:05] [SORTEO_CANCELADO] sorteo_id=8 titulo="Sorteo quickly" motivo="Condiciones mínimas no alcanzadas"
+[2026-05-19 16:40:20] [SORTEO_CREADO] sorteo_id=9 titulo="oisdsnfkjsd" tipo=acumulado
+[2026-05-19 16:40:26] [SORTEO_CREADO] sorteo_id=10 titulo="oisdsnfkjsd" tipo=acumulado
+[2026-05-19 16:40:45] [SORTEO_CREADO] sorteo_id=11 titulo="oisdsnfkjsd" tipo=acumulado
+[2026-05-19 16:41:13] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=2 operacion=sumar monto=660660
+[2026-05-19 16:41:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=11 ticket=#5 monto=132132
+[2026-05-19 16:41:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=11 ticket=#4 monto=132132
+[2026-05-19 16:41:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=11 ticket=#3 monto=132132
+[2026-05-19 16:41:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=11 ticket=#2 monto=132132
+[2026-05-19 16:41:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=11 ticket=#1 monto=132132
+[2026-05-19 16:41:33] [SORTEO_EJECUTADO] sorteo_id=11 titulo="oisdsnfkjsd" ganadores=["1"] premio=462462
+[2026-05-19 16:41:33] [PREMIO_PAGADO] usuario_id=2 sorteo_id=11 monto=462462
