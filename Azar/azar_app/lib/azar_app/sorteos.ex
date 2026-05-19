@@ -379,15 +379,23 @@ defmodule AzarApp.Sorteos do
       Ecto.Multi.run(acc, {:pagar, ticket.id}, fn _repo, _ -> Cuentas.registrar_premio(ticket.usuario, premio_por_ganador) end)
     end)
   end
+
 defp reembolsar_compradores_multi(multi, tickets, precio_ticket) do
-  Enum.reduce(tickets, multi, fn ticket, acc ->
-    Ecto.Multi.run(acc, {:reembolso, ticket.id}, fn _repo, _changes ->
-      case Cuentas.recargar_saldo(ticket.usuario, precio_ticket) do
+  tickets
+  |> Enum.group_by(& &1.usuario_id)
+  |> Enum.reduce(multi, fn {_usuario_id, tickets_del_usuario}, acc ->
+    usuario = hd(tickets_del_usuario).usuario
+    cantidad = length(tickets_del_usuario)
+    monto_total = Decimal.mult(precio_ticket, Decimal.new(cantidad))
+
+    Ecto.Multi.run(acc, {:reembolso, usuario.id}, fn _repo, _changes ->
+      case Cuentas.recargar_saldo(usuario, monto_total) do
         {:ok, usuario_actualizado} ->
           AzarApp.Auditoria.log(:devolucion_cancelacion, %{
-            usuario_id: ticket.usuario_id,
-            sorteo_id: ticket.sorteo_id,
-            monto: precio_ticket
+            usuario_id: usuario.id,
+            sorteo_id: hd(tickets_del_usuario).sorteo_id,
+            monto: monto_total,
+            tickets_count: cantidad
           })
 
           {:ok, usuario_actualizado}

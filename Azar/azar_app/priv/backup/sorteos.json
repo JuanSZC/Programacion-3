@@ -30,5 +30,20 @@
     ],
     "fecha_ejecucion": "2026-05-18 14:50:00",
     "insertado": "2026-05-18 19:48:03"
+  },
+  {
+    "id": 7,
+    "titulo": "Una noche con un travesaño",
+    "tipo_premio": "fijo",
+    "descripcion": "Una rifa",
+    "precio_ticket": "20000",
+    "total_tickets": 200,
+    "cantidad_ganadores": 1,
+    "premio_fijo": "2000000.00",
+    "porcentaje_casa": 30,
+    "estado": "cancelado",
+    "numeros_ganadores": [],
+    "fecha_ejecucion": "2026-05-19 11:28:00",
+    "insertado": "2026-05-19 16:23:06"
   }
 ]

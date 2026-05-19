@@ -157,3 +157,143 @@
 [2026-05-18 19:49:33] [SORTEO_EJECUTADO] sorteo_id=6 titulo="Rifa rapida" ganadores=["67"] premio=5600
 [2026-05-18 19:49:33] [PREMIO_PAGADO] usuario_id=2 sorteo_id=6 monto=5600
 [2026-05-18 19:50:42] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=2
+[2026-05-19 16:13:42] [USUARIO_CREADO] usuario_id=4 email=nicolas.monsalvea@uqvirtual.edu.co rol=cliente
+[2026-05-19 16:13:47] [SESION_INICIADA] usuario_id=4 email=nicolas.monsalvea@uqvirtual.edu.co rol=cliente
+[2026-05-19 16:15:19] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:15:19] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:17:02] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:18:44] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:20:12] [SESION_INICIADA] usuario_id=4 email=nicolas.monsalvea@uqvirtual.edu.co rol=cliente
+[2026-05-19 16:20:47] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:21:58] [RECARGA_SALDO] usuario_id=4 monto=50000000 metodo=plataforma
+[2026-05-19 16:23:06] [SORTEO_CREADO] sorteo_id=7 titulo="Una noche con un travesaño" tipo=fijo
+[2026-05-19 16:23:47] [TICKET_COMPRADO] usuario_id=4 sorteo_id=7 ticket=#200 monto=20000
+[2026-05-19 16:23:47] [TICKET_COMPRADO] usuario_id=4 sorteo_id=7 ticket=#67 monto=20000
+[2026-05-19 16:23:47] [TICKET_COMPRADO] usuario_id=4 sorteo_id=7 ticket=#32 monto=20000
+[2026-05-19 16:23:47] [TICKET_COMPRADO] usuario_id=4 sorteo_id=7 ticket=#16 monto=20000
+[2026-05-19 16:24:31] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-19 16:25:10] [RECARGA_SALDO] usuario_id=2 monto=100000000 metodo=plataforma
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#176 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#175 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#174 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#173 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#69 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#24 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#23 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#22 monto=20000
+[2026-05-19 16:25:40] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#21 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#20 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#19 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#18 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#10 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#9 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#11 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#12 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#13 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#14 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#15 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#8 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#7 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#6 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#5 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#4 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#3 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#2 monto=20000
+[2026-05-19 16:25:41] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#1 monto=20000
+[2026-05-19 16:25:47] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#31 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#61 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#60 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#52 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#53 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#45 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#44 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#36 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#37 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#29 monto=20000
+[2026-05-19 16:25:55] [TICKET_COMPRADO] usuario_id=2 sorteo_id=7 ticket=#28 monto=20000
+[2026-05-19 16:26:14] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=4 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=4 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=4 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=4 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=4 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=4 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=4 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=4 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [RECARGA_SALDO] usuario_id=2 monto=20000 metodo=plataforma
+[2026-05-19 16:26:32] [DEVOLUCION_CANCELACION] usuario_id=2 sorteo_id=7 monto_reembolsado=20000
+[2026-05-19 16:26:32] [SORTEO_CANCELADO] sorteo_id=7 titulo="Una noche con un travesaño" motivo="Condiciones mínimas no alcanzadas"

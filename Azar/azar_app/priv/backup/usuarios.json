@@ -12,7 +12,7 @@
     "total_recargado": "0.0",
     "total_gastado": "0.0",
     "total_ganado": "0.0",
-    "ultimo_login": "2026-05-18 19:41:40"
+    "ultimo_login": "2026-05-19 16:26:14"
   },
   {
     "id": 2,
@@ -23,11 +23,11 @@
     "edad": 28,
     "rol": "cliente",
     "activo": true,
-    "saldo_virtual": "10026050.00",
-    "total_recargado": "10056510.0",
-    "total_gastado": "36060.0",
+    "saldo_virtual": "99260000.00",
+    "total_recargado": "110076510.0",
+    "total_gastado": "796060.0",
     "total_ganado": "5600.0",
-    "ultimo_login": "2026-05-18 19:47:38"
+    "ultimo_login": "2026-05-19 16:24:31"
   },
   {
     "id": 3,
@@ -43,5 +43,20 @@
     "total_gastado": "0.0",
     "total_ganado": "0.0",
     "ultimo_login": "2026-05-17 17:26:00"
+  },
+  {
+    "id": 4,
+    "insertado": "2026-05-19 16:13:42Z",
+    "email": "nicolas.monsalvea@uqvirtual.edu.co",
+    "nombre": "nico",
+    "cedula": "12345678",
+    "edad": null,
+    "rol": "cliente",
+    "activo": true,
+    "saldo_virtual": "49940000.00",
+    "total_recargado": "50020000.0",
+    "total_gastado": "80000.0",
+    "total_ganado": "0.0",
+    "ultimo_login": "2026-05-19 16:20:12"
   }
 ]
