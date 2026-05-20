@@ -13,8 +13,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
     case ErrorHandler.safe_get(fn -> Sorteos.get_sorteo_con_tickets!(id) end) do
       {:ok, sorteo} ->
-        # Extraemos los tickets para el stream y limpiamos la relación en el struct
-        # para evitar clonar miles de registros en la memoria persistente del socket.
         tickets = sorteo.tickets
         sorteo_limpio = %{sorteo | tickets: []}
 
@@ -32,7 +30,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
     end
   end
 
-  # Modificado para recibir la lista de tickets por separado sin saturar el estado
   defp assign_sorteo_data(socket, sorteo, tickets) do
     recaudo = Sorteos.recaudo_actual(sorteo)
     premio = Sorteos.premio_actual(sorteo)
@@ -180,10 +177,19 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_event("show_ticket", %{"id" => ticket_id}, socket) do
-    # OPTIMIZACIÓN: En lugar de buscar en una lista masiva en memoria,
-    # cargamos el ticket y su usuario de forma aislada y bajo demanda.
-    ticket = Sorteos.get_ticket_con_usuario!(ticket_id)
-    {:noreply, assign(socket, :selected_ticket, ticket)}
+    try do
+      ticket = Sorteos.get_ticket_con_usuario!(ticket_id)
+      {:noreply, assign(socket, :selected_ticket, ticket)}
+    rescue
+      Ecto.NoResultsError ->
+        {:noreply, put_flash(socket, :error, "❌ Ticket no encontrado")}
+
+      e in Postgrex.Error ->
+        {:noreply, put_flash(socket, :error, "❌ #{format_pg_error(e)}")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "❌ Error inesperado al cargar el ticket")}
+    end
   end
 
   @impl true
@@ -191,25 +197,60 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_event("jugar_ahora", _, socket) do
-    case Sorteos.realizar_sorteo!(socket.assigns.sorteo) do
-      {:ok, _sorteo_actualizado} ->
-        {:noreply, put_flash(socket, :info, "Sorteo realizado con éxito.")}
-      {:error, razon} ->
-        {:noreply, put_flash(socket, :error, "❌ Error: #{razon}")}
+    try do
+      case Sorteos.realizar_sorteo!(socket.assigns.sorteo) do
+        {:ok, _sorteo_actualizado} ->
+          {:noreply, put_flash(socket, :info, "✅ Sorteo realizado con éxito.")}
+
+        {:error, razon} when is_binary(razon) ->
+          {:noreply, put_flash(socket, :error, "❌ No se pudo ejecutar: #{razon}")}
+
+        {:error, %Ecto.Changeset{} = cs} ->
+          detalle = format_changeset_errors(cs)
+          {:noreply, put_flash(socket, :error, "❌ Error de datos: #{detalle}")}
+
+        _ ->
+          {:noreply, put_flash(socket, :error, "❌ Respuesta inesperada del sistema")}
+      end
+    rescue
+      e in Postgrex.Error ->
+        {:noreply, put_flash(socket, :error, "❌ #{format_pg_error(e)}")}
+
+      e in Ecto.InvalidChangesetError ->
+        detalle = format_changeset_errors(e.changeset)
+        {:noreply, put_flash(socket, :error, "❌ Datos inválidos: #{detalle}")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "❌ Error inesperado al ejecutar el sorteo")}
     end
   end
 
   @impl true
   def handle_event("cancelar_sorteo", _, socket) do
-    case Sorteos.cancelar_sorteo(socket.assigns.sorteo) do
-      {:ok, _sorteo_cancelado} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Sorteo cancelado exitonamente. Se ha reembolsado a los participantes.")
-         |> push_navigate(to: ~p"/admin/sorteos")}
+    try do
+      case Sorteos.cancelar_sorteo(socket.assigns.sorteo) do
+        {:ok, _sorteo_cancelado} ->
+          {:noreply,
+           socket
+           |> put_flash(:info, "Sorteo cancelado exitosamente. Se ha reembolsado a los participantes.")
+           |> push_navigate(to: ~p"/admin/sorteos")}
 
-      {:error, razon} ->
-        {:noreply, put_flash(socket, :error, "❌ No se pudo cancelar el sorteo: #{razon}")}
+        {:error, razon} when is_binary(razon) ->
+          {:noreply, put_flash(socket, :error, "❌ No se pudo cancelar: #{razon}")}
+
+        {:error, %Ecto.Changeset{} = cs} ->
+          detalle = format_changeset_errors(cs)
+          {:noreply, put_flash(socket, :error, "❌ Error de validación: #{detalle}")}
+
+        _ ->
+          {:noreply, put_flash(socket, :error, "❌ Respuesta inesperada del sistema")}
+      end
+    rescue
+      e in Postgrex.Error ->
+        {:noreply, put_flash(socket, :error, "❌ #{format_pg_error(e)}")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "❌ Error inesperado al cancelar el sorteo")}
     end
   end
 
@@ -219,7 +260,6 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
 
   @impl true
   def handle_info(:ticket_comprado, socket) do
-    # Evitamos "reset: true". Recargamos la metadata y refrescamos únicamente los elementos.
     sorteo_actualizado = Sorteos.get_sorteo_con_tickets!(socket.assigns.sorteo.id)
     tickets = sorteo_actualizado.tickets
     sorteo_limpio = %{sorteo_actualizado | tickets: []}
@@ -228,7 +268,7 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
      socket
      |> assign_sorteo_data(sorteo_limpio, tickets)
      |> update_selected_ticket(tickets)
-     |> stream(:tickets, tickets, reset: true)} # Solo usar reset si es estrictamente obligatorio por cambios masivos concurrentes.
+     |> stream(:tickets, tickets, reset: true)}
   end
 
   @impl true
@@ -251,10 +291,14 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
      |> push_navigate(to: ~p"/admin/sorteos")}
   end
 
+  # =========================================================================
+  # HELPERS PRIVADOS
+  # =========================================================================
+
   defp update_selected_ticket(socket, tickets) do
     if socket.assigns.selected_ticket do
       ticket_actualizado = Enum.find(tickets, &(&1.id == socket.assigns.selected_ticket.id))
-      # Si el ticket inspeccionado cambió de estado, volvemos a traer sus datos actualizados
+
       if ticket_actualizado && ticket_actualizado.estado != socket.assigns.selected_ticket.estado do
         assign(socket, :selected_ticket, Sorteos.get_ticket_con_usuario!(ticket_actualizado.id))
       else
@@ -263,5 +307,38 @@ defmodule AzarAppWeb.Admin.SorteoLive.Show do
     else
       socket
     end
+  end
+
+  defp format_pg_error(%Postgrex.Error{postgres: pg}) do
+    case pg do
+      %{code: :numeric_value_out_of_range} ->
+        "Un valor numérico supera el límite permitido en base de datos"
+
+      %{code: :foreign_key_violation} ->
+        "Referencia inválida: un registro relacionado no existe"
+
+      %{code: :unique_violation} ->
+        "Ya existe un registro duplicado"
+
+      %{code: :not_null_violation, column: col} ->
+        "El campo '#{col}' no puede estar vacío"
+
+      %{code: :check_violation, constraint: c} ->
+        "Violación de restricción de integridad: '#{c}'"
+
+      %{message: msg} when is_binary(msg) ->
+        "Error de base de datos: #{msg}"
+
+      _ ->
+        "Error de base de datos desconocido"
+    end
+  end
+
+  defp format_pg_error(_), do: "Error de base de datos desconocido"
+
+  defp format_changeset_errors(%Ecto.Changeset{errors: errors}) do
+    errors
+    |> Enum.map(fn {campo, {msg, _opts}} -> "#{campo}: #{msg}" end)
+    |> Enum.join(", ")
   end
 end

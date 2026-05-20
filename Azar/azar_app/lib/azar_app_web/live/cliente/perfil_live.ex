@@ -4,6 +4,10 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
   use AzarAppWeb, :live_view
   alias AzarApp.Cuentas
 
+  # Límites de negocio — ajusta según el precision/scale de tu columna Postgres
+  @monto_minimo 1_000
+  @monto_maximo 10_000_000
+
   @impl true
   def mount(_params, session, socket) do
     usuario_id = session["usuario_id"]
@@ -47,9 +51,6 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
     {:noreply, assign(socket, seccion_activa: sec, editando_campo: nil)}
   end
 
-  @doc """
-  Breve: handle_event.
-  """
   def handle_event("editar", %{"campo" => campo}, socket) do
     {:noreply, assign(socket, editando_campo: campo)}
   end
@@ -108,46 +109,100 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
   def handle_event("devolver_ticket", %{"ticket_id" => ticket_id}, socket) do
     usuario = socket.assigns.usuario
 
-    case AzarApp.Sorteos.devolver_ticket(usuario, String.to_integer(ticket_id)) do
-      {:ok, _ticket} ->
-        usuario_actualizado = AzarApp.Cuentas.obtener_usuario!(usuario.id)
-        transacciones = AzarApp.Cuentas.listar_transacciones(usuario.id)
-        tickets_usuario = AzarApp.Sorteos.list_tickets_por_usuario(usuario.id)
-        nuevo_balance = AzarApp.Cuentas.obtener_balance_personal(usuario_actualizado)
+    try do
+      case AzarApp.Sorteos.devolver_ticket(usuario, String.to_integer(ticket_id)) do
+        {:ok, _ticket} ->
+          usuario_actualizado = AzarApp.Cuentas.obtener_usuario!(usuario.id)
+          transacciones = AzarApp.Cuentas.listar_transacciones(usuario.id)
+          tickets_usuario = AzarApp.Sorteos.list_tickets_por_usuario(usuario.id)
+          nuevo_balance = AzarApp.Cuentas.obtener_balance_personal(usuario_actualizado)
 
-        {:noreply,
-         socket
-         |> assign(usuario: usuario_actualizado)
-         |> assign(balance: nuevo_balance)
-         |> assign(transacciones: transacciones)
-         |> assign(tickets_usuario: tickets_usuario)
-         |> put_flash(:info, "✅ Ticket devuelto y saldo reembolsado")}
+          {:noreply,
+           socket
+           |> assign(usuario: usuario_actualizado)
+           |> assign(balance: nuevo_balance)
+           |> assign(transacciones: transacciones)
+           |> assign(tickets_usuario: tickets_usuario)
+           |> put_flash(:info, "✅ Ticket devuelto y saldo reembolsado")}
 
+        {:error, mensaje} when is_binary(mensaje) ->
+          {:noreply, put_flash(socket, :error, "❌ #{mensaje}")}
+
+        {:error, %Ecto.Changeset{} = cs} ->
+          detalle = format_changeset_errors(cs)
+          {:noreply, put_flash(socket, :error, "❌ Error de validación: #{detalle}")}
+
+        _ ->
+          {:noreply, put_flash(socket, :error, "❌ No se pudo devolver el ticket")}
+      end
+    rescue
+      e in Postgrex.Error ->
+        {:noreply, put_flash(socket, :error, "❌ #{format_pg_error(e)}")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "❌ Error inesperado al devolver el ticket")}
+    end
+  end
+
+  def handle_event("confirmar_recarga", params, socket) do
+    with {:ok, monto_raw} <- obtener_monto(params, socket),
+         {:ok, monto} <- validar_monto(monto_raw) do
+      ejecutar_recarga(socket, monto)
+    else
       {:error, mensaje} ->
         {:noreply, put_flash(socket, :error, "❌ #{mensaje}")}
     end
   end
 
-  def handle_event("confirmar_recarga", params, socket) do
-    monto =
-      if socket.assigns.modo_monto == "manual" do
-        case Integer.parse(Map.get(params, "monto_manual", "0")) do
-          {val, _} -> val
-          :error -> 0
-        end
-      else
-        socket.assigns.monto_seleccionado
-      end
+  # =========================================================================
+  # HELPERS PRIVADOS — RECARGA
+  # =========================================================================
 
-    metodo = socket.assigns.metodo_pago
-
-    if monto < 1000 do
-      {:noreply, put_flash(socket, :error, "❌ El monto mínimo de recarga es $1.000")}
+  defp obtener_monto(params, socket) do
+    if socket.assigns.modo_monto == "manual" do
+      parse_monto_manual(params)
     else
+      {:ok, socket.assigns.monto_seleccionado}
+    end
+  end
+
+  defp parse_monto_manual(params) do
+    raw = Map.get(params, "monto_manual", "0") |> String.trim()
+
+    cond do
+      raw == "" ->
+        {:error, "Ingresa un monto válido"}
+
+      String.length(raw) > 10 ->
+        {:error, "El monto ingresado es demasiado grande"}
+
+      true ->
+        case Integer.parse(raw) do
+          {val, ""} when val > 0 -> {:ok, val}
+          {_, _} -> {:error, "El monto no puede contener decimales"}
+          :error -> {:error, "El monto debe ser un número entero"}
+        end
+    end
+  end
+
+  defp validar_monto(monto) do
+    cond do
+      monto < @monto_minimo ->
+        {:error, "El monto mínimo de recarga es $#{@monto_minimo}"}
+
+      monto > @monto_maximo ->
+        {:error, "El monto máximo permitido es $#{@monto_maximo}"}
+
+      true ->
+        {:ok, monto}
+    end
+  end
+
+  defp ejecutar_recarga(socket, monto) do
+    try do
       case Cuentas.recargar_saldo(socket.assigns.usuario, monto) do
         {:ok, usuario_actualizado} ->
-          metodo_bonito = String.upcase(metodo)
-
+          metodo_bonito = socket.assigns.metodo_pago |> String.upcase()
           nuevo_balance = Cuentas.obtener_balance_personal(usuario_actualizado)
 
           {:noreply,
@@ -157,13 +212,69 @@ defmodule AzarAppWeb.Cliente.PerfilLive do
            |> assign(show_modal: false)
            |> put_flash(:info, "¡Recarga de $#{monto} exitosa vía #{metodo_bonito}!")}
 
+        {:error, %Ecto.Changeset{} = changeset} ->
+          mensaje = format_changeset_errors(changeset)
+          {:noreply, put_flash(socket, :error, "❌ Error de validación: #{mensaje}")}
+
+        {:error, razon} when is_binary(razon) ->
+          {:noreply, put_flash(socket, :error, "❌ #{razon}")}
+
         _ ->
-          {:noreply, put_flash(socket, :error, "Error al procesar la recarga")}
+          {:noreply, put_flash(socket, :error, "❌ No se pudo procesar la recarga")}
       end
+    rescue
+      # Overflow numérico en columna Postgres (ej: numeric precision excedida)
+      e in Postgrex.Error ->
+        {:noreply, put_flash(socket, :error, "❌ #{format_pg_error(e)}")}
+
+      # Changeset inválido que llegó sin wrapper {:error, ...}
+      e in Ecto.InvalidChangesetError ->
+        detalle = format_changeset_errors(e.changeset)
+        {:noreply, put_flash(socket, :error, "❌ Datos inválidos: #{detalle}")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "❌ Error inesperado al procesar la recarga")}
     end
   end
 
- @impl true
+  # =========================================================================
+  # HELPERS PRIVADOS — FORMATEO DE ERRORES
+  # =========================================================================
+
+  defp format_pg_error(%Postgrex.Error{postgres: pg}) do
+    case pg do
+      %{code: :numeric_value_out_of_range} ->
+        "El monto excede el límite permitido por el sistema"
+
+      %{code: :foreign_key_violation} ->
+        "Referencia inválida: un registro relacionado no existe"
+
+      %{code: :unique_violation} ->
+        "Ya existe un registro duplicado"
+
+      %{code: :not_null_violation, column: col} ->
+        "El campo '#{col}' no puede estar vacío"
+
+      %{code: :check_violation, constraint: c} ->
+        "Violación de restricción de integridad: '#{c}'"
+
+      %{message: msg} when is_binary(msg) ->
+        "Error de base de datos: #{msg}"
+
+      _ ->
+        "Error de base de datos desconocido"
+    end
+  end
+
+  defp format_pg_error(_), do: "Error de base de datos desconocido"
+
+  defp format_changeset_errors(%Ecto.Changeset{errors: errors}) do
+    errors
+    |> Enum.map(fn {campo, {msg, _opts}} -> "#{campo}: #{msg}" end)
+    |> Enum.join(", ")
+  end
+
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="min-h-screen bg-gradient-to-b from-base-200/30 to-base-100 pb-20 animate-in fade-in zoom-in-95 duration-700">

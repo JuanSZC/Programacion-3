@@ -328,3 +328,146 @@
 [2026-05-19 16:41:18] [TICKET_COMPRADO] usuario_id=2 sorteo_id=11 ticket=#1 monto=132132
 [2026-05-19 16:41:33] [SORTEO_EJECUTADO] sorteo_id=11 titulo="oisdsnfkjsd" ganadores=["1"] premio=462462
 [2026-05-19 16:41:33] [PREMIO_PAGADO] usuario_id=2 sorteo_id=11 monto=462462
+[2026-05-19 18:47:58] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 18:49:31] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-19 18:50:06] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-19 19:02:14] [USUARIO_CREADO] usuario_id=5 email=miguela.mayac1@uqvirtual.edu.co rol=cliente
+[2026-05-19 19:02:29] [SESION_INICIADA] usuario_id=5 email=miguela.mayac1@uqvirtual.edu.co rol=cliente
+[2026-05-19 19:02:46] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 19:05:14] [SORTEO_CREADO] sorteo_id=12 titulo="Trava 190cm" tipo=fijo
+[2026-05-19 19:05:42] [RECARGA_SALDO] usuario_id=5 monto=50000 metodo=plataforma
+[2026-05-19 19:06:16] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#20 monto=200
+[2026-05-19 19:06:54] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=5 operacion=sumar monto=100000
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#76 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#75 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#65 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#74 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#64 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#73 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#63 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#62 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#71 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#61 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#45 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#55 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#54 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#53 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#52 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#56 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#57 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#58 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#59 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#60 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#50 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#49 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#48 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#47 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#46 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#44 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#43 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#42 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#31 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#32 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#33 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#34 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#35 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#36 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#37 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#38 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#39 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#40 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#30 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#29 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#28 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#27 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#26 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#25 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#24 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#23 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#22 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#21 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#11 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#12 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#13 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#14 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#15 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#16 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#17 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#18 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#19 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#10 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#9 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#8 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#7 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#6 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#5 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#4 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#3 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#2 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#1 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#51 monto=200
+[2026-05-19 19:07:49] [TICKET_COMPRADO] usuario_id=5 sorteo_id=12 ticket=#41 monto=200
+[2026-05-19 19:09:09] [SORTEO_EJECUTADO] sorteo_id=12 titulo="Trava 190cm" ganadores=["24"] premio=50000.00
+[2026-05-19 19:09:09] [PREMIO_PAGADO] usuario_id=5 sorteo_id=12 monto=50000.00
+[2026-05-19 19:18:22] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-19 19:19:19] [USUARIO_CREADO] usuario_id=6 email=ju4ntr4x30149@gmail.com rol=cliente
+[2026-05-19 19:19:40] [SESION_INICIADA] usuario_id=6 email=ju4ntr4x30149@gmail.com rol=cliente
+[2026-05-19 19:20:15] [RECARGA_SALDO] usuario_id=6 monto=67000 metodo=plataforma
+[2026-05-19 19:21:25] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 19:23:27] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-19 19:24:01] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-19 19:25:26] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-19 19:27:40] [SORTEO_CREADO] sorteo_id=13 titulo="Sorteo prueba clase" tipo=acumulado
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#36 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#37 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#38 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#39 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#40 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#30 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#29 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#28 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#27 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#26 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#25 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#24 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#23 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#22 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#21 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#11 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#12 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#13 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#14 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#15 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#16 monto=1000
+[2026-05-19 19:28:27] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#17 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#18 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#19 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#20 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#10 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#9 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#8 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#7 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#6 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#5 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#4 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#3 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#2 monto=1000
+[2026-05-19 19:28:28] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#1 monto=1000
+[2026-05-19 19:28:46] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#31 monto=1000
+[2026-05-19 19:28:46] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#35 monto=1000
+[2026-05-19 19:28:46] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#34 monto=1000
+[2026-05-19 19:28:46] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#33 monto=1000
+[2026-05-19 19:28:46] [TICKET_COMPRADO] usuario_id=6 sorteo_id=13 ticket=#32 monto=1000
+[2026-05-19 19:28:57] [SORTEO_EJECUTADO] sorteo_id=13 titulo="Sorteo prueba clase" ganadores=["30"] premio=32000
+[2026-05-19 19:28:57] [PREMIO_PAGADO] usuario_id=6 sorteo_id=13 monto=32000
+[2026-05-19 19:29:41] [USUARIO_CREADO] usuario_id=7 email=yaelcavi@gmail.com rol=cliente
+[2026-05-19 19:30:01] [SESION_INICIADA] usuario_id=7 email=yaelcavi@gmail.com rol=cliente
+[2026-05-19 19:30:47] [RECARGA_SALDO] usuario_id=7 monto=100000 metodo=plataforma
+[2026-05-19 19:32:58] [SORTEO_CREADO] sorteo_id=14 titulo="El increible mundo de gumball" tipo=acumulado
+[2026-05-19 19:34:03] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=7 operacion=sumar monto=100000
+[2026-05-19 19:34:17] [TICKET_COMPRADO] usuario_id=7 sorteo_id=14 ticket=#326 monto=5000
+[2026-05-19 19:34:17] [TICKET_COMPRADO] usuario_id=7 sorteo_id=14 ticket=#222 monto=5000
+[2026-05-19 19:34:17] [TICKET_COMPRADO] usuario_id=7 sorteo_id=14 ticket=#22 monto=5000
+[2026-05-19 19:34:17] [TICKET_COMPRADO] usuario_id=7 sorteo_id=14 ticket=#129 monto=5000
+[2026-05-19 19:35:07] [SORTEO_EJECUTADO] sorteo_id=14 titulo="El increible mundo de gumball" ganadores=["129"] premio=14000
+[2026-05-19 19:35:08] [PREMIO_PAGADO] usuario_id=7 sorteo_id=14 monto=14000
