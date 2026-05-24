@@ -5,20 +5,22 @@ defmodule AzarAppWeb.CoreComponents do
 
   alias Phoenix.LiveView.JS
 
-attr :id, :string, doc: "the optional id of flash container"
-attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-attr :title, :string, default: nil
+  # ---------------------------------------------------------------------------
+  # FLASH
+  # ---------------------------------------------------------------------------
 
-attr :kind, :atom,
-  values: [:info, :error, :success, :warning],
-  doc: "used for styling and flash lookup"
-
-attr :rest, :global,
-  doc: "the arbitrary HTML attributes to add to the flash container"
+  attr :id, :string, doc: "the optional id of flash container"
+  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
+  attr :title, :string, default: nil
+  attr :kind, :atom,
+    values: [:info, :error, :success, :warning],
+    doc: "used for styling and flash lookup"
+  attr :rest, :global,
+    doc: "the arbitrary HTML attributes to add to the flash container"
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
   @doc """
-  Breve: flash.
+  Componente de flash — notificaciones de sistema.
   """
   def flash(assigns) do
     assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
@@ -29,55 +31,74 @@ attr :rest, :global,
       id={@id}
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
-      class="toast toast-top toast-center sm:toast-end z-[100] mt-4"
+      class="toast toast-top toast-end z-[100] mt-2"
       {@rest}
     >
       <div class={[
-        "alert w-80 sm:w-96 max-w-80 sm:max-w-96 text-wrap shadow-2xl rounded-2xl border-0 backdrop-blur-md cursor-pointer transition-all duration-300",
-          @kind == :info && "bg-base-100/95 text-base-content border-l-4 border-l-primary",
-        @kind == :success && "bg-success/90 text-success-content",
-        @kind == :error && "bg-error/95 text-error-content",
-        @kind == :warning && "bg-warning/95 text-warning-content"
+        "flex items-start gap-3 w-80 px-4 py-3.5 rounded-xl border shadow-lg cursor-pointer",
+        "backdrop-blur-sm transition-all duration-200 hover:opacity-80",
+        @kind == :info    && "bg-base-100/95 border-base-content/10 text-base-content",
+        @kind == :success && "bg-success/10 border-success/20 text-success-content",
+        @kind == :error   && "bg-error/10 border-error/20 text-error",
+        @kind == :warning && "bg-warning/10 border-warning/20 text-warning-content"
       ]}>
-        <.icon :if={@kind == :info} name="hero-information-circle" class="size-6 shrink-0 text-primary" />
-            <.icon :if={@kind == :success} name="hero-check-circle" class="size-6 shrink-0" />
-                <.icon :if={@kind == :error} name="hero-exclamation-circle" class="size-6 shrink-0" />
-            <.icon :if={@kind == :warning} name="hero-exclamation-triangle" class="size-6 shrink-0" />
-        <div class="flex-1">
-          <p :if={@title} class="font-bold tracking-wide text-sm">{@title}</p>
-          <p class="text-sm font-medium opacity-90">{msg}</p>
+        <%!-- Ícono --%>
+        <div class={[
+          "shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5",
+          @kind == :info    && "bg-primary/10 text-primary",
+          @kind == :success && "bg-success/15 text-success",
+          @kind == :error   && "bg-error/10 text-error",
+          @kind == :warning && "bg-warning/15 text-warning"
+        ]}>
+          <.icon :if={@kind == :info}    name="hero-information-circle-solid" class="size-4" />
+          <.icon :if={@kind == :success} name="hero-check-circle-solid"       class="size-4" />
+          <.icon :if={@kind == :error}   name="hero-exclamation-circle-solid" class="size-4" />
+          <.icon :if={@kind == :warning} name="hero-exclamation-triangle-solid" class="size-4" />
         </div>
-        <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
-          <.icon name="hero-x-mark" class="size-5 opacity-50 group-hover:opacity-100 transition-opacity" />
+
+        <%!-- Texto --%>
+        <div class="flex-1 min-w-0">
+          <p :if={@title} class="font-semibold text-sm leading-tight mb-0.5">{@title}</p>
+          <p class="text-sm opacity-80 leading-snug">{msg}</p>
+        </div>
+
+        <%!-- Cerrar --%>
+        <button type="button" class="shrink-0 mt-0.5 opacity-40 hover:opacity-70 transition-opacity" aria-label={gettext("close")}>
+          <.icon name="hero-x-mark-solid" class="size-4" />
         </button>
       </div>
     </div>
     """
   end
 
+  # ---------------------------------------------------------------------------
+  # BUTTON
+  # ---------------------------------------------------------------------------
+
   attr :rest, :global, include: ~w(href navigate patch method download name value disabled)
   attr :class, :any, default: nil
-  attr :variant, :string, default: "primary", values: ~w(primary secondary danger ghost outline default)
+  attr :variant, :string, default: "primary",
+    values: ~w(primary secondary danger ghost outline default)
   slot :inner_block, required: true
 
   @doc """
-  Breve: button.
+  Botón de acción con variantes.
   """
   def button(%{rest: rest} = assigns) do
     variants = %{
-      "primary" => "btn-primary text-primary-content shadow-lg shadow-primary/30",
-      "secondary" => "btn-secondary shadow-lg shadow-secondary/30",
-      "danger" => "btn-error text-white shadow-lg shadow-error/30",
-      "ghost" => "btn-ghost hover:bg-base-200",
-      "outline" => "btn-outline border-base-300 hover:border-base-content/30",
-      "default" => "btn-neutral",
-      nil => "btn-primary"
+      "primary"   => "bg-primary text-primary-content hover:opacity-90 shadow-sm shadow-primary/20 border-transparent",
+      "secondary" => "bg-secondary text-secondary-content hover:opacity-90 shadow-sm border-transparent",
+      "danger"    => "bg-error text-white hover:opacity-90 shadow-sm shadow-error/20 border-transparent",
+      "ghost"     => "bg-transparent text-base-content/70 hover:text-base-content hover:bg-base-content/6 border-transparent",
+      "outline"   => "bg-transparent text-base-content/70 hover:text-base-content hover:bg-base-content/5 border-base-content/15",
+      "default"   => "bg-base-200 text-base-content hover:bg-base-200/80 border-transparent"
     }
 
     assigns =
       assign_new(assigns, :combined_class, fn ->
         [
-          "btn rounded-xl transition-all duration-200 active:scale-95",
+          "btn inline-flex items-center gap-2 px-4 h-9 text-sm font-semibold",
+          "rounded-lg border transition-all duration-150 active:scale-[0.98]",
           Map.get(variants, assigns[:variant], variants["primary"]),
           assigns[:class]
         ]
@@ -98,11 +119,16 @@ attr :rest, :global,
     end
   end
 
+  # ---------------------------------------------------------------------------
+  # INPUT
+  # ---------------------------------------------------------------------------
+
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
   attr :value, :any
-  attr :type, :string, default: "text", values: ~w(checkbox color date datetime-local email file month number password search select tel text textarea time url week hidden)
+  attr :type, :string, default: "text",
+    values: ~w(checkbox color date datetime-local email file month number password search select tel text textarea time url week hidden)
   attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
   attr :errors, :list, default: []
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
@@ -114,7 +140,7 @@ attr :rest, :global,
   attr :rest, :global, include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength multiple pattern placeholder readonly required rows size step)
 
   @doc """
-  Breve: input.
+  Componente de input unificado.
   """
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -134,21 +160,24 @@ attr :rest, :global,
   end
 
   def input(%{type: "checkbox"} = assigns) do
-    assigns = assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value]) end)
+    assigns = assign_new(assigns, :checked, fn ->
+      Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
+    end)
+
     ~H"""
-    <div class="fieldset mb-2">
-      <label for={@id} class="cursor-pointer flex items-center gap-3">
-        <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} form={@rest[:form]} />
-        <input
-          type="checkbox"
-          id={@id}
-          name={@name}
-          value="true"
-          checked={@checked}
-          class={@class || "checkbox checkbox-primary checkbox-sm rounded-md"}
-          {@rest}
-        />
-        <span class="text-sm font-semibold text-base-content/80">{@label}</span>
+    <div class="flex items-center gap-3 py-1">
+      <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} form={@rest[:form]} />
+      <input
+        type="checkbox"
+        id={@id}
+        name={@name}
+        value="true"
+        checked={@checked}
+        class={@class || "checkbox checkbox-primary checkbox-sm rounded-md"}
+        {@rest}
+      />
+      <label for={@id} class="text-sm font-medium text-base-content/75 cursor-pointer select-none">
+        {@label}
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
@@ -157,23 +186,23 @@ attr :rest, :global,
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2 w-full">
-      <label for={@id} class="flex flex-col w-full">
-        <span :if={@label} class="text-sm font-bold text-base-content/80 mb-1.5 ml-1">{@label}</span>
-        <select
-          id={@id}
-          name={@name}
-          class={[
-            @class || "select select-bordered w-full rounded-xl bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all shadow-sm",
-            @errors != [] && (@error_class || "select-error focus:ring-error/30")
-          ]}
-          multiple={@multiple}
-          {@rest}
-        >
-          <option :if={@prompt} value="" disabled selected={@value in [nil, ""]}>{@prompt}</option>
-          {Phoenix.HTML.Form.options_for_select(@options, @value)}
-        </select>
+    <div class="flex flex-col gap-1.5 w-full">
+      <label :if={@label} for={@id} class="text-xs font-semibold text-base-content/60 uppercase tracking-wide">
+        {@label}
       </label>
+      <select
+        id={@id}
+        name={@name}
+        class={[
+          @class || "select select-bordered w-full rounded-lg bg-base-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all h-10 min-h-0",
+          @errors != [] && (@error_class || "select-error")
+        ]}
+        multiple={@multiple}
+        {@rest}
+      >
+        <option :if={@prompt} value="" disabled selected={@value in [nil, ""]}>{@prompt}</option>
+        {Phoenix.HTML.Form.options_for_select(@options, @value)}
+      </select>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
@@ -181,19 +210,19 @@ attr :rest, :global,
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2 w-full">
-      <label for={@id} class="flex flex-col w-full">
-        <span :if={@label} class="text-sm font-bold text-base-content/80 mb-1.5 ml-1">{@label}</span>
-        <textarea
-          id={@id}
-          name={@name}
-          class={[
-            @class || "textarea textarea-bordered w-full rounded-xl bg-base-100 min-h-[100px] focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all shadow-sm",
-            @errors != [] && (@error_class || "textarea-error focus:ring-error/30")
-          ]}
-          {@rest}
-        >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
+    <div class="flex flex-col gap-1.5 w-full">
+      <label :if={@label} for={@id} class="text-xs font-semibold text-base-content/60 uppercase tracking-wide">
+        {@label}
       </label>
+      <textarea
+        id={@id}
+        name={@name}
+        class={[
+          @class || "textarea textarea-bordered w-full rounded-lg bg-base-100 text-sm min-h-[90px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all resize-none",
+          @errors != [] && (@error_class || "textarea-error")
+        ]}
+        {@rest}
+      >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
@@ -201,21 +230,21 @@ attr :rest, :global,
 
   def input(assigns) do
     ~H"""
-    <div class="fieldset mb-2 w-full">
-      <label for={@id} class="flex flex-col w-full">
-        <span :if={@label} class="text-sm font-bold text-base-content/80 mb-1.5 ml-1">{@label}</span>
-        <input
-          type={@type}
-          name={@name}
-          id={@id}
-          value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-          class={[
-            @class || "input input-bordered w-full rounded-xl bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all shadow-sm",
-            @errors != [] && (@error_class || "input-error focus:ring-error/30")
-          ]}
-          {@rest}
-        />
+    <div class="flex flex-col gap-1.5 w-full">
+      <label :if={@label} for={@id} class="text-xs font-semibold text-base-content/60 uppercase tracking-wide">
+        {@label}
       </label>
+      <input
+        type={@type}
+        name={@name}
+        id={@id}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        class={[
+          @class || "input input-bordered w-full rounded-lg bg-base-100 text-sm h-10 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all",
+          @errors != [] && (@error_class || "input-error")
+        ]}
+        {@rest}
+      />
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
@@ -223,35 +252,45 @@ attr :rest, :global,
 
   defp error(assigns) do
     ~H"""
-    <p class="mt-1.5 flex gap-1.5 items-center text-xs font-bold text-error ml-1">
-      <.icon name="hero-exclamation-circle-mini" class="size-4" />
+    <p class="flex items-center gap-1.5 text-xs font-medium text-error mt-0.5">
+      <.icon name="hero-exclamation-circle-mini" class="size-3.5 shrink-0" />
       {render_slot(@inner_block)}
     </p>
     """
   end
+
+  # ---------------------------------------------------------------------------
+  # HEADER DE PÁGINA
+  # ---------------------------------------------------------------------------
 
   slot :inner_block, required: true
   slot :subtitle
   slot :actions
 
   @doc """
-  Breve: header.
+  Header de sección con título, subtítulo y acciones opcionales.
   """
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", "pb-6"]}>
+    <header class={["flex items-start justify-between gap-4 pb-6", @actions == [] && ""]}>
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-base-content">
+        <h1 class="font-display text-xl font-bold tracking-tight text-base-content leading-tight">
           {render_slot(@inner_block)}
         </h1>
-        <p :if={@subtitle != []} class="text-sm font-medium text-base-content/60 mt-1">
+        <p :if={@subtitle != []} class="text-sm text-base-content/50 mt-1 font-medium">
           {render_slot(@subtitle)}
         </p>
       </div>
-      <div class="flex-none">{render_slot(@actions)}</div>
+      <div :if={@actions != []} class="flex-none flex items-center gap-2">
+        {render_slot(@actions)}
+      </div>
     </header>
     """
   end
+
+  # ---------------------------------------------------------------------------
+  # TABLE
+  # ---------------------------------------------------------------------------
 
   attr :id, :string, required: true
   attr :rows, :list, required: true
@@ -264,7 +303,7 @@ attr :rest, :global,
   slot :action
 
   @doc """
-  Breve: table.
+  Tabla de datos con hover y acciones por fila.
   """
   def table(assigns) do
     assigns =
@@ -273,30 +312,41 @@ attr :rest, :global,
       end
 
     ~H"""
-    <div class="overflow-x-auto bg-base-100 border border-base-200 rounded-2xl shadow-sm">
-      <table class="table w-full">
-        <thead class="bg-base-200/50 text-base-content/60 text-xs uppercase tracking-wider font-bold">
-          <tr>
-            <th :for={col <- @col} class="px-6 py-4">{col[:label]}</th>
-            <th :if={@action != []} class="px-6 py-4 text-right">
+    <div class="overflow-x-auto rounded-xl border border-base-content/8 bg-base-100">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-base-content/8">
+            <th
+              :for={col <- @col}
+              class="px-5 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-base-content/40"
+            >
+              {col[:label]}
+            </th>
+            <th :if={@action != []} class="px-5 py-3 text-right">
               <span class="sr-only">{gettext("Actions")}</span>
             </th>
           </tr>
         </thead>
-        <tbody id={@id} phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"} class="divide-y divide-base-200 text-sm">
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="hover:bg-base-200/30 transition-colors group">
+        <tbody
+          id={@id}
+          phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"}
+          class="divide-y divide-base-content/6"
+        >
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-base-content/3 transition-colors duration-100"
+          >
             <td
               :for={col <- @col}
               phx-click={@row_click && @row_click.(row)}
-              class={["px-6 py-4", @row_click && "hover:cursor-pointer"]}
+              class={["px-5 py-3.5 text-base-content/80", @row_click && "cursor-pointer"]}
             >
               {render_slot(col, @row_item.(row))}
             </td>
-            <td :if={@action != []} class="px-6 py-4 text-right font-medium">
-              <div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <%= for action <- @action do %>
-                  {render_slot(action, @row_item.(row))}
-                <% end %>
+            <td :if={@action != []} class="px-5 py-3.5 text-right">
+              <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                {for action <- @action, do: render_slot(action, @row_item.(row))}
               </div>
             </td>
           </tr>
@@ -306,31 +356,46 @@ attr :rest, :global,
     """
   end
 
+  # ---------------------------------------------------------------------------
+  # LIST (clave/valor)
+  # ---------------------------------------------------------------------------
+
   slot :item, required: true do
     attr :title, :string, required: true
   end
 
   @doc """
-  Breve: list.
+  Lista de pares clave–valor para mostrar detalles de un registro.
   """
   def list(assigns) do
     ~H"""
-    <div class="bg-base-100 rounded-2xl border border-base-200 overflow-hidden shadow-sm">
-      <dl class="divide-y divide-base-200">
-        <div :for={item <- @item} class="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 flex flex-col hover:bg-base-200/30 transition-colors">
-          <dt class="text-sm font-bold text-base-content/70">{item.title}</dt>
-          <dd class="mt-1 text-sm text-base-content sm:col-span-2 sm:mt-0 font-medium">{render_slot(item)}</dd>
+    <div class="rounded-xl border border-base-content/8 bg-base-100 overflow-hidden">
+      <dl class="divide-y divide-base-content/6">
+        <div
+          :for={item <- @item}
+          class="grid grid-cols-1 sm:grid-cols-3 gap-1 px-5 py-4 hover:bg-base-content/2 transition-colors"
+        >
+          <dt class="text-xs font-semibold text-base-content/45 uppercase tracking-wide self-center">
+            {item.title}
+          </dt>
+          <dd class="sm:col-span-2 text-sm text-base-content font-medium">
+            {render_slot(item)}
+          </dd>
         </div>
       </dl>
     </div>
     """
   end
 
+  # ---------------------------------------------------------------------------
+  # ICON
+  # ---------------------------------------------------------------------------
+
   attr :name, :string, required: true
   attr :class, :any, default: "size-5"
 
   @doc """
-  Breve: icon.
+  Ícono de Heroicons.
   """
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
@@ -338,36 +403,41 @@ attr :rest, :global,
     """
   end
 
-  @doc """
-  Breve: show.
-  """
+  # ---------------------------------------------------------------------------
+  # JS HELPERS
+  # ---------------------------------------------------------------------------
+
+  @doc "Muestra un elemento con transición."
   def show(js \\ %JS{}, selector) do
     JS.show(js,
       to: selector,
-      time: 300,
-      transition:
-        {"transition-all ease-out duration-300",
-         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
-         "opacity-100 translate-y-0 sm:scale-100"}
+      time: 250,
+      transition: {
+        "transition-all ease-out duration-250",
+        "opacity-0 translate-y-2 scale-98",
+        "opacity-100 translate-y-0 scale-100"
+      }
     )
   end
 
-  @doc """
-  Breve: hide.
-  """
+  @doc "Oculta un elemento con transición."
   def hide(js \\ %JS{}, selector) do
     JS.hide(js,
       to: selector,
       time: 200,
-      transition:
-        {"transition-all ease-in duration-200", "opacity-100 translate-y-0 sm:scale-100",
-         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
+      transition: {
+        "transition-all ease-in duration-200",
+        "opacity-100 translate-y-0 scale-100",
+        "opacity-0 translate-y-2 scale-98"
+      }
     )
   end
 
-  @doc """
-  Breve: translate_error.
-  """
+  # ---------------------------------------------------------------------------
+  # I18N HELPERS
+  # ---------------------------------------------------------------------------
+
+  @doc false
   def translate_error({msg, opts}) do
     if count = opts[:count] do
       Gettext.dngettext(AzarAppWeb.Gettext, "errors", msg, msg, count, opts)
@@ -376,9 +446,7 @@ attr :rest, :global,
     end
   end
 
-  @doc """
-  Breve: translate_errors.
-  """
+  @doc false
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end

@@ -9,17 +9,18 @@
       {assigns[:page_title] && "#{assigns[:page_title]} · Azar"}
     </.live_title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
+    <%!-- Tipografía con carácter: Sora para display, DM Sans para cuerpo --%>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
       rel="stylesheet"
     />
 
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}></script>
 
+    <%!-- Sistema de temas --%>
     <script>
       (() => {
         const setTheme = (theme) => {
@@ -31,17 +32,12 @@
             document.documentElement.setAttribute("data-theme", theme);
           }
         };
-
         if (!document.documentElement.hasAttribute("data-theme")) {
           setTheme(localStorage.getItem("phx:theme") || "system");
         }
-
         window.addEventListener("storage", (e) => {
-          if (e.key === "phx:theme") {
-            setTheme(e.newValue || "system");
-          }
+          if (e.key === "phx:theme") setTheme(e.newValue || "system");
         });
-
         window.addEventListener("phx:set-theme", (e) => {
           setTheme(e.target.dataset.phxTheme);
         });
@@ -49,36 +45,49 @@
     </script>
 
     <style>
-      body {
-        font-family: 'Inter', sans-serif;
+      :root {
+        --font-display: 'Sora', sans-serif;
+        --font-body: 'DM Sans', sans-serif;
+      }
+
+      html, body {
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Headings y display usan Sora */
+      h1, h2, h3, h4,
+      .font-display {
+        font-family: var(--font-display);
+      }
+
+      /* Scrollbar discreta */
+      ::-webkit-scrollbar { width: 5px; height: 5px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: oklch(var(--bc) / 0.15); border-radius: 99px; }
+      ::-webkit-scrollbar-thumb:hover { background: oklch(var(--bc) / 0.25); }
+
+      /* Selección de texto con color primario */
+      ::selection {
+        background: oklch(var(--p) / 0.2);
+        color: oklch(var(--pc));
       }
     </style>
   </head>
 
-  <body class="min-h-screen bg-base-100 text-base-content antialiased flex flex-col selection:bg-primary selection:text-primary-content">
+  <body class="min-h-screen bg-base-100 text-base-content antialiased flex flex-col">
 
-    <%!-- FLASHES GLOBALES --%>
-    <div class="fixed top-4 right-4 z-[9999] w-full max-w-sm space-y-3 px-4 pointer-events-none">
-
+    <%!-- Flash global — posicionado arriba a la derecha --%>
+    <div class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 w-full max-w-xs pointer-events-none">
       <div class="pointer-events-auto">
-        <.flash
-          kind={:info}
-          flash={@flash}
-          class="alert bg-success/15 border border-success/30 text-success shadow-2xl rounded-2xl font-bold backdrop-blur-xl"
-        />
+        <.flash kind={:info} flash={@flash} />
       </div>
-
       <div class="pointer-events-auto">
-        <.flash
-          kind={:error}
-          flash={@flash}
-          class="alert bg-error/15 border border-error/30 text-error shadow-2xl rounded-2xl font-bold backdrop-blur-xl"
-        />
+        <.flash kind={:error} flash={@flash} />
       </div>
-
     </div>
 
     {@inner_content}
-
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <%!--
   Layout compartido para todas las rutas /cliente.
   Renderiza la página normal + el modal de premio si hay notificaciones pendientes.
@@ -13,90 +11,91 @@
 <%= if @notificacion_activa do %>
   <div
     id="modal-premio"
-    class="fixed inset-0 z-[200] flex items-center justify-center px-4"
-    phx-mounted={JS.transition("animate-in fade-in zoom-in-95 duration-300")}
+    class="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-4"
+    phx-mounted={JS.transition("animate-in fade-in duration-300")}
   >
-    <%!-- Fondo oscuro --%>
-    <div class="absolute inset-0 bg-base-300/80 backdrop-blur-md"></div>
+    <%!-- Fondo --%>
+    <div class="absolute inset-0 bg-base-300/60 backdrop-blur-sm"></div>
 
-    <%!-- Tarjeta del modal --%>
-    <div class="relative bg-base-100/95 backdrop-blur-3xl border border-warning/30 rounded-[3rem] p-8 md:p-12 w-full max-w-md shadow-2xl shadow-warning/20 animate-in zoom-in-95 duration-300 text-center overflow-hidden">
+    <%!-- Tarjeta --%>
+    <div class="relative w-full max-w-sm bg-base-100 rounded-2xl border border-base-content/10 shadow-2xl shadow-base-content/10 overflow-hidden animate-in slide-in-from-bottom-4 duration-300 sm:slide-in-from-bottom-0 sm:zoom-in-95">
 
-      <%!-- Brillo decorativo --%>
-      <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-warning/20 rounded-full blur-[80px] pointer-events-none"></div>
+      <%!-- Banda superior de color --%>
+      <div class="h-1 w-full bg-gradient-to-r from-warning/60 via-warning to-warning/60"></div>
 
-      <%!-- Ícono trofeo animado --%>
-      <div class="relative inline-flex mb-6">
-        <div class="absolute inset-0 bg-warning/30 rounded-full blur-xl animate-pulse"></div>
-        <div class="relative bg-warning/10 border-2 border-warning/30 rounded-full p-6">
-          <.icon name="hero-trophy-solid" class="size-14 text-warning" />
-        </div>
-      </div>
+      <div class="p-6 sm:p-8">
 
-      <%!-- Título --%>
-      <div class="mb-2 inline-flex items-center gap-2 bg-warning/10 px-4 py-1.5 rounded-full border border-warning/20">
-        <div class="size-2 bg-warning rounded-full animate-pulse"></div>
-        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-warning">¡Premio!</span>
-      </div>
-
-      <h2 class="text-3xl md:text-4xl font-black italic uppercase tracking-tighter text-base-content mt-3 mb-2">
-        ¡Ganaste!
-      </h2>
-
-      <p class="text-base-content/50 text-sm font-bold mb-8">
-        Tu ticket resultó ganador en el sorteo
-        <span class="text-base-content font-black"><%= @notificacion_activa.sorteo.titulo %></span>
-      </p>
-
-      <%!-- Detalles del premio --%>
-      <div class="space-y-3 mb-8">
-        <div class="flex justify-between items-center bg-base-200/60 rounded-2xl px-5 py-4 border border-base-300/50">
-          <span class="text-[11px] font-black uppercase tracking-widest text-base-content/50 flex items-center gap-2">
-            <.icon name="hero-ticket-solid" class="size-4" />
-            Ticket Ganador
+        <%!-- Badge de estado --%>
+        <div class="flex items-center justify-between mb-6">
+          <span class="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-warning bg-warning/10 border border-warning/20 px-3 py-1.5 rounded-full">
+            <span class="size-1.5 bg-warning rounded-full animate-pulse"></span>
+            Premio
           </span>
-          <span class="font-black text-xl italic text-base-content">
-            #<%= @notificacion_activa.ticket_numero %>
-          </span>
+          <.icon name="hero-trophy-solid" class="size-6 text-warning/60" />
         </div>
 
-        <div class="flex justify-between items-center bg-base-200/60 rounded-2xl px-5 py-4 border border-base-300/50">
-          <span class="text-[11px] font-black uppercase tracking-widest text-base-content/50 flex items-center gap-2">
-            <.icon name="hero-banknotes-solid" class="size-4" />
-            Tipo de Premio
-          </span>
-          <span class="font-black text-sm uppercase tracking-widest text-base-content">
-            <%= if @notificacion_activa.tipo_premio == "fijo", do: "Premio Fijo", else: "Acumulado" %>
-          </span>
-        </div>
-
-        <div class="flex justify-between items-center bg-warning/10 rounded-2xl px-5 py-4 border border-warning/20 shadow-inner">
-          <span class="text-[11px] font-black uppercase tracking-widest text-warning/70 flex items-center gap-2">
-            <.icon name="hero-star-solid" class="size-4" />
-            Premio Acreditado
-          </span>
-          <span class="font-black text-3xl italic text-warning">
-            $<%= @notificacion_activa.monto_premio %>
-          </span>
-        </div>
-      </div>
-
-      <%!-- Indicador de múltiples notificaciones --%>
-      <%= if length(@notificaciones_pendientes) > 1 do %>
-        <p class="text-[10px] font-black uppercase tracking-widest text-base-content/30 mb-4">
-          <%= length(@notificaciones_pendientes) - 1 %> premio(s) más por revisar
+        <%!-- Título --%>
+        <h2 class="font-display text-2xl font-bold tracking-tight text-base-content mb-1">
+          ¡Ganaste!
+        </h2>
+        <p class="text-sm text-base-content/50 mb-6">
+          Tu ticket resultó ganador en
+          <span class="text-base-content font-semibold"><%= @notificacion_activa.sorteo.titulo %></span>
         </p>
-      <% end %>
 
-      <%!-- Botón cerrar --%>
-      <button
-        phx-click="cerrar_notificacion"
-        phx-value-id={@notificacion_activa.id}
-        class="btn btn-warning w-full h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-warning/30 hover:-translate-y-1 hover:shadow-warning/40 transition-all gap-2"
-      >
-        ¡Entendido, gracias!
-        <.icon name="hero-check-circle-solid" class="size-5" />
-      </button>
+        <%!-- Detalles del premio --%>
+        <div class="flex flex-col gap-2 mb-6">
+
+          <div class="flex items-center justify-between px-4 py-3 rounded-xl bg-base-200/50 border border-base-content/6">
+            <span class="text-xs font-medium text-base-content/50 flex items-center gap-2">
+              <.icon name="hero-ticket-solid" class="size-3.5" />
+              Ticket ganador
+            </span>
+            <span class="font-display font-bold text-base-content">
+              #<%= @notificacion_activa.ticket_numero %>
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between px-4 py-3 rounded-xl bg-base-200/50 border border-base-content/6">
+            <span class="text-xs font-medium text-base-content/50 flex items-center gap-2">
+              <.icon name="hero-banknotes-solid" class="size-3.5" />
+              Tipo de premio
+            </span>
+            <span class="text-sm font-semibold text-base-content">
+              <%= if @notificacion_activa.tipo_premio == "fijo", do: "Premio Fijo", else: "Acumulado" %>
+            </span>
+          </div>
+
+          <%!-- Monto destacado --%>
+          <div class="flex items-center justify-between px-4 py-3.5 rounded-xl bg-warning/8 border border-warning/15">
+            <span class="text-xs font-medium text-warning/70 flex items-center gap-2">
+              <.icon name="hero-star-solid" class="size-3.5" />
+              Premio acreditado
+            </span>
+            <span class="font-display font-bold text-2xl text-warning">
+              $<%= @notificacion_activa.monto_premio %>
+            </span>
+          </div>
+        </div>
+
+        <%!-- Indicador múltiples premios --%>
+        <%= if length(@notificaciones_pendientes) > 1 do %>
+          <p class="text-center text-xs text-base-content/35 font-medium mb-4">
+            +<%= length(@notificaciones_pendientes) - 1 %> premio(s) más por revisar
+          </p>
+        <% end %>
+
+        <%!-- CTA --%>
+        <button
+          phx-click="cerrar_notificacion"
+          phx-value-id={@notificacion_activa.id}
+          class="w-full h-11 rounded-xl bg-warning text-warning-content text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all duration-150 flex items-center justify-center gap-2 shadow-sm shadow-warning/20"
+        >
+          Entendido, gracias
+          <.icon name="hero-check-circle-solid" class="size-4" />
+        </button>
+
+      </div>
     </div>
   </div>
 <% end %>

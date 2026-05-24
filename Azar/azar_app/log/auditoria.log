@@ -471,3 +471,5 @@
 [2026-05-19 19:34:17] [TICKET_COMPRADO] usuario_id=7 sorteo_id=14 ticket=#129 monto=5000
 [2026-05-19 19:35:07] [SORTEO_EJECUTADO] sorteo_id=14 titulo="El increible mundo de gumball" ganadores=["129"] premio=14000
 [2026-05-19 19:35:08] [PREMIO_PAGADO] usuario_id=7 sorteo_id=14 monto=14000
+[2026-05-20 22:22:10] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-23 23:43:26] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin

@@ -13,103 +13,105 @@ defmodule AzarAppWeb.Layouts do
   slot :inner_block, required: true
 
   @doc """
-  Breve: app.
+  Layout principal para el área de clientes.
   """
   def app(assigns) do
     ~H"""
-    <div class="min-h-screen flex flex-col bg-base-100 selection:bg-primary selection:text-primary-content relative overflow-hidden">
+    <div class="min-h-screen flex flex-col bg-base-100 relative">
 
-      <%!-- LUCES AMBIENTALES GLOBALES --%>
-      <div class="absolute top-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px]"></div>
-        <div class="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[150px]"></div>
+      <%!-- Luz ambiental sutil — solo dos puntos, discretos --%>
+      <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        <div class="absolute -top-32 left-1/3 w-[600px] h-[600px] bg-primary/8 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/2 right-0 w-[400px] h-[400px] bg-secondary/6 rounded-full blur-[100px]"></div>
       </div>
 
-      <%!-- BARRA DE NAVEGACIÓN SUPERIOR (Sticky y Efecto Cristal Supremo) --%>
-      <header class="sticky top-0 z-50 w-full backdrop-blur-2xl bg-base-100/60 border-b border-base-200/50 shadow-sm transition-all duration-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between h-20">
+      <%!-- NAVBAR --%>
+      <header class="sticky top-0 z-50 w-full">
+        <%!-- Línea de borde con blur real --%>
+        <div class="absolute inset-0 bg-base-100/75 backdrop-blur-xl border-b border-base-content/8"></div>
 
-            <%!-- IZQUIERDA: Logo y Branding --%>
-            <div class="flex-shrink-0 flex items-center gap-2 animate-in fade-in slide-in-from-left-4 duration-700">
-              <a href="/" class="flex items-center gap-3 group outline-none">
-                <div class="bg-primary/10 text-primary p-3 rounded-[1.5rem] group-hover:bg-primary group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-inner">
-                  <.icon name="hero-sparkles-solid" class="size-6" />
-                </div>
-                <div class="flex flex-col leading-none">
-                  <span class="font-black text-2xl uppercase tracking-tighter italic text-base-content group-hover:text-primary transition-colors duration-500">
-                    Azar<span class="text-primary drop-shadow-sm">App</span>
-                  </span>
-                  <span class="text-[8px] font-black uppercase tracking-[0.3em] opacity-40 ml-1">Portal Oficial</span>
-                </div>
-              </a>
-            </div>
+        <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+          <div class="flex items-center justify-between h-16">
 
-            <%!-- CENTRO: Enlaces de Navegación (Escritorio) --%>
-            <nav class="hidden md:flex items-center space-x-2">
-              <a href="/cliente/sorteos" class="px-5 py-2.5 rounded-2xl text-base-content/60 hover:text-primary hover:bg-primary/10 font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 group border border-transparent hover:border-primary/20">
-                <.icon name="hero-ticket-solid" class="size-4 group-hover:scale-110 transition-transform" />
-                Explorar Sorteos
+            <%!-- Logo --%>
+            <a href="/" class="group flex items-center gap-2.5 outline-none">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200">
+                <.icon name="hero-sparkles-solid" class="size-4 text-primary-content" />
+              </div>
+              <span class="font-display font-bold text-xl tracking-tight text-base-content group-hover:text-primary transition-colors duration-200">
+                Azar<span class="text-primary">.</span>
+              </span>
+            </a>
+
+            <%!-- Nav central (desktop) --%>
+            <nav class="hidden md:flex items-center gap-1">
+              <a
+                href="/cliente/sorteos"
+                class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-base-content/60 hover:text-base-content hover:bg-base-content/5 transition-all duration-150"
+              >
+                <.icon name="hero-ticket-solid" class="size-4" />
+                Sorteos
               </a>
             </nav>
 
-            <%!-- DERECHA: Acciones, Modo Oscuro y Usuario --%>
-            <div class="flex items-center gap-2 sm:gap-6 animate-in fade-in slide-in-from-right-4 duration-700">
+            <%!-- Derecha: tema + usuario --%>
+            <div class="flex items-center gap-3">
 
-              <%!-- TU COMPONENTE DE TEMA ORIGINAL --%>
               <.theme_toggle />
 
-              <%!-- Separador Visual --%>
-              <div class="hidden sm:block h-8 w-px bg-base-300/50 rounded-full"></div>
+              <div class="w-px h-5 bg-base-content/15 hidden sm:block"></div>
 
-              <%!-- MENÚ DE USUARIO --%>
               <%= if assigns[:current_user] || assigns[:current_usuario] do %>
                 <div class="dropdown dropdown-end">
-                  <div tabindex="0" role="button" class="btn btn-ghost h-auto py-2 px-3 rounded-[2rem] flex items-center gap-3 hover:bg-base-200/50 border border-transparent hover:border-base-300 transition-all group">
-                    <div class="flex flex-col items-end leading-tight hidden sm:flex">
-                      <span class="font-black text-xs uppercase tracking-tight text-base-content">Mi Cuenta</span>
-                      <span class="text-[9px] font-bold text-success uppercase tracking-widest flex items-center gap-1">
-                        <div class="size-1.5 bg-success rounded-full animate-pulse"></div> En línea
-                      </span>
+                  <div
+                    tabindex="0"
+                    role="button"
+                    class="flex items-center gap-2 cursor-pointer group"
+                  >
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-display font-bold text-sm group-hover:bg-primary group-hover:text-primary-content transition-all duration-200">
+                      U
                     </div>
-                    <div class="avatar placeholder">
-                      <div class="bg-primary text-primary-content rounded-full w-10 shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
-                        <span class="text-sm font-black uppercase">U</span>
-                      </div>
-                    </div>
+                    <.icon name="hero-chevron-down-solid" class="size-3 text-base-content/40 group-hover:text-base-content/70 transition-colors hidden sm:block" />
                   </div>
 
-                  <ul tabindex="0" class="dropdown-content z-[1] menu p-3 shadow-2xl shadow-base-300/50 bg-base-100/90 backdrop-blur-xl rounded-[2.5rem] w-64 border border-base-200/50 mt-4">
-                    <div class="px-4 pb-2 pt-1 border-b border-base-200/50 mb-2">
-                       <span class="text-[10px] font-black uppercase tracking-widest text-base-content/40">Opciones de usuario</span>
-                    </div>
+                  <ul
+                    tabindex="0"
+                    class="dropdown-content z-[1] mt-3 p-1.5 min-w-48 bg-base-100 border border-base-content/10 rounded-xl shadow-xl shadow-base-content/5"
+                  >
                     <li>
-                      <a href="/admin/sorteos" class="py-3 px-4 rounded-2xl hover:bg-base-200/50 font-bold text-sm flex items-center gap-3 group">
-                        <div class="p-2 bg-secondary/10 text-secondary rounded-xl group-hover:bg-secondary group-hover:text-white transition-colors">
-                          <.icon name="hero-command-line-solid" class="size-4" />
-                        </div>
+                      <a
+                        href="/admin/sorteos"
+                        class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-base-content/70 hover:text-base-content hover:bg-base-content/5 transition-all"
+                      >
+                        <.icon name="hero-command-line-solid" class="size-4 text-base-content/40" />
                         Panel Admin
                       </a>
                     </li>
-                    <div class="divider my-0"></div>
+                    <li class="my-1 border-t border-base-content/8"></li>
                     <li>
-                      <a href="/log_out" class="py-3 px-4 rounded-2xl text-error hover:bg-error/10 hover:text-error font-bold text-sm flex items-center gap-3 group">
-                        <div class="p-2 bg-error/10 rounded-xl group-hover:bg-error group-hover:text-white transition-colors">
-                          <.icon name="hero-arrow-right-on-rectangle-solid" class="size-4" />
-                        </div>
+                      <a
+                        href="/log_out"
+                        class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-error/70 hover:text-error hover:bg-error/8 transition-all"
+                      >
+                        <.icon name="hero-arrow-right-on-rectangle-solid" class="size-4" />
                         Cerrar Sesión
                       </a>
                     </li>
                   </ul>
                 </div>
               <% else %>
-                <%!-- BOTONES PARA INVITADOS --%>
-                <div class="hidden sm:flex items-center gap-3">
-                  <a href="/login" class="btn btn-ghost rounded-[1.5rem] font-black text-xs uppercase tracking-widest text-base-content/60 hover:text-primary hover:bg-primary/10">
+                <div class="flex items-center gap-2">
+                  <a
+                    href="/login"
+                    class="hidden sm:block px-4 py-2 rounded-lg text-sm font-medium text-base-content/60 hover:text-base-content hover:bg-base-content/5 transition-all duration-150"
+                  >
                     Ingresar
                   </a>
-                  <a href="/registro" class="btn btn-primary rounded-[1.5rem] px-6 font-black text-xs uppercase tracking-widest text-white shadow-xl shadow-primary/30 hover:-translate-y-1 hover:shadow-primary/40 transition-all">
-                    Crear Cuenta
+                  <a
+                    href="/registro"
+                    class="px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-primary-content hover:opacity-90 active:scale-95 transition-all duration-150 shadow-sm shadow-primary/20"
+                  >
+                    Crear cuenta
                   </a>
                 </div>
               <% end %>
@@ -118,34 +120,30 @@ defmodule AzarAppWeb.Layouts do
         </div>
       </header>
 
-      <%!-- CONTENEDOR PRINCIPAL --%>
-      <main class="flex-grow pt-10 pb-24 w-full relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <%!-- Notificaciones (Flash Messages) --%>
-          <div class="relative z-50">
+      <%!-- CONTENIDO PRINCIPAL --%>
+      <main class="flex-grow py-8 w-full relative z-10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+          <div class="relative z-50 mb-2">
             <.flash_group flash={@flash} />
           </div>
-
-          <%!-- El contenido de tus vistas (Sorteos, Cliente, etc.) --%>
           {render_slot(@inner_block)}
         </div>
       </main>
 
-      <%!-- PIE DE PÁGINA (Footer) --%>
-      <footer class="mt-auto relative z-10 border-t border-base-200/50 bg-base-100/50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 py-12">
-          <div class="flex flex-col items-center justify-center text-center space-y-4">
-            <div class="flex items-center gap-2 opacity-50 grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer group">
-              <div class="bg-base-200 p-2 rounded-xl group-hover:bg-primary/10 transition-colors">
-                <.icon name="hero-sparkles-solid" class="size-6 group-hover:text-primary transition-colors" />
-              </div>
-              <span class="font-black text-2xl tracking-tighter italic uppercase group-hover:text-primary transition-colors">Azar<span class="text-base-content/50 group-hover:text-primary">App</span></span>
+      <%!-- FOOTER --%>
+      <footer class="mt-auto border-t border-base-content/8 py-10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 bg-primary/10 rounded-md flex items-center justify-center">
+              <.icon name="hero-sparkles-solid" class="size-3 text-primary" />
             </div>
-            <p class="font-bold text-[10px] text-base-content/40 uppercase tracking-widest max-w-sm">
-              Plataforma segura y transparente de sorteos digitales.<br/>
-              <span class="inline-block mt-2 px-3 py-1 bg-base-200 rounded-full">Copyright © <%= Date.utc_today().year %></span>
-            </p>
+            <span class="font-display font-bold text-base-content/40 tracking-tight">
+              Azar<span class="text-primary/60">.</span>
+            </span>
           </div>
+          <p class="text-xs text-base-content/35 font-medium">
+            Plataforma de sorteos digitales · © <%= Date.utc_today().year %>
+          </p>
         </div>
       </footer>
     </div>
@@ -160,7 +158,7 @@ defmodule AzarAppWeb.Layouts do
   """
   def flash_group(assigns) do
     ~H"""
-    <div id={@id} aria-live="polite" class="flex flex-col gap-3">
+    <div id={@id} aria-live="polite" class="flex flex-col gap-2">
       <.flash kind={:info} flash={@flash} />
       <.flash kind={:error} flash={@flash} />
       <.flash kind={:warning} flash={@flash} />
@@ -168,24 +166,24 @@ defmodule AzarAppWeb.Layouts do
       <.flash
         id="client-error"
         kind={:error}
-        title={gettext("We can't find the internet")}
+        title={gettext("Sin conexión")}
         phx-disconnected={show(".phx-client-error #client-error") |> JS.remove_attribute("hidden")}
         phx-connected={hide("#client-error") |> JS.set_attribute({"hidden", ""})}
         hidden
       >
-        {gettext("Attempting to reconnect")}
+        {gettext("Intentando reconectar")}
         <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
       </.flash>
 
       <.flash
         id="server-error"
         kind={:error}
-        title={gettext("Something went wrong!")}
+        title={gettext("Algo salió mal")}
         phx-disconnected={show(".phx-server-error #server-error") |> JS.remove_attribute("hidden")}
         phx-connected={hide("#server-error") |> JS.set_attribute({"hidden", ""})}
         hidden
       >
-        {gettext("Attempting to reconnect")}
+        {gettext("Intentando reconectar")}
         <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
       </.flash>
     </div>
@@ -193,35 +191,44 @@ defmodule AzarAppWeb.Layouts do
   end
 
   @doc """
-  Breve: theme_toggle.
+  Toggle de tema: sistema / claro / oscuro.
   """
   def theme_toggle(assigns) do
     ~H"""
-    <div class="card relative flex flex-row items-center bg-base-200/50 backdrop-blur-sm rounded-[1.5rem] border border-base-300/50 overflow-hidden shadow-inner p-1">
-      <div class="absolute w-[30%] h-[80%] rounded-xl bg-base-100 shadow-sm border border-base-200 left-[2%] [[data-theme=light]_&]:left-[35%] [[data-theme=dark]_&]:left-[68%] transition-all duration-300 ease-out" />
+    <div class="relative flex items-center bg-base-200/60 rounded-lg p-0.5 gap-0.5">
+      <%!-- Indicador deslizante (CSS puro) --%>
+      <div class="absolute w-[calc(33.33%-2px)] h-[calc(100%-4px)] rounded-md bg-base-100 shadow-sm border border-base-content/8
+        left-[2px]
+        [[data-theme=light]_&]:left-[calc(33.33%+1px)]
+        [[data-theme=dark]_&]:left-[calc(66.66%+0px)]
+        transition-all duration-200 ease-out">
+      </div>
 
       <button
-        class="flex justify-center items-center p-2 cursor-pointer w-10 h-8 relative z-10 text-base-content/50 hover:text-base-content transition-colors"
+        class="relative z-10 flex items-center justify-center w-7 h-7 rounded-md text-base-content/50 hover:text-base-content transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
+        title="Sistema"
       >
-        <.icon name="hero-computer-desktop-solid" class="size-4" />
+        <.icon name="hero-computer-desktop-solid" class="size-3.5" />
       </button>
 
       <button
-        class="flex justify-center items-center p-2 cursor-pointer w-10 h-8 relative z-10 text-base-content/50 hover:text-base-content transition-colors"
+        class="relative z-10 flex items-center justify-center w-7 h-7 rounded-md text-base-content/50 hover:text-base-content transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
+        title="Claro"
       >
-        <.icon name="hero-sun-solid" class="size-4" />
+        <.icon name="hero-sun-solid" class="size-3.5" />
       </button>
 
       <button
-        class="flex justify-center items-center p-2 cursor-pointer w-10 h-8 relative z-10 text-base-content/50 hover:text-base-content transition-colors"
+        class="relative z-10 flex items-center justify-center w-7 h-7 rounded-md text-base-content/50 hover:text-base-content transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
+        title="Oscuro"
       >
-        <.icon name="hero-moon-solid" class="size-4" />
+        <.icon name="hero-moon-solid" class="size-3.5" />
       </button>
     </div>
     """
