@@ -473,3 +473,7 @@
 [2026-05-19 19:35:08] [PREMIO_PAGADO] usuario_id=7 sorteo_id=14 monto=14000
 [2026-05-20 22:22:10] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
 [2026-05-23 23:43:26] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 00:07:45] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 00:08:31] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-24 00:08:55] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
+[2026-05-24 00:09:06] [SESION_CERRADA] usuario_id=2 email=jusezaca2024@gmail.com

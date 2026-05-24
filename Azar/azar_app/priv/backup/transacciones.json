@@ -3,2680 +3,2680 @@
     "id": 1,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10000000",
+    "insertado": "2026-05-17 16:47:12Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 16:47:12Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10000000"
   },
   {
     "id": 2,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-17 17:12:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 17:12:58Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "10"
   },
   {
     "id": 3,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-17 17:12:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 17:12:58Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "10"
   },
   {
     "id": 4,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-17 17:12:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 17:12:58Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "10"
   },
   {
     "id": 5,
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-17 17:12:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 17:12:58Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "10"
   },
   {
     "id": 6,
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-17 17:12:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 17:12:58Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "10"
   },
   {
     "id": 7,
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-17 17:12:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-17 17:12:58Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "10"
   },
   {
     "id": 15,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-18 16:10:38Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:10:38Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10"
   },
   {
     "id": 16,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-18 16:10:38Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:10:38Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10"
   },
   {
     "id": 17,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-18 16:10:38Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:10:38Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10"
   },
   {
     "id": 18,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-18 16:10:38Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:10:38Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10"
   },
   {
     "id": 19,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-18 16:10:38Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:10:38Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10"
   },
   {
     "id": 20,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "10",
+    "insertado": "2026-05-18 16:10:38Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:10:38Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "10"
   },
   {
     "id": 21,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "50000",
+    "insertado": "2026-05-18 16:27:10Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:27:10Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "50000"
   },
   {
     "id": 22,
     "ticket_numero": "67",
     "descripcion": "Compra ticket #67",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 16:27:21Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:27:21Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 23,
     "ticket_numero": "69",
     "descripcion": "Compra ticket #69",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 16:29:17Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:29:17Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 24,
     "ticket_numero": "69",
     "descripcion": "Devolución ticket #69",
-    "tipo": "devolucion_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 16:29:31Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:29:31Z"
+    "usuario_id": 2,
+    "tipo": "devolucion_ticket",
+    "monto": "1000"
   },
   {
     "id": 25,
     "ticket_numero": "69",
     "descripcion": "Compra ticket #69",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 16:29:39Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 16:29:39Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 26,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 17:30:53Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:30:53Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "1000"
   },
   {
     "id": 27,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 17:30:53Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:30:53Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "1000"
   },
   {
     "id": 28,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "500",
+    "insertado": "2026-05-18 17:36:35Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:36:35Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "500"
   },
   {
     "id": 29,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "500",
+    "insertado": "2026-05-18 17:36:35Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:36:35Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "500"
   },
   {
     "id": 30,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "500",
+    "insertado": "2026-05-18 17:36:35Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:36:35Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "500"
   },
   {
     "id": 31,
     "ticket_numero": "4",
     "descripcion": "Devolución ticket #4",
-    "tipo": "devolucion_ticket",
-    "usuario_id": 2,
-    "monto": "500",
+    "insertado": "2026-05-18 17:40:07Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:40:07Z"
+    "usuario_id": 2,
+    "tipo": "devolucion_ticket",
+    "monto": "500"
   },
   {
     "id": 32,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "500",
+    "insertado": "2026-05-18 17:42:46Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:42:46Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "500"
   },
   {
     "id": 33,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "500",
+    "insertado": "2026-05-18 17:42:46Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 17:42:46Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "500"
   },
   {
     "id": 34,
     "ticket_numero": "8",
     "descripcion": "Compra ticket #8",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:45:44Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:45:44Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 35,
     "ticket_numero": "7",
     "descripcion": "Compra ticket #7",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:45:44Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:45:44Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 36,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:45:44Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:45:44Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 37,
     "ticket_numero": "200",
     "descripcion": "Compra ticket #200",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:45:44Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:45:44Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 38,
     "ticket_numero": "53",
     "descripcion": "Compra ticket #53",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:45:44Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:45:44Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 39,
     "ticket_numero": "136",
     "descripcion": "Compra ticket #136",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:45:44Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:45:44Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 40,
     "ticket_numero": "53",
     "descripcion": "Devolución ticket #53",
-    "tipo": "devolucion_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:46:02Z",
     "sorteo_id": 5,
-    "insertado": "2026-05-18 19:46:02Z"
+    "usuario_id": 2,
+    "tipo": "devolucion_ticket",
+    "monto": "5000"
   },
   {
     "id": 41,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:46:54Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 19:46:54Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "5000"
   },
   {
     "id": 42,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:46:54Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 19:46:54Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "5000"
   },
   {
     "id": 43,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:46:54Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 19:46:54Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "5000"
   },
   {
     "id": 44,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:46:54Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 19:46:54Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "5000"
   },
   {
     "id": 45,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-18 19:46:54Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 19:46:54Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "5000"
   },
   {
     "id": 46,
     "ticket_numero": "67",
     "descripcion": "Compra ticket #67",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:15Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:15Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 47,
     "ticket_numero": "69",
     "descripcion": "Compra ticket #69",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:18Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:18Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 48,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:20Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:20Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 49,
     "ticket_numero": "74",
     "descripcion": "Compra ticket #74",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:22Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:22Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 50,
     "ticket_numero": "57",
     "descripcion": "Compra ticket #57",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:28Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:28Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 51,
     "ticket_numero": "56",
     "descripcion": "Compra ticket #56",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:28Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:28Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 52,
     "ticket_numero": "55",
     "descripcion": "Compra ticket #55",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:28Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:28Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 53,
     "ticket_numero": "54",
     "descripcion": "Compra ticket #54",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "1000",
+    "insertado": "2026-05-18 19:48:29Z",
     "sorteo_id": 6,
-    "insertado": "2026-05-18 19:48:29Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 54,
     "ticket_numero": null,
     "descripcion": "Premio ganado",
-    "tipo": "premio",
-    "usuario_id": 2,
-    "monto": "5600",
+    "insertado": "2026-05-18 19:49:33Z",
     "sorteo_id": null,
-    "insertado": "2026-05-18 19:49:33Z"
+    "usuario_id": 2,
+    "tipo": "premio",
+    "monto": "5600"
   },
   {
     "id": 55,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 4,
-    "monto": "50000000",
+    "insertado": "2026-05-19 16:21:58Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:21:58Z"
+    "usuario_id": 4,
+    "tipo": "recarga",
+    "monto": "50000000"
   },
   {
     "id": 56,
     "ticket_numero": "200",
     "descripcion": "Compra ticket #200",
-    "tipo": "compra_ticket",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:23:47Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:23:47Z"
+    "usuario_id": 4,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 57,
     "ticket_numero": "67",
     "descripcion": "Compra ticket #67",
-    "tipo": "compra_ticket",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:23:47Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:23:47Z"
+    "usuario_id": 4,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 58,
     "ticket_numero": "32",
     "descripcion": "Compra ticket #32",
-    "tipo": "compra_ticket",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:23:47Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:23:47Z"
+    "usuario_id": 4,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 59,
     "ticket_numero": "16",
     "descripcion": "Compra ticket #16",
-    "tipo": "compra_ticket",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:23:47Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:23:47Z"
+    "usuario_id": 4,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 60,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "100000000",
+    "insertado": "2026-05-19 16:25:10Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:25:10Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "100000000"
   },
   {
     "id": 61,
     "ticket_numero": "176",
     "descripcion": "Compra ticket #176",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 62,
     "ticket_numero": "175",
     "descripcion": "Compra ticket #175",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 63,
     "ticket_numero": "174",
     "descripcion": "Compra ticket #174",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 64,
     "ticket_numero": "173",
     "descripcion": "Compra ticket #173",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 65,
     "ticket_numero": "69",
     "descripcion": "Compra ticket #69",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 66,
     "ticket_numero": "24",
     "descripcion": "Compra ticket #24",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 67,
     "ticket_numero": "23",
     "descripcion": "Compra ticket #23",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 68,
     "ticket_numero": "22",
     "descripcion": "Compra ticket #22",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 69,
     "ticket_numero": "21",
     "descripcion": "Compra ticket #21",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:40Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:40Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 70,
     "ticket_numero": "20",
     "descripcion": "Compra ticket #20",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 71,
     "ticket_numero": "19",
     "descripcion": "Compra ticket #19",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 72,
     "ticket_numero": "18",
     "descripcion": "Compra ticket #18",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 73,
     "ticket_numero": "10",
     "descripcion": "Compra ticket #10",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 74,
     "ticket_numero": "9",
     "descripcion": "Compra ticket #9",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 75,
     "ticket_numero": "11",
     "descripcion": "Compra ticket #11",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 76,
     "ticket_numero": "12",
     "descripcion": "Compra ticket #12",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 77,
     "ticket_numero": "13",
     "descripcion": "Compra ticket #13",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 78,
     "ticket_numero": "14",
     "descripcion": "Compra ticket #14",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 79,
     "ticket_numero": "15",
     "descripcion": "Compra ticket #15",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 80,
     "ticket_numero": "8",
     "descripcion": "Compra ticket #8",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 81,
     "ticket_numero": "7",
     "descripcion": "Compra ticket #7",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 82,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 83,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 84,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 85,
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 86,
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 87,
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:41Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:41Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 88,
     "ticket_numero": "31",
     "descripcion": "Compra ticket #31",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:47Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:47Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 89,
     "ticket_numero": "61",
     "descripcion": "Compra ticket #61",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 90,
     "ticket_numero": "60",
     "descripcion": "Compra ticket #60",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 91,
     "ticket_numero": "52",
     "descripcion": "Compra ticket #52",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 92,
     "ticket_numero": "53",
     "descripcion": "Compra ticket #53",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 93,
     "ticket_numero": "45",
     "descripcion": "Compra ticket #45",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 94,
     "ticket_numero": "44",
     "descripcion": "Compra ticket #44",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 95,
     "ticket_numero": "36",
     "descripcion": "Compra ticket #36",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 96,
     "ticket_numero": "37",
     "descripcion": "Compra ticket #37",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 97,
     "ticket_numero": "29",
     "descripcion": "Compra ticket #29",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 98,
     "ticket_numero": "28",
     "descripcion": "Compra ticket #28",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:25:55Z",
     "sorteo_id": 7,
-    "insertado": "2026-05-19 16:25:55Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "20000"
   },
   {
     "id": 99,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 4,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 100,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 4,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 101,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 102,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 103,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 104,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 105,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 106,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 107,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 108,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 109,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 110,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 111,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 112,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 113,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 114,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 115,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 116,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 117,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 118,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 119,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 120,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 121,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 122,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 123,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 124,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 125,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 126,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 127,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 128,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 129,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 130,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 4,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 131,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 4,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 4,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 132,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 133,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 134,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 135,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 136,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 137,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 138,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 139,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 140,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "20000",
+    "insertado": "2026-05-19 16:26:32Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:26:32Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "20000"
   },
   {
     "id": 141,
     "ticket_numero": "8",
     "descripcion": "Compra ticket #8",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 142,
     "ticket_numero": "7",
     "descripcion": "Compra ticket #7",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 143,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 144,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 145,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 146,
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 147,
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 148,
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "5000",
+    "insertado": "2026-05-19 16:39:52Z",
     "sorteo_id": 8,
-    "insertado": "2026-05-19 16:39:52Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 149,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 2,
-    "monto": "40000",
+    "insertado": "2026-05-19 16:40:05Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:40:05Z"
+    "usuario_id": 2,
+    "tipo": "recarga",
+    "monto": "40000"
   },
   {
     "id": 150,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "132132",
+    "insertado": "2026-05-19 16:41:18Z",
     "sorteo_id": 11,
-    "insertado": "2026-05-19 16:41:18Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "132132"
   },
   {
     "id": 151,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "132132",
+    "insertado": "2026-05-19 16:41:18Z",
     "sorteo_id": 11,
-    "insertado": "2026-05-19 16:41:18Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "132132"
   },
   {
     "id": 152,
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "132132",
+    "insertado": "2026-05-19 16:41:18Z",
     "sorteo_id": 11,
-    "insertado": "2026-05-19 16:41:18Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "132132"
   },
   {
     "id": 153,
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "132132",
+    "insertado": "2026-05-19 16:41:18Z",
     "sorteo_id": 11,
-    "insertado": "2026-05-19 16:41:18Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "132132"
   },
   {
     "id": 154,
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
-    "tipo": "compra_ticket",
-    "usuario_id": 2,
-    "monto": "132132",
+    "insertado": "2026-05-19 16:41:18Z",
     "sorteo_id": 11,
-    "insertado": "2026-05-19 16:41:18Z"
+    "usuario_id": 2,
+    "tipo": "compra_ticket",
+    "monto": "132132"
   },
   {
     "id": 155,
     "ticket_numero": null,
     "descripcion": "Premio ganado",
-    "tipo": "premio",
-    "usuario_id": 2,
-    "monto": "462462",
+    "insertado": "2026-05-19 16:41:33Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 16:41:33Z"
+    "usuario_id": 2,
+    "tipo": "premio",
+    "monto": "462462"
   },
   {
     "id": 156,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 5,
-    "monto": "50000",
+    "insertado": "2026-05-19 19:05:42Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 19:05:42Z"
+    "usuario_id": 5,
+    "tipo": "recarga",
+    "monto": "50000"
   },
   {
     "id": 157,
     "ticket_numero": "20",
     "descripcion": "Compra ticket #20",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:06:16Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:06:16Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 158,
     "ticket_numero": "76",
     "descripcion": "Compra ticket #76",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 159,
     "ticket_numero": "75",
     "descripcion": "Compra ticket #75",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 160,
     "ticket_numero": "65",
     "descripcion": "Compra ticket #65",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 161,
     "ticket_numero": "74",
     "descripcion": "Compra ticket #74",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 162,
     "ticket_numero": "64",
     "descripcion": "Compra ticket #64",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 163,
     "ticket_numero": "73",
     "descripcion": "Compra ticket #73",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 164,
     "ticket_numero": "63",
     "descripcion": "Compra ticket #63",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 165,
     "ticket_numero": "62",
     "descripcion": "Compra ticket #62",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 166,
     "ticket_numero": "71",
     "descripcion": "Compra ticket #71",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 167,
     "ticket_numero": "61",
     "descripcion": "Compra ticket #61",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 168,
     "ticket_numero": "45",
     "descripcion": "Compra ticket #45",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 169,
     "ticket_numero": "55",
     "descripcion": "Compra ticket #55",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 170,
     "ticket_numero": "54",
     "descripcion": "Compra ticket #54",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 171,
     "ticket_numero": "53",
     "descripcion": "Compra ticket #53",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 172,
     "ticket_numero": "52",
     "descripcion": "Compra ticket #52",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 173,
     "ticket_numero": "56",
     "descripcion": "Compra ticket #56",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 174,
     "ticket_numero": "57",
     "descripcion": "Compra ticket #57",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 175,
     "ticket_numero": "58",
     "descripcion": "Compra ticket #58",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 176,
     "ticket_numero": "59",
     "descripcion": "Compra ticket #59",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 177,
     "ticket_numero": "60",
     "descripcion": "Compra ticket #60",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 178,
     "ticket_numero": "50",
     "descripcion": "Compra ticket #50",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 179,
     "ticket_numero": "49",
     "descripcion": "Compra ticket #49",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 180,
     "ticket_numero": "48",
     "descripcion": "Compra ticket #48",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 181,
     "ticket_numero": "47",
     "descripcion": "Compra ticket #47",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 182,
     "ticket_numero": "46",
     "descripcion": "Compra ticket #46",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 183,
     "ticket_numero": "44",
     "descripcion": "Compra ticket #44",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 184,
     "ticket_numero": "43",
     "descripcion": "Compra ticket #43",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 185,
     "ticket_numero": "42",
     "descripcion": "Compra ticket #42",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 186,
     "ticket_numero": "31",
     "descripcion": "Compra ticket #31",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 187,
     "ticket_numero": "32",
     "descripcion": "Compra ticket #32",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 188,
     "ticket_numero": "33",
     "descripcion": "Compra ticket #33",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 189,
     "ticket_numero": "34",
     "descripcion": "Compra ticket #34",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 190,
     "ticket_numero": "35",
     "descripcion": "Compra ticket #35",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 191,
     "ticket_numero": "36",
     "descripcion": "Compra ticket #36",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 192,
     "ticket_numero": "37",
     "descripcion": "Compra ticket #37",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 193,
     "ticket_numero": "38",
     "descripcion": "Compra ticket #38",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 194,
     "ticket_numero": "39",
     "descripcion": "Compra ticket #39",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 195,
     "ticket_numero": "40",
     "descripcion": "Compra ticket #40",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 196,
     "ticket_numero": "30",
     "descripcion": "Compra ticket #30",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 197,
     "ticket_numero": "29",
     "descripcion": "Compra ticket #29",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 198,
     "ticket_numero": "28",
     "descripcion": "Compra ticket #28",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 199,
     "ticket_numero": "27",
     "descripcion": "Compra ticket #27",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 200,
     "ticket_numero": "26",
     "descripcion": "Compra ticket #26",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 201,
     "ticket_numero": "25",
     "descripcion": "Compra ticket #25",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 202,
     "ticket_numero": "24",
     "descripcion": "Compra ticket #24",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 203,
     "ticket_numero": "23",
     "descripcion": "Compra ticket #23",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 204,
     "ticket_numero": "22",
     "descripcion": "Compra ticket #22",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 205,
     "ticket_numero": "21",
     "descripcion": "Compra ticket #21",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 206,
     "ticket_numero": "11",
     "descripcion": "Compra ticket #11",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 207,
     "ticket_numero": "12",
     "descripcion": "Compra ticket #12",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 208,
     "ticket_numero": "13",
     "descripcion": "Compra ticket #13",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 209,
     "ticket_numero": "14",
     "descripcion": "Compra ticket #14",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 210,
     "ticket_numero": "15",
     "descripcion": "Compra ticket #15",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 211,
     "ticket_numero": "16",
     "descripcion": "Compra ticket #16",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 212,
     "ticket_numero": "17",
     "descripcion": "Compra ticket #17",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 213,
     "ticket_numero": "18",
     "descripcion": "Compra ticket #18",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 214,
     "ticket_numero": "19",
     "descripcion": "Compra ticket #19",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 215,
     "ticket_numero": "10",
     "descripcion": "Compra ticket #10",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 216,
     "ticket_numero": "9",
     "descripcion": "Compra ticket #9",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 217,
     "ticket_numero": "8",
     "descripcion": "Compra ticket #8",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 218,
     "ticket_numero": "7",
     "descripcion": "Compra ticket #7",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 219,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 220,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 221,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 222,
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 223,
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 224,
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 225,
     "ticket_numero": "51",
     "descripcion": "Compra ticket #51",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 226,
     "ticket_numero": "41",
     "descripcion": "Compra ticket #41",
-    "tipo": "compra_ticket",
-    "usuario_id": 5,
-    "monto": "200",
+    "insertado": "2026-05-19 19:07:49Z",
     "sorteo_id": 12,
-    "insertado": "2026-05-19 19:07:49Z"
+    "usuario_id": 5,
+    "tipo": "compra_ticket",
+    "monto": "200"
   },
   {
     "id": 227,
     "ticket_numero": null,
     "descripcion": "Premio ganado",
-    "tipo": "premio",
-    "usuario_id": 5,
-    "monto": "50000.00",
+    "insertado": "2026-05-19 19:09:09Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 19:09:09Z"
+    "usuario_id": 5,
+    "tipo": "premio",
+    "monto": "50000.00"
   },
   {
     "id": 228,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 6,
-    "monto": "67000",
+    "insertado": "2026-05-19 19:20:15Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 19:20:15Z"
+    "usuario_id": 6,
+    "tipo": "recarga",
+    "monto": "67000"
   },
   {
     "id": 229,
     "ticket_numero": "36",
     "descripcion": "Compra ticket #36",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 230,
     "ticket_numero": "37",
     "descripcion": "Compra ticket #37",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 231,
     "ticket_numero": "38",
     "descripcion": "Compra ticket #38",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 232,
     "ticket_numero": "39",
     "descripcion": "Compra ticket #39",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 233,
     "ticket_numero": "40",
     "descripcion": "Compra ticket #40",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 234,
     "ticket_numero": "30",
     "descripcion": "Compra ticket #30",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 235,
     "ticket_numero": "29",
     "descripcion": "Compra ticket #29",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 236,
     "ticket_numero": "28",
     "descripcion": "Compra ticket #28",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 237,
     "ticket_numero": "27",
     "descripcion": "Compra ticket #27",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 238,
     "ticket_numero": "26",
     "descripcion": "Compra ticket #26",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 239,
     "ticket_numero": "25",
     "descripcion": "Compra ticket #25",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 240,
     "ticket_numero": "24",
     "descripcion": "Compra ticket #24",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 241,
     "ticket_numero": "23",
     "descripcion": "Compra ticket #23",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 242,
     "ticket_numero": "22",
     "descripcion": "Compra ticket #22",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 243,
     "ticket_numero": "21",
     "descripcion": "Compra ticket #21",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 244,
     "ticket_numero": "11",
     "descripcion": "Compra ticket #11",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 245,
     "ticket_numero": "12",
     "descripcion": "Compra ticket #12",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 246,
     "ticket_numero": "13",
     "descripcion": "Compra ticket #13",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 247,
     "ticket_numero": "14",
     "descripcion": "Compra ticket #14",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 248,
     "ticket_numero": "15",
     "descripcion": "Compra ticket #15",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 249,
     "ticket_numero": "16",
     "descripcion": "Compra ticket #16",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 250,
     "ticket_numero": "17",
     "descripcion": "Compra ticket #17",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:27Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:27Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 251,
     "ticket_numero": "18",
     "descripcion": "Compra ticket #18",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 252,
     "ticket_numero": "19",
     "descripcion": "Compra ticket #19",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 253,
     "ticket_numero": "20",
     "descripcion": "Compra ticket #20",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 254,
     "ticket_numero": "10",
     "descripcion": "Compra ticket #10",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 255,
     "ticket_numero": "9",
     "descripcion": "Compra ticket #9",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 256,
     "ticket_numero": "8",
     "descripcion": "Compra ticket #8",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 257,
     "ticket_numero": "7",
     "descripcion": "Compra ticket #7",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 258,
     "ticket_numero": "6",
     "descripcion": "Compra ticket #6",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 259,
     "ticket_numero": "5",
     "descripcion": "Compra ticket #5",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 260,
     "ticket_numero": "4",
     "descripcion": "Compra ticket #4",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 261,
     "ticket_numero": "3",
     "descripcion": "Compra ticket #3",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 262,
     "ticket_numero": "2",
     "descripcion": "Compra ticket #2",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 263,
     "ticket_numero": "1",
     "descripcion": "Compra ticket #1",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:28Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:28Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 264,
     "ticket_numero": "31",
     "descripcion": "Compra ticket #31",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:46Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:46Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 265,
     "ticket_numero": "35",
     "descripcion": "Compra ticket #35",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:46Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:46Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 266,
     "ticket_numero": "34",
     "descripcion": "Compra ticket #34",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:46Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:46Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 267,
     "ticket_numero": "33",
     "descripcion": "Compra ticket #33",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:46Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:46Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 268,
     "ticket_numero": "32",
     "descripcion": "Compra ticket #32",
-    "tipo": "compra_ticket",
-    "usuario_id": 6,
-    "monto": "1000",
+    "insertado": "2026-05-19 19:28:46Z",
     "sorteo_id": 13,
-    "insertado": "2026-05-19 19:28:46Z"
+    "usuario_id": 6,
+    "tipo": "compra_ticket",
+    "monto": "1000"
   },
   {
     "id": 269,
     "ticket_numero": null,
     "descripcion": "Premio ganado",
-    "tipo": "premio",
-    "usuario_id": 6,
-    "monto": "32000",
+    "insertado": "2026-05-19 19:28:57Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 19:28:57Z"
+    "usuario_id": 6,
+    "tipo": "premio",
+    "monto": "32000"
   },
   {
     "id": 270,
     "ticket_numero": null,
     "descripcion": "Recarga de saldo",
-    "tipo": "recarga",
-    "usuario_id": 7,
-    "monto": "100000",
+    "insertado": "2026-05-19 19:30:47Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 19:30:47Z"
+    "usuario_id": 7,
+    "tipo": "recarga",
+    "monto": "100000"
   },
   {
     "id": 271,
     "ticket_numero": "326",
     "descripcion": "Compra ticket #326",
-    "tipo": "compra_ticket",
-    "usuario_id": 7,
-    "monto": "5000",
+    "insertado": "2026-05-19 19:34:17Z",
     "sorteo_id": 14,
-    "insertado": "2026-05-19 19:34:17Z"
+    "usuario_id": 7,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 272,
     "ticket_numero": "222",
     "descripcion": "Compra ticket #222",
-    "tipo": "compra_ticket",
-    "usuario_id": 7,
-    "monto": "5000",
+    "insertado": "2026-05-19 19:34:17Z",
     "sorteo_id": 14,
-    "insertado": "2026-05-19 19:34:17Z"
+    "usuario_id": 7,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 273,
     "ticket_numero": "22",
     "descripcion": "Compra ticket #22",
-    "tipo": "compra_ticket",
-    "usuario_id": 7,
-    "monto": "5000",
+    "insertado": "2026-05-19 19:34:17Z",
     "sorteo_id": 14,
-    "insertado": "2026-05-19 19:34:17Z"
+    "usuario_id": 7,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 274,
     "ticket_numero": "129",
     "descripcion": "Compra ticket #129",
-    "tipo": "compra_ticket",
-    "usuario_id": 7,
-    "monto": "5000",
+    "insertado": "2026-05-19 19:34:17Z",
     "sorteo_id": 14,
-    "insertado": "2026-05-19 19:34:17Z"
+    "usuario_id": 7,
+    "tipo": "compra_ticket",
+    "monto": "5000"
   },
   {
     "id": 275,
     "ticket_numero": null,
     "descripcion": "Premio ganado",
-    "tipo": "premio",
-    "usuario_id": 7,
-    "monto": "14000",
+    "insertado": "2026-05-19 19:35:07Z",
     "sorteo_id": null,
-    "insertado": "2026-05-19 19:35:07Z"
+    "usuario_id": 7,
+    "tipo": "premio",
+    "monto": "14000"
   }
 ]
