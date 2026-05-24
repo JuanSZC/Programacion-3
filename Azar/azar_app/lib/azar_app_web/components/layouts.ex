@@ -22,18 +22,18 @@ defmodule AzarAppWeb.Layouts do
 
       <%!-- NAVBAR --%>
       <header class="sticky top-0 z-50 w-full">
-        <div class="absolute inset-0" style="background:rgba(15,15,23,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)"></div>
+        <div class="absolute inset-0" style="background:var(--header-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)"></div>
         <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
           <div class="flex items-center justify-between h-16">
 
             <%!-- Logo --%>
             <a href="/" class="group flex items-center gap-2.5 outline-none">
               <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
-                style="background:linear-gradient(135deg,#6366F1,#818CF8)">
+                style="background:linear-gradient(135deg,var(--menu-primary),var(--menu-primary-light))">
                 <.icon name="hero-sparkles-solid" class="size-4 text-white" />
               </div>
               <span class="font-display font-bold text-xl tracking-tight" style="color:var(--text-primary)">
-                Azar<span style="color:var(--indigo)">.</span>
+                Azar<span style="color:var(--menu-primary)">.</span>
               </span>
             </a>
 
@@ -41,9 +41,9 @@ defmodule AzarAppWeb.Layouts do
             <nav class="hidden md:flex items-center gap-1">
               <a href="/cliente/sorteos"
                 class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150"
-                style="color:var(--text-secondary)"
+                style="color:var(--menu-primary)"
                 onmouseenter="this.style.color='var(--text-primary)';this.style.background='var(--bg-card)'"
-                onmouseleave="this.style.color='var(--text-secondary)';this.style.background='transparent'">
+                onmouseleave="this.style.color='var(--menu-primary)';this.style.background='transparent'">
                 <.icon name="hero-ticket-solid" class="size-4" />
                 Sorteos
               </a>
@@ -58,9 +58,9 @@ defmodule AzarAppWeb.Layouts do
                 <div class="dropdown dropdown-end">
                   <div tabindex="0" role="button" class="flex items-center gap-2 cursor-pointer group">
                     <div class="w-8 h-8 rounded-xl flex items-center justify-center font-display font-bold text-sm transition-all duration-200"
-                      style="background:var(--indigo-dim);color:var(--indigo-light)"
-                      onmouseenter="this.style.background='var(--indigo)';this.style.color='white'"
-                      onmouseleave="this.style.background='var(--indigo-dim)';this.style.color='var(--indigo-light)'">
+                      style="background:var(--menu-primary-dim);color:var(--menu-primary)"
+                      onmouseenter="this.style.background='var(--menu-primary)';this.style.color='white'"
+                      onmouseleave="this.style.background='var(--menu-primary-dim)';this.style.color='var(--menu-primary)'">
                       U
                     </div>
     <.icon name="hero-chevron-down-solid" class="size-3 hidden sm:block text-[var(--text-muted)]" />                  </div>
@@ -92,14 +92,14 @@ defmodule AzarAppWeb.Layouts do
                 <div class="flex items-center gap-2">
                   <a href="/login"
                     class="hidden sm:block px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150"
-                    style="color:var(--text-secondary)"
+                    style="color:var(--menu-primary)"
                     onmouseenter="this.style.color='var(--text-primary)'"
-                    onmouseleave="this.style.color='var(--text-secondary)'">
+                    onmouseleave="this.style.color='var(--menu-primary)'">
                     Ingresar
                   </a>
                   <a href="/registro"
                     class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 active:scale-95"
-                    style="background:var(--indigo);color:white">
+                    style="background:var(--menu-primary);color:white">
                     Crear cuenta
                   </a>
                 </div>

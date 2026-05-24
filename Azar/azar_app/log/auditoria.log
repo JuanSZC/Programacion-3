@@ -481,3 +481,19 @@
 [2026-05-24 20:01:34] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
 [2026-05-24 20:05:22] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
 [2026-05-24 20:07:44] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 20:10:27] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
+[2026-05-24 20:14:33] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 20:17:33] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 20:24:31] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 20:29:11] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=7 operacion=restar monto=-100000
+[2026-05-24 20:29:57] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=7 operacion=restar monto=-9999
+[2026-05-24 20:32:07] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 20:32:22] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=5 operacion=sumar monto=1000000
+[2026-05-24 20:32:38] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=5 operacion=restar monto=-1000000
+[2026-05-24 20:32:44] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=5 operacion=sumar monto=10000000
+[2026-05-24 20:39:40] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin
+[2026-05-24 20:39:48] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=7
+[2026-05-24 20:40:03] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=7 operacion=sumar monto=10000
+[2026-05-24 20:40:10] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=7 operacion=sumar monto=10000000
+[2026-05-24 20:40:17] [SALDO_AJUSTADO_ADMIN] admin_id=admin usuario_id=7 operacion=restar monto=-1100000
+[2026-05-24 20:49:51] [CUENTA_VACIADA_ADMIN] admin_id=admin usuario_id=7

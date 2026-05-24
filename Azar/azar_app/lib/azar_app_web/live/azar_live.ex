@@ -55,13 +55,13 @@ defmodule AzarAppWeb.AzarLive do
           <%!-- CARD ADMINISTRADOR --%>
           <.link
             navigate={~p"/admin/login"}
-            class="group relative overflow-hidden p-10 bg-base-100/60 backdrop-blur-xl border border-base-200/50 rounded-[3rem] hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-3 transition-all duration-500"
+            class="group relative overflow-hidden p-10 bg-base-100/60 backdrop-blur-xl border border-base-200/50 rounded-[3rem] hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-400/20 hover:-translate-y-3 transition-all duration-500"
           >
             <%!-- Efecto de brillo al hover --%>
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
             <div class="relative z-10 flex flex-col items-center text-center space-y-6">
-              <div class="p-6 bg-primary/10 text-primary rounded-[2rem] shadow-inner group-hover:bg-primary group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
+              <div class="p-6 bg-blue-400/10 text-blue-400 rounded-[2rem] shadow-inner group-hover:bg-blue-400 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
                 <.icon name="hero-cog-8-tooth-solid" class="size-12" />
               </div>
 
@@ -83,13 +83,13 @@ defmodule AzarAppWeb.AzarLive do
           <%!-- CARD CLIENTE --%>
           <.link
             navigate={~p"/login"}
-            class="group relative overflow-hidden p-10 bg-base-100/60 backdrop-blur-xl border border-base-200/50 rounded-[3rem] hover:border-secondary/50 hover:shadow-2xl hover:shadow-secondary/20 hover:-translate-y-3 transition-all duration-500"
+            class="group relative overflow-hidden p-10 bg-base-100/60 backdrop-blur-xl border border-base-200/50 rounded-[3rem] hover:border-green-400/50 hover:shadow-2xl hover:shadow-green-400/20 hover:-translate-y-3 transition-all duration-500"
           >
              <%!-- Efecto de brillo al hover --%>
-            <div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-green-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
             <div class="relative z-10 flex flex-col items-center text-center space-y-6">
-              <div class="p-6 bg-secondary/10 text-secondary rounded-[2rem] shadow-inner group-hover:bg-secondary group-hover:text-white group-hover:-rotate-12 group-hover:scale-110 transition-all duration-500">
+              <div class="p-6 bg-green-400/10 text-green-400 rounded-[2rem] shadow-inner group-hover:bg-green-400 group-hover:text-white group-hover:-rotate-12 group-hover:scale-110 transition-all duration-500">
                 <.icon name="hero-ticket-solid" class="size-12" />
               </div>
 

@@ -6,6 +6,7 @@ defmodule AzarApp.Cuentas do
   import Ecto.Query, warn: false
 
   @limite_max_ajuste Decimal.new(10_000_000)
+  @limite_max_saldo Decimal.new("9999999999999.99")
 
 
   @doc """
@@ -20,7 +21,7 @@ defmodule AzarApp.Cuentas do
         {:error, _} -> {:ok, usuario}
       end
     else
-      Pbkdf2.no_user_verify() # Previene enumeración de usuarios
+      Pbkdf2.no_user_verify()
       {:error, "Correo o contraseña inválidos"}
     end
   end
@@ -43,7 +44,7 @@ defmodule AzarApp.Cuentas do
   end
 
   @doc """
-  Breve: obtener_usuario.
+  Breve: obtener_usuario!.
   """
   def obtener_usuario!(id), do: Repo.get!(Usuario, id)
 
@@ -82,32 +83,32 @@ defmodule AzarApp.Cuentas do
   end
 
 
- @doc """
- Breve: crear_usuario.
- """
- def crear_usuario(attrs \\ %{}) do
-  case %Usuario{}
-       |> Usuario.registration_changeset(attrs)
-       |> Repo.insert() do
+  @doc """
+  Breve: crear_usuario.
+  """
+  def crear_usuario(attrs \\ %{}) do
+    case %Usuario{}
+         |> Usuario.registration_changeset(attrs)
+         |> Repo.insert() do
 
-    {:ok, usuario} ->
-      AzarApp.Auditoria.log(:usuario_creado, %{
-        usuario_id: usuario.id,
-        email: usuario.email,
-        rol: usuario.rol
-      })
+      {:ok, usuario} ->
+        AzarApp.Auditoria.log(:usuario_creado, %{
+          usuario_id: usuario.id,
+          email: usuario.email,
+          rol: usuario.rol
+        })
 
-      Task.start(fn ->
-        AzarApp.Mailer.NotificacionEmail.bienvenida(usuario)
-        |> AzarApp.Mailer.deliver()
-      end)
+        Task.start(fn ->
+          AzarApp.Mailer.NotificacionEmail.bienvenida(usuario)
+          |> AzarApp.Mailer.deliver()
+        end)
 
-      {:ok, usuario}
+        {:ok, usuario}
 
-    error ->
-      error
+      error ->
+        error
+    end
   end
-end
 
   @doc """
   Breve: actualizar_usuario.
@@ -153,63 +154,56 @@ end
   @doc """
   Breve: toggle_activo.
   """
- def toggle_activo(%Usuario{} = usuario) do
-  cond do
-    # Si está inactivo → permitir activarlo
-    not usuario.activo ->
-      do_toggle(usuario)
+  def toggle_activo(%Usuario{} = usuario) do
+    cond do
+      not usuario.activo ->
+        do_toggle(usuario)
 
-    # Si tiene tickets activos → bloquear desactivación
-    tiene_tickets_activos?(usuario.id) ->
-      {:error, "El usuario tiene tickets en sorteos activos"}
+      tiene_tickets_activos?(usuario.id) ->
+        {:error, "El usuario tiene tickets en sorteos activos"}
 
-    # Si es el último admin activo → bloquear
-    usuario.rol == "admin" && usuario.activo ->
-      admins_activos =
-        Repo.one(
-          from u in Usuario,
-            where: u.rol == "admin" and u.activo == true,
-            select: count(u.id)
+      usuario.rol == "admin" && usuario.activo ->
+        admins_activos =
+          Repo.one(
+            from u in Usuario,
+              where: u.rol == "admin" and u.activo == true,
+              select: count(u.id)
+          )
+
+        if admins_activos <= 1 do
+          {:error, "No puedes desactivar al único administrador activo"}
+        else
+          do_toggle(usuario)
+        end
+
+      true ->
+        do_toggle(usuario)
+    end
+  end
+
+  defp do_toggle(usuario) do
+    case usuario
+         |> Ecto.Changeset.change(activo: !usuario.activo)
+         |> Repo.update() do
+
+      {:ok, usuario_actualizado} ->
+        AzarApp.Auditoria.log(
+          if(usuario_actualizado.activo,
+            do: :usuario_activado,
+            else: :usuario_desactivado
+          ),
+          %{usuario_id: usuario_actualizado.id}
         )
 
-      if admins_activos <= 1 do
-        {:error, "No puedes desactivar al único administrador activo"}
-      else
-        do_toggle(usuario)
-      end
+        {:ok, usuario_actualizado}
 
-    # Cualquier otro usuario activo normal
-    true ->
-      do_toggle(usuario)
+      error ->
+        error
+    end
   end
-end
-
-defp do_toggle(usuario) do
-  case usuario
-       |> Ecto.Changeset.change(activo: !usuario.activo)
-       |> Repo.update() do
-
-    {:ok, usuario_actualizado} ->
-
-      AzarApp.Auditoria.log(
-        if(usuario_actualizado.activo,
-          do: :usuario_activado,
-          else: :usuario_desactivado
-        ),
-        %{
-          usuario_id: usuario_actualizado.id
-        }
-      )
-
-      {:ok, usuario_actualizado}
-
-    error ->
-      error
-  end
-end
 
   @doc """
-  Breve: tiene_tickets_activos.
+  Breve: tiene_tickets_activos?.
   """
   def tiene_tickets_activos?(usuario_id) do
     query = from(t in AzarApp.Sorteos.Ticket,
@@ -229,92 +223,110 @@ end
       tiene_tickets_activos?(usuario.id) ->
         {:error, "El usuario tiene tickets en sorteos activos"}
       true ->
+        AzarApp.Auditoria.log(:usuario_eliminado, %{
+          usuario_id: usuario.id,
+          email: usuario.email
+        })
 
-  AzarApp.Auditoria.log(:usuario_eliminado, %{
-    usuario_id: usuario.id,
-    email: usuario.email
-  })
-
-  Repo.delete(usuario)
+        Repo.delete(usuario)
     end
   end
 
 
-@doc """
-Breve: recargar_saldo.
-"""
-def recargar_saldo(usuario, monto) do
-  monto_d = decimal_seguro(monto)
-  nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
-  nuevo_recargado = Decimal.add(decimal_seguro(usuario.total_recargado), monto_d)
+  @doc """
+  Breve: recargar_saldo.
+  """
+  def recargar_saldo(usuario, monto) do
+    monto_d = decimal_seguro(monto)
+    nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
+    nuevo_recargado = Decimal.add(decimal_seguro(usuario.total_recargado), monto_d)
 
-  Ecto.Multi.new()
-  |> Ecto.Multi.update(:usuario, Usuario.update_changeset(usuario, %{
-      saldo_virtual: nuevo_saldo,
-      total_recargado: nuevo_recargado
-    }))
-|> Ecto.Multi.insert(:transaccion,
-    AzarApp.Cuentas.Transaccion.changeset(%AzarApp.Cuentas.Transaccion{}, %{
-      usuario_id: usuario.id,
-      tipo: "recarga",
-      monto: monto_d,
-      descripcion: "Recarga de saldo"
-    })
-  )
-  |> Repo.transaction()
-  |> case do
-    {:ok, %{usuario: u}} ->
+    cond do
+      Decimal.lt?(monto_d, Decimal.new("0.01")) ->
+        {:error, "El monto mínimo de recarga es $0.01"}
 
-  AzarApp.Auditoria.log(:recarga_saldo, %{
-    usuario_id: u.id,
-    monto: monto_d,
-    metodo: "plataforma"
-  })
+      Decimal.gt?(monto_d, @limite_max_ajuste) ->
+        {:error, "El monto máximo por recarga es $#{@limite_max_ajuste}"}
 
-  {:ok, u}
-    {:error, _, changeset, _} -> {:error, changeset}
+      Decimal.gt?(nuevo_saldo, @limite_max_saldo) ->
+        espacio_disponible = Decimal.sub(@limite_max_saldo, decimal_seguro(usuario.saldo_virtual))
+        {:error, "La recarga excede el límite permitido. El máximo que puedes recargar ahora es $#{Decimal.round(espacio_disponible, 2)}"}
+
+      true ->
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(:usuario, Usuario.update_changeset(usuario, %{
+            saldo_virtual: nuevo_saldo,
+            total_recargado: nuevo_recargado
+          }))
+        |> Ecto.Multi.insert(:transaccion,
+          AzarApp.Cuentas.Transaccion.changeset(%AzarApp.Cuentas.Transaccion{}, %{
+            usuario_id: usuario.id,
+            tipo: "recarga",
+            monto: monto_d,
+            descripcion: "Recarga de saldo"
+          })
+        )
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{usuario: u}} ->
+            AzarApp.Auditoria.log(:recarga_saldo, %{
+              usuario_id: u.id,
+              monto: monto_d,
+              metodo: "plataforma"
+            })
+
+            {:ok, u}
+
+          {:error, _, changeset, _} -> {:error, changeset}
+        end
+    end
   end
-end
 
-@doc """
-Breve: registrar_premio.
-"""
-def registrar_premio(usuario, monto, sorteo_id \\ nil) do
-  monto_d = decimal_seguro(monto)
-  nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
-  nuevo_ganado = Decimal.add(decimal_seguro(usuario.total_ganado), monto_d)
+  @doc """
+  Breve: registrar_premio.
+  """
+  def registrar_premio(usuario, monto, sorteo_id \\ nil) do
+    monto_d = decimal_seguro(monto)
+    nuevo_saldo = Decimal.add(decimal_seguro(usuario.saldo_virtual), monto_d)
+    nuevo_ganado = Decimal.add(decimal_seguro(usuario.total_ganado), monto_d)
 
-  Ecto.Multi.new()
-  |> Ecto.Multi.update(:usuario, Usuario.update_changeset(usuario, %{
-      saldo_virtual: nuevo_saldo,
-      total_ganado: nuevo_ganado
-    }))
-  |> Ecto.Multi.insert(:transaccion,
-    AzarApp.Cuentas.Transaccion.changeset(%AzarApp.Cuentas.Transaccion{}, %{
-      usuario_id: usuario.id,
-      tipo: "premio",
-      monto: monto_d,
-      descripcion: "Premio ganado",
-      sorteo_id: sorteo_id
-    })
-  )
-  |> Repo.transaction()
-  |> case do
-    {:ok, %{usuario: u}} -> {:ok, u}
-    {:error, _, changeset, _} -> {:error, changeset}
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:usuario, Usuario.update_changeset(usuario, %{
+        saldo_virtual: nuevo_saldo,
+        total_ganado: nuevo_ganado
+      }))
+    |> Ecto.Multi.insert(:transaccion,
+      AzarApp.Cuentas.Transaccion.changeset(%AzarApp.Cuentas.Transaccion{}, %{
+        usuario_id: usuario.id,
+        tipo: "premio",
+        monto: monto_d,
+        descripcion: "Premio ganado",
+        sorteo_id: sorteo_id
+      })
+    )
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{usuario: u}} -> {:ok, u}
+      {:error, _, changeset, _} -> {:error, changeset}
+    end
   end
-end
 
   @doc """
   Breve: ajustar_saldo_admin.
+
+  Retorna:
+    - `{:ok, usuario}` en éxito
+    - `{:error, mensaje}` para errores simples de validación
+    - `{:error, {:saldo_insuficiente, %{intentado: d, disponible: d}}}` cuando
+      el admin intenta restar más saldo del que el usuario tiene
   """
   def ajustar_saldo_admin(%Usuario{} = usuario, monto) do
     try do
       monto_limpio =
         "#{monto}"
         |> String.trim()
-        |> String.replace(",", ".")          # "1,500" → "1.500"
-        |> String.replace(~r/[^\d.\-]/, "")  # elimina cualquier otro carácter extraño
+        |> String.replace(",", ".")
+        |> String.replace(~r/[^\d.\-]/, "")
 
       if monto_limpio == "" or monto_limpio == "-" do
         raise ArgumentError, "vacío"
@@ -322,7 +334,7 @@ end
 
       monto_decimal = Decimal.new(monto_limpio)
       monto_absoluto = Decimal.abs(monto_decimal)
-      saldo_actual = usuario.saldo_virtual || Decimal.new(0)
+      saldo_actual = decimal_seguro(usuario.saldo_virtual)
       nuevo_saldo = Decimal.add(saldo_actual, monto_decimal)
 
       cond do
@@ -330,38 +342,56 @@ end
           {:error, "El monto de ajuste no puede ser cero ($0)"}
 
         Decimal.gt?(monto_absoluto, @limite_max_ajuste) ->
-          {:error, "Monto inválido. El ajuste máximo permitido es de $#{@limite_max_ajuste}"}
+          {:error, "El ajuste máximo permitido por operación es $#{@limite_max_ajuste}"}
+
+        Decimal.gt?(nuevo_saldo, @limite_max_saldo) ->
+          espacio = Decimal.sub(@limite_max_saldo, saldo_actual)
+          {:error, "Saldo resultante excede el máximo permitido. Puedes sumar como máximo $#{Decimal.round(espacio, 2)}"}
 
         Decimal.lt?(nuevo_saldo, Decimal.new(0)) ->
-          {:error, "El saldo no puede quedar negativo (Saldo actual: $#{saldo_actual})"}
+          # Error estructurado: la vista puede mostrar exactamente cuánto puede restar
+          {:error, {:saldo_insuficiente, %{
+            intentado: monto_absoluto,
+            disponible: saldo_actual
+          }}}
 
         true ->
+          case usuario
+               |> Ecto.Changeset.change(saldo_virtual: nuevo_saldo)
+               |> Repo.update() do
 
-  case usuario
-       |> Ecto.Changeset.change(saldo_virtual: nuevo_saldo)
-       |> Repo.update() do
+            {:ok, usuario_actualizado} ->
+              AzarApp.Auditoria.log(:saldo_ajustado_admin, %{
+                usuario_id: usuario.id,
+                monto: monto_decimal,
+                operacion:
+                  if(Decimal.negative?(monto_decimal),
+                    do: "restar",
+                    else: "sumar"
+                  ),
+                admin_id: "admin"
+              })
 
-    {:ok, usuario_actualizado} ->
+              {:ok, usuario_actualizado}
 
-      AzarApp.Auditoria.log(:saldo_ajustado_admin, %{
-        usuario_id: usuario.id,
-        monto: monto_decimal,
-        operacion:
-          if(Decimal.negative?(monto_decimal),
-            do: "restar",
-            else: "sumar"
-          ),
-        admin_id: "admin"
-      })
-
-      {:ok, usuario_actualizado}
-
-    error ->
-      error
-  end
+            error ->
+              error
+          end
       end
     rescue
-      _ -> {:error, "El valor ingresado no es un número válido"}
+      e in Postgrex.Error ->
+        {:error, mensaje_postgrex(e)}
+
+      e in Ecto.InvalidChangesetError ->
+        {:error, "Datos inválidos: #{inspect(e.changeset.errors)}"}
+
+      e in Decimal.Error ->
+        _ = e
+        {:error, "El valor ingresado no es un número válido"}
+
+      e in ArgumentError ->
+        _ = e
+        {:error, "El valor ingresado no es un número válido"}
     end
   end
 
@@ -369,30 +399,28 @@ end
   Breve: vaciar_cuenta_admin.
   """
   def vaciar_cuenta_admin(%Usuario{} = usuario) do
-    saldo_actual = usuario.saldo_virtual || Decimal.new(0)
+    saldo_actual = decimal_seguro(usuario.saldo_virtual)
 
     cond do
       Decimal.equal?(saldo_actual, Decimal.new(0)) ->
         {:error, "La cuenta ya está en $0, no hay nada que vaciar"}
 
       true ->
+        case usuario
+             |> Ecto.Changeset.change(saldo_virtual: Decimal.new(0))
+             |> Repo.update() do
 
-  case usuario
-       |> Ecto.Changeset.change(saldo_virtual: Decimal.new(0))
-       |> Repo.update() do
+          {:ok, usuario_actualizado} ->
+            AzarApp.Auditoria.log(:cuenta_vaciada_admin, %{
+              usuario_id: usuario_actualizado.id,
+              admin_id: "admin"
+            })
 
-    {:ok, usuario_actualizado} ->
+            {:ok, usuario_actualizado}
 
-      AzarApp.Auditoria.log(:cuenta_vaciada_admin, %{
-        usuario_id: usuario_actualizado.id,
-        admin_id: "admin"
-      })
-
-      {:ok, usuario_actualizado}
-
-    error ->
-      error
-  end
+          error ->
+            error
+        end
     end
   end
 
@@ -442,94 +470,118 @@ end
   Breve: registrar_compra_ticket.
   """
   def registrar_compra_ticket(usuario_id, sorteo_id, numero, monto) do
-  %AzarApp.Cuentas.Transaccion{}
-  |> AzarApp.Cuentas.Transaccion.changeset(%{
-      usuario_id: usuario_id,
-      tipo: "compra_ticket",
-      monto: decimal_seguro(monto),
-      descripcion: "Compra ticket ##{numero}",
-      sorteo_id: sorteo_id,
-      ticket_numero: to_string(numero)
-    })
-  |> Repo.insert()
-end
-
-@doc """
-Breve: registrar_devolucion_ticket.
-"""
-def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
-  %AzarApp.Cuentas.Transaccion{}
-  |> AzarApp.Cuentas.Transaccion.changeset(%{
-      usuario_id: usuario_id,
-      tipo: "devolucion_ticket",
-      monto: decimal_seguro(monto),
-      descripcion: "Devolución ticket ##{numero}",
-      sorteo_id: sorteo_id,
-      ticket_numero: to_string(numero)
-    })
-  |> Repo.insert()
-end
-
-@doc """
-Breve: listar_transacciones.
-"""
-def listar_transacciones(usuario_id) do
-  Repo.all(
-    from t in AzarApp.Cuentas.Transaccion,
-    where: t.usuario_id == ^usuario_id,
-    order_by: [desc: t.inserted_at],
-    preload: [:sorteo]
-  )
-end
-
-defp decimal_seguro(nil), do: Decimal.new(0)
-defp decimal_seguro(%Decimal{} = v), do: v
-defp decimal_seguro(v), do: Decimal.new(to_string(v))
-
-
-@doc """
-Breve: limpiar_sistema_completo.
-"""
-def limpiar_sistema_completo() do
-  emails_protegidos = ["admin@azar.com", "cliente@azar.com"]
-
-  Ecto.Multi.new()
-  |> Ecto.Multi.delete_all(:transacciones,
-      from(t in AzarApp.Cuentas.Transaccion, select: t))
-  |> Ecto.Multi.delete_all(:tickets,
-      from(t in AzarApp.Sorteos.Ticket, select: t))
-  |> Ecto.Multi.delete_all(:sorteos,
-      from(s in AzarApp.Sorteos.Sorteo, select: s))
-  |> Ecto.Multi.delete_all(:usuarios,
-      from(u in AzarApp.Cuentas.Usuario,
-        where: u.email not in ^emails_protegidos,
-        select: u))
-  |> Ecto.Multi.update_all(:reset_usuarios,
-      from(u in AzarApp.Cuentas.Usuario,
-        where: u.email in ^emails_protegidos),
-      set: [
-        saldo_virtual: Decimal.new("0"),
-        total_recargado: Decimal.new("0"),
-        total_gastado: Decimal.new("0"),
-        total_ganado: Decimal.new("0")
-      ])
-  |> Repo.transaction()
-  |> case do
-    {:ok, resultado} ->
-      File.rm("log/auditoria.log")
-
-      AzarApp.Backup.limpiar_todo()
-
-      AzarApp.Auditoria.log(:sistema_limpiado, %{
-        tickets: resultado.tickets |> elem(0),
-        sorteos: resultado.sorteos |> elem(0),
-        usuarios: resultado.usuarios |> elem(0)
+    %AzarApp.Cuentas.Transaccion{}
+    |> AzarApp.Cuentas.Transaccion.changeset(%{
+        usuario_id: usuario_id,
+        tipo: "compra_ticket",
+        monto: decimal_seguro(monto),
+        descripcion: "Compra ticket ##{numero}",
+        sorteo_id: sorteo_id,
+        ticket_numero: to_string(numero)
       })
-
-      {:ok, resultado}
-
-    {:error, op, razon, _} ->
-      {:error, "Falló en #{op}: #{inspect(razon)}"}
+    |> Repo.insert()
   end
-end
+
+  @doc """
+  Breve: registrar_devolucion_ticket.
+  """
+  def registrar_devolucion_ticket(usuario_id, sorteo_id, numero, monto) do
+    %AzarApp.Cuentas.Transaccion{}
+    |> AzarApp.Cuentas.Transaccion.changeset(%{
+        usuario_id: usuario_id,
+        tipo: "devolucion_ticket",
+        monto: decimal_seguro(monto),
+        descripcion: "Devolución ticket ##{numero}",
+        sorteo_id: sorteo_id,
+        ticket_numero: to_string(numero)
+      })
+    |> Repo.insert()
+  end
+
+  @doc """
+  Breve: listar_transacciones.
+  """
+  def listar_transacciones(usuario_id) do
+    Repo.all(
+      from t in AzarApp.Cuentas.Transaccion,
+      where: t.usuario_id == ^usuario_id,
+      order_by: [desc: t.inserted_at],
+      preload: [:sorteo]
+    )
+  end
+
+  @doc """
+  Breve: limpiar_sistema_completo.
+  """
+  def limpiar_sistema_completo() do
+    emails_protegidos = ["admin@azar.com", "cliente@azar.com"]
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete_all(:transacciones,
+        from(t in AzarApp.Cuentas.Transaccion, select: t))
+    |> Ecto.Multi.delete_all(:tickets,
+        from(t in AzarApp.Sorteos.Ticket, select: t))
+    |> Ecto.Multi.delete_all(:sorteos,
+        from(s in AzarApp.Sorteos.Sorteo, select: s))
+    |> Ecto.Multi.delete_all(:usuarios,
+        from(u in AzarApp.Cuentas.Usuario,
+          where: u.email not in ^emails_protegidos,
+          select: u))
+    |> Ecto.Multi.update_all(:reset_usuarios,
+        from(u in AzarApp.Cuentas.Usuario,
+          where: u.email in ^emails_protegidos),
+        set: [
+          saldo_virtual: Decimal.new("0"),
+          total_recargado: Decimal.new("0"),
+          total_gastado: Decimal.new("0"),
+          total_ganado: Decimal.new("0")
+        ])
+    |> Repo.transaction()
+    |> case do
+      {:ok, resultado} ->
+        File.rm("log/auditoria.log")
+
+        AzarApp.Backup.limpiar_todo()
+
+        AzarApp.Auditoria.log(:sistema_limpiado, %{
+          tickets: resultado.tickets |> elem(0),
+          sorteos: resultado.sorteos |> elem(0),
+          usuarios: resultado.usuarios |> elem(0)
+        })
+
+        {:ok, resultado}
+
+      {:error, op, razon, _} ->
+        {:error, "Falló en #{op}: #{inspect(razon)}"}
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # Privadas
+  # ---------------------------------------------------------------------------
+
+  defp decimal_seguro(nil), do: Decimal.new(0)
+  defp decimal_seguro(%Decimal{} = v), do: v
+  defp decimal_seguro(v), do: Decimal.new(to_string(v))
+
+  defp mensaje_postgrex(%Postgrex.Error{postgres: pg}) do
+    case pg[:code] do
+      "22003" ->
+        "El saldo resultante supera la precisión numérica máxima de PostgreSQL"
+      "22P02" ->
+        "Formato de número inválido para la base de datos"
+      "23514" ->
+        "El valor viola una restricción de integridad (CHECK constraint)"
+      "23502" ->
+        "Campo requerido nulo — error interno de integridad"
+      "40001" ->
+        "Conflicto de transacción concurrente, intenta nuevamente"
+      "40P01" ->
+        "Deadlock detectado por PostgreSQL, intenta nuevamente"
+      "53300" ->
+        "Demasiadas conexiones activas, intenta en un momento"
+      code ->
+        "Error de base de datos (#{code}): #{pg[:message]}"
+    end
+  end
 end

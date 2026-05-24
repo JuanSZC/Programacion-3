@@ -19,7 +19,8 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
          |> assign(:usuario, usuario)
          |> assign(:tickets, tickets)
          |> assign(:editando, false)
-         |> assign(:error_usuario, nil) # Inicializamos el estado del modal de error
+         |> assign(:monto_ajuste, "")
+         |> assign(:error_usuario, nil)
          |> assign(:page_title, "Gestión: #{usuario.nombre}")}
 
       {:error, :not_found} ->
@@ -128,7 +129,7 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
   def handle_event("editar", _, socket), do: {:noreply, assign(socket, :editando, true)}
 
   @doc """
-  Breve: handle_event.
+  Breve: handle_event cancelar.
   """
   def handle_event("cancelar", _, socket), do: {:noreply, assign(socket, :editando, false)}
 
@@ -148,29 +149,50 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
   end
 
   @impl true
+  def handle_event("validar_monto", %{"monto" => monto}, socket) do
+    {:noreply, assign(socket, :monto_ajuste, monto)}
+  end
+
+  @impl true
   def handle_event("ajustar_saldo", %{"monto" => monto_str, "operacion" => op}, socket) do
     usuario = socket.assigns.usuario
 
-   monto_formateado =
-  case op do
-    "restar" -> "-" <> String.trim(monto_str)
-    "sumar"  -> String.trim(monto_str)
-  end
-
+    monto_formateado =
+      case op do
+        "restar" -> "-" <> String.trim(monto_str)
+        "sumar"  -> String.trim(monto_str)
+      end
 
     case Cuentas.ajustar_saldo_admin(usuario, monto_formateado) do
       {:ok, usuario_actualizado} ->
-        Phoenix.PubSub.broadcast(AzarApp.PubSub, "usuario:#{usuario_actualizado.id}", :ticket_comprado)
+        Phoenix.PubSub.broadcast(
+          AzarApp.PubSub,
+          "usuario:#{usuario_actualizado.id}",
+          :ticket_comprado
+        )
 
         accion = if op == "sumar", do: "sumado", else: "descontado"
 
         {:noreply,
          socket
          |> assign(:usuario, usuario_actualizado)
+         |> assign(:monto_ajuste, "")
          |> put_flash(:info, "💸 Saldo #{accion} con éxito.")}
 
+      # Caso específico: el admin intenta restar más saldo del disponible
+      {:error, {:saldo_insuficiente, %{intentado: intentado, disponible: disponible}}} ->
+        {:noreply,
+         assign(
+           socket,
+           :error_usuario,
+           "Saldo insuficiente. Intentas restar $#{Decimal.round(intentado, 2)} " <>
+           "pero el usuario solo tiene $#{Decimal.round(disponible, 2)} disponibles. " <>
+           "El máximo que puedes restar ahora es $#{Decimal.round(disponible, 2)}."
+         )}
+
       {:error, mensaje_error} ->
-        {:noreply, put_flash(socket, :error, "❌ No se puede realizar: #{mensaje_error}")}
+        {:noreply,
+         assign(socket, :error_usuario, mensaje_error)}
     end
   end
 
@@ -190,7 +212,7 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
          |> put_flash(:info, "🧹 Cuenta vaciada. Saldo establecido en $0.")}
 
       {:error, mensaje} ->
-        {:noreply, put_flash(socket, :error, "❌ #{mensaje}")}
+        {:noreply, assign(socket, :error_usuario, mensaje)}
     end
   end
 
@@ -233,12 +255,12 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
               Operación Denegada
             </h2>
 
-            <%!-- Descripción Dinámica del error del Backend --%>
+            <%!-- Descripción dinámica del error del backend --%>
             <p class="text-base-content/80 text-sm font-bold mb-6 leading-relaxed">
               <%= @error_usuario %>
             </p>
 
-            <%!-- Caja Informativa de Seguridad --%>
+            <%!-- Caja informativa de seguridad --%>
             <div class="bg-error/5 rounded-2xl p-4 border border-error/10 text-left mb-6 space-y-2">
               <span class="text-[11px] font-black uppercase tracking-widest text-error/70 flex items-center gap-2">
                 <.icon name="hero-shield-check-solid" class="size-4" />
@@ -249,7 +271,7 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
               </p>
             </div>
 
-            <%!-- Botón de Cierre --%>
+            <%!-- Botón de cierre --%>
             <button
               phx-click="cerrar_error_usuario"
               class="btn btn-error w-full h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-error/30 hover:-translate-y-1 hover:shadow-error/40 transition-all"
@@ -398,24 +420,32 @@ defmodule AzarAppWeb.Admin.UsuarioLive.Show do
           </div>
 
           <p class="text-[10px] font-bold text-base-content/40 uppercase tracking-widest mb-4 ml-1">
-            Límite por transacción: $10,000,000 · El saldo no puede quedar negativo
+            Límite por transacción: $10,000,000 · Saldo máximo: $9,999,999,999,999.99 · El saldo no puede quedar negativo
           </p>
 
-          <form phx-submit="ajustar_saldo" class="flex flex-col sm:flex-row gap-4 items-end">
+          <form phx-submit="ajustar_saldo" phx-change="validar_monto" class="flex flex-col sm:flex-row gap-4 items-end">
             <div class="form-control flex-1">
-              <label class="text-[10px] font-black uppercase tracking-widest text-base-content/50 mb-1.5 ml-1">Monto ($)</label>
+              <label class="text-[10px] font-black uppercase tracking-widest text-base-content/50 mb-1.5 ml-1">
+                Monto ($) — disponible:
+                <span class="text-success font-black">$<%= @usuario.saldo_virtual || 0 %></span>
+              </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-4 flex items-center font-black text-base-content/30">$</span>
                 <input
                   type="number"
                   name="monto"
+                  value={@monto_ajuste}
                   placeholder="0"
                   min="0.01"
+                  max="10000000"
                   step="0.01"
                   required
                   class="input input-bordered h-12 w-full pl-8 rounded-2xl bg-base-200/50 border-none focus:ring-2 focus:ring-primary/40 font-bold"
                 />
               </div>
+              <p class="text-[9px] text-base-content/30 font-bold uppercase tracking-widest mt-1 ml-1">
+                Máx. restable: $<%= @usuario.saldo_virtual || 0 %> · Máx. por operación: $10,000,000
+              </p>
             </div>
             <input type="hidden" name="operacion" id="op-hidden" value="sumar" />
             <div class="flex gap-3">
