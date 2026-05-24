@@ -2,11 +2,11 @@ defmodule AzarAppWeb.Layouts do
   @moduledoc false
   use AzarAppWeb, :html
 
-  embed_templates "layouts/*"
+  embed_templates("layouts/*")
 
-  attr :flash, :map, required: true
-  attr :current_scope, :map, default: nil
-  slot :inner_block, required: true
+  attr(:flash, :map, required: true)
+  attr(:current_scope, :map, default: nil)
+  slot(:inner_block, required: true)
 
   def app(assigns) do
     ~H"""
@@ -63,8 +63,7 @@ defmodule AzarAppWeb.Layouts do
                       onmouseleave="this.style.background='var(--indigo-dim)';this.style.color='var(--indigo-light)'">
                       U
                     </div>
-                    <.icon name="hero-chevron-down-solid" class="size-3 hidden sm:block" style="color:var(--text-muted)" />
-                  </div>
+    <.icon name="hero-chevron-down-solid" class="size-3 hidden sm:block text-[var(--text-muted)]" />                  </div>
                   <ul tabindex="0" class="dropdown-content z-[1] mt-3 p-1.5 min-w-48 rounded-2xl shadow-2xl"
                     style="background:var(--bg-elevated);border:1px solid var(--border)">
                     <li>
@@ -73,8 +72,7 @@ defmodule AzarAppWeb.Layouts do
                         style="color:var(--text-secondary)"
                         onmouseenter="this.style.color='var(--text-primary)';this.style.background='var(--bg-card)'"
                         onmouseleave="this.style.color='var(--text-secondary)';this.style.background='transparent'">
-                        <.icon name="hero-command-line-solid" class="size-4" style="color:var(--text-muted)" />
-                        Panel Admin
+    <.icon name="hero-command-line-solid" class="size-4 text-[var(--text-muted)]" />                        Panel Admin
                       </a>
                     </li>
                     <li class="my-1" style="border-top:1px solid var(--border)"></li>
@@ -127,7 +125,7 @@ defmodule AzarAppWeb.Layouts do
           <div class="flex items-center gap-2">
             <div class="w-6 h-6 rounded-lg flex items-center justify-center"
               style="background:var(--indigo-dim)">
-              <.icon name="hero-sparkles-solid" class="size-3" style="color:var(--indigo)" />
+    <.icon name="hero-sparkles-solid" class="size-3 text-[var(--indigo)]" />
             </div>
             <span class="font-display font-bold tracking-tight" style="color:var(--text-muted)">
               Azar<span style="color:var(--indigo)">.</span>
@@ -142,8 +140,8 @@ defmodule AzarAppWeb.Layouts do
     """
   end
 
-  attr :flash, :map, required: true
-  attr :id, :string, default: "flash-group"
+  attr(:flash, :map, required: true)
+  attr(:id, :string, default: "flash-group")
 
   def flash_group(assigns) do
     ~H"""
@@ -166,33 +164,92 @@ defmodule AzarAppWeb.Layouts do
     </div>
     """
   end
+def theme_toggle(assigns) do
+  ~H"""
+  <div id="theme-switch" style="
+    width:96px;height:36px;
+    border-radius:999px;
+    background:var(--color-base-200);
+    border:1px solid var(--color-base-300);
+    position:relative;
+    display:flex;align-items:center;
+    padding:3px;
+    box-sizing:border-box;
+  ">
+    <div id="theme-knob" style="
+      width:28px;height:28px;
+      border-radius:50%;
+      background:var(--color-base-100);
+      border:1px solid var(--color-base-300);
+      position:absolute;left:3px;
+      transition:left 0.25s cubic-bezier(.4,0,.2,1);
+      box-shadow:0 1px 3px rgba(0,0,0,.15);
+      pointer-events:none;
+    "></div>
 
-  def theme_toggle(assigns) do
-    ~H"""
-    <div class="relative flex items-center rounded-lg p-0.5 gap-0.5" style="background:var(--bg-card)">
-      <div class="absolute w-[calc(33.33%-2px)] h-[calc(100%-4px)] rounded-md
-        left-[2px]
-        [[data-theme=light]_&]:left-[calc(33.33%+1px)]
-        [[data-theme=dark]_&]:left-[calc(66.66%+0px)]
-        transition-all duration-200 ease-out"
-        style="background:var(--bg-elevated);border:1px solid var(--border)">
-      </div>
-      <button class="relative z-10 flex items-center justify-center w-7 h-7 rounded-md transition-colors"
-        style="color:var(--text-muted)"
-        phx-click={JS.dispatch("phx:set-theme")} data-phx-theme="system" title="Sistema">
-        <.icon name="hero-computer-desktop-solid" class="size-3.5" />
-      </button>
-      <button class="relative z-10 flex items-center justify-center w-7 h-7 rounded-md transition-colors"
-        style="color:var(--text-muted)"
-        phx-click={JS.dispatch("phx:set-theme")} data-phx-theme="light" title="Claro">
-        <.icon name="hero-sun-solid" class="size-3.5" />
-      </button>
-      <button class="relative z-10 flex items-center justify-center w-7 h-7 rounded-md transition-colors"
-        style="color:var(--text-muted)"
-        phx-click={JS.dispatch("phx:set-theme")} data-phx-theme="dark" title="Oscuro">
-        <.icon name="hero-moon-solid" class="size-3.5" />
-      </button>
-    </div>
-    """
-  end
+    <button onclick="window.setTheme('system')" title="Sistema" id="btn-system" style="
+      position:absolute;left:3px;width:28px;height:28px;
+      border:none;background:transparent;cursor:pointer;
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      transition:opacity 0.2s;z-index:1;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+        fill="none" stroke="#7C6AF7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+      </svg>
+    </button>
+
+    <button onclick="window.setTheme('light')" title="Claro" id="btn-light" style="
+      position:absolute;left:35px;width:28px;height:28px;
+      border:none;background:transparent;cursor:pointer;
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      transition:opacity 0.2s;opacity:0.25;z-index:1;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+        fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+    </button>
+
+    <button onclick="window.setTheme('dark')" title="Oscuro" id="btn-dark" style="
+      position:absolute;left:65px;width:28px;height:28px;
+      border:none;background:transparent;cursor:pointer;
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      transition:opacity 0.2s;opacity:0.25;z-index:1;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+        fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>
+        <path d="M19 3v4M21 5h-4"/>
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    window.setTheme = function(theme) {
+      const root = document.documentElement;
+      const resolved = theme === 'system'
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme;
+
+      root.setAttribute('data-theme', resolved);
+      localStorage.setItem('app-theme', theme);
+
+      const positions = { system: '3px', light: '35px', dark: '65px' };
+      const knob = document.getElementById('theme-knob');
+      if (knob) knob.style.left = positions[theme];
+
+      ['system', 'light', 'dark'].forEach(function(t) {
+        const btn = document.getElementById('btn-' + t);
+        if (btn) btn.style.opacity = t === theme ? '1' : '0.25';
+      });
+    };
+
+    (function() {
+      const saved = localStorage.getItem('app-theme') || 'system';
+      window.setTheme(saved);
+    })();
+  </script>
+  """
+end
 end

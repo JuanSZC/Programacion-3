@@ -26,6 +26,49 @@ window.addEventListener("phx:scroll_to_panel", () => {
   if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
+/**
+ * Manejo de temas (claro / oscuro / sistema)
+ * Escucha el evento `phx:set-theme` despachado desde los botones del toggle.
+ */
+const THEME_KEY = "app-theme";
+
+function applyTheme(theme) {
+  const root = document.documentElement;
+
+  if (theme === "system") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.setAttribute("data-theme", prefersDark ? "dark" : "light");
+  } else {
+    root.setAttribute("data-theme", theme);
+  }
+
+  // Aplicar tema guardado inmediatamente (evita flash)
+(function() {
+  const theme = localStorage.getItem('app-theme') || 'system';
+  const resolved = theme === 'system'
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : theme;
+  document.documentElement.setAttribute('data-theme', resolved);
+})();
+
+  // Guardar preferencia real (no la resuelta)
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+// Aplicar tema guardado al cargar la página
+applyTheme(localStorage.getItem(THEME_KEY) || "system");
+
+// Escuchar clics del toggle
+window.addEventListener("phx:set-theme", (e) => {
+  const theme = e.target.dataset.phxTheme;
+  if (theme) applyTheme(theme);
+});
+
+// Sincronizar si el usuario cambia preferencia del sistema
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  const saved = localStorage.getItem(THEME_KEY) || "system";
+  if (saved === "system") applyTheme("system");
+});
 
 // 3. Inicialización y Configuración de LiveSocket
 const liveSocket = new LiveSocket("/live", Socket, {

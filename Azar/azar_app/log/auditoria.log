@@ -477,3 +477,4 @@
 [2026-05-24 00:08:31] [SESION_CERRADA] usuario_id=1 email=sebastianzambrano2809@gmail.com
 [2026-05-24 00:08:55] [SESION_INICIADA] usuario_id=2 email=jusezaca2024@gmail.com rol=cliente
 [2026-05-24 00:09:06] [SESION_CERRADA] usuario_id=2 email=jusezaca2024@gmail.com
+[2026-05-24 19:57:48] [SESION_INICIADA] usuario_id=1 email=sebastianzambrano2809@gmail.com rol=admin

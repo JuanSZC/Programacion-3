@@ -9,11 +9,11 @@
       {assigns[:page_title] && "#{assigns[:page_title]} · Azar"}
     </.live_title>
 
-    <%!-- Tipografía con carácter: Sora para display, DM Sans para cuerpo --%>
+    <%!-- Tipografía moderna y discreta: Inter para cuerpo, Sora para encabezados --%>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -46,8 +46,8 @@
 
     <style>
       :root {
-        --font-display: 'Sora', sans-serif;
-        --font-body: 'DM Sans', sans-serif;
+        --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+        --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
       }
 
       html, body {
