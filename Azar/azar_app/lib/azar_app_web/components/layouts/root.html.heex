@@ -9,11 +9,11 @@
       {assigns[:page_title] && "#{assigns[:page_title]} · Azar"}
     </.live_title>
 
-    <%!-- Tipografía moderna y discreta: Inter para cuerpo, Sora para encabezados --%>
+    <%!-- Tipografía moderna y global: Plus Jakarta Sans para cuerpo, Space Grotesk para encabezados --%>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -46,20 +46,34 @@
 
     <style>
       :root {
-        --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
-        --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+        --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
       }
 
-      html, body {
-        font-family: var(--font-body);
+      html, body,
+      input, textarea, select, button,
+      .font-sans,
+      .font-serif,
+      .font-mono,
+      .font-display,
+      .font-thin,
+      .font-light,
+      .font-normal,
+      .font-medium,
+      .font-semibold,
+      .font-bold,
+      .font-extrabold,
+      .font-black {
+        font-family: var(--font-body) !important;
+        letter-spacing: 0.02em;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
 
-      /* Headings y display usan Sora */
-      h1, h2, h3, h4,
+      /* Headings y display usan Space Grotesk */
+      h1, h2, h3, h4, h5, h6,
       .font-display {
-        font-family: var(--font-display);
+        font-family: var(--font-display) !important;
       }
 
       /* Scrollbar discreta */
@@ -76,7 +90,7 @@
     </style>
   </head>
 
-  <body class="min-h-screen bg-base-100 text-base-content antialiased flex flex-col">
+  <body class="min-h-screen bg-base-100 text-base-content antialiased flex flex-col font-sans">
 
     <%!-- Flash global — posicionado arriba a la derecha --%>
     <div class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 w-full max-w-xs pointer-events-none">
